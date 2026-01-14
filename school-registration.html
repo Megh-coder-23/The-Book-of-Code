@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Book of Code • School Registration</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --bg-dark: #05070d;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --border-soft: rgba(255,255,255,0.08);
+  --text-main: #e8ecf1;
+  --text-muted: #a6b0c3;
+}
+body {
+  font-family: 'Sora', sans-serif;
+  background: linear-gradient(180deg,#05070d,#0b1020);
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  color: var(--text-main);
+  margin:0;
+}
+h1 {text-align:center; margin-bottom:16px;}
+form {
+  width: 100%;
+  max-width: 520px;
+  background: var(--card-bg);
+  padding: 48px;
+  border-radius:22px;
+  backdrop-filter: blur(14px);
+  display: grid;
+  gap:18px;
+  box-shadow:0 40px 80px rgba(0,0,0,0.45);
+}
+input {
+  padding:14px 16px;
+  border-radius:12px;
+  border:1px solid var(--border-soft);
+  background: rgba(255,255,255,0.04);
+  color: var(--text-main);
+  font-family: inherit;
+}
+input::placeholder { color: var(--text-muted);}
+button {
+  padding:14px;
+  border-radius:14px;
+  border:none;
+  cursor:pointer;
+  font-family:inherit;
+  font-weight:500;
+  background: linear-gradient(135deg, #00c9ff 0%, #005bff 100%);
+  color:#fff;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+button:hover { transform:translateY(-3px); box-shadow:0 16px 40px rgba(0,91,255,0.4);}
+.error {color:#ff6b6b; font-size:13px; display:none; text-align:center;}
+.success {color:#4ad994; font-size:13px; display:none; text-align:center;}
+</style>
+</head>
+<body>
+
+<h1><span class="gradient-text">Register Your School</span></h1>
+
+<form id="schoolForm">
+  <input type="text" id="schoolName" placeholder="School Name" required/>
+  <input type="email" id="adminEmail" placeholder="Admin Email" required/>
+  <input type="text" id="domain" placeholder="School Domain (e.g. redbrickseducation.org)" required/>
+  <input type="password" id="sharedPassword" placeholder="Shared Student Password" required/>
+  <button type="submit">Request Registration</button>
+  <div class="error" id="errorBox"></div>
+  <div class="success" id="successBox"></div>
+</form>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBGeAln9WrYu07QrOlANYLINLWcq9NpBHA",
+    authDomain: "the-book-of-code.firebaseapp.com",
+    projectId: "the-book-of-code",
+    storageBucket: "the-book-of-code.firebasestorage.app",
+    messagingSenderId: "598679975161",
+    appId: "1:598679975161:web:a2c465f0ac6d9a56531e28",
+    measurementId: "G-29P13DSLTZ",
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const form = document.getElementById("schoolForm");
+  const errorBox = document.getElementById("errorBox");
+  const successBox = document.getElementById("successBox");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorBox.style.display = "none";
+    successBox.style.display = "none";
+
+    const schoolName = document.getElementById("schoolName").value.trim();
+    const adminEmail = document.getElementById("adminEmail").value.trim();
+    const domain = document.getElementById("domain").value.trim();
+    const sharedPassword = document.getElementById("sharedPassword").value;
+
+    try {
+      // Check if domain already requested
+      const q = query(collection(db, "schoolRegistrations"), where("domain","==",domain));
+      const snap = await getDocs(q);
+      if(!snap.empty){
+        errorBox.textContent = "This school domain has already requested registration.";
+        errorBox.style.display = "block";
+        return;
+      }
+
+      await addDoc(collection(db, "schoolRegistrations"), {
+        schoolName,
+        adminEmail,
+        domain,
+        sharedPassword,
+        timestamp: new Date()
+      });
+
+      successBox.textContent = "Registration request submitted! An admin will review it.";
+      successBox.style.display = "block";
+      form.reset();
+    } catch(err){
+      errorBox.textContent = "Error submitting request. Try again later.";
+      errorBox.style.display = "block";
+      console.error(err);
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -3,275 +3,240 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Log In - The Book of Code</title>
+    <title>The Book of Code • Login</title>
+
+    <!-- Sora Font -->
     <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
     />
+
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap");
+      :root {
+        --bg-dark: #05070d;
+        --bg-mid: #0b1020;
+        --card-bg: rgba(255, 255, 255, 0.05);
+        --border-soft: rgba(255, 255, 255, 0.08);
+        --text-main: #e8ecf1;
+        --text-muted: #a6b0c3;
+      }
+
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
-        font-family: "Sora", sans-serif;
       }
+
       body {
+        font-family: "Sora", system-ui, sans-serif;
+        background: linear-gradient(180deg, #05070d, #0b1020);
+        color: var(--text-main);
         min-height: 100vh;
-        background: linear-gradient(
-          135deg,
-          #0f172a 0%,
-          #1d283a 50%,
-          #0f172a 100%
-        );
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #fff;
+        display: grid;
+        place-items: center;
       }
-      .container {
-        background-color: rgba(255, 255, 255, 0.02);
-        padding: 40px;
-        border-radius: 16px;
-        width: 100%;
-        max-width: 400px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        margin: 50px 0;
-      }
-      svg {
-        margin: 0.5rem 0;
-      }
-      .back {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        font-size: 14px;
-        color: #aaa;
-        text-decoration: none;
-      }
-      .back::before {
-        content: "← ";
-      }
-      h2 {
-        text-align: center;
-        margin-bottom: 6px;
-        font-size: 24px;
-      }
+
       .gradient-text {
-        background: linear-gradient(90deg, #00c9ff, #005bff);
+        background: linear-gradient(135deg, #00c9ff 0%, #005bff 100%);
         -webkit-background-clip: text;
-        background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-weight: 700;
-        margin-bottom: 24px;
+        background-clip: text;
       }
-      .welcome-msg {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        color: #fff;
-        gap: 0.5rem;
-      }
-      p {
-        text-align: center;
-        font-size: 19px;
-        color: #fff;
-      }
-      label {
-        font-size: 13px;
-        display: block;
-        margin-bottom: 6px;
-      }
-      input[type="email"],
-      input[type="password"],
-      input[type="text"] {
+
+      .login-shell {
         width: 100%;
-        padding: 12px 14px;
-        border: 1px solid #2c2f40;
-        border-radius: 12px;
-        background-color: #0e1320;
-        color: white;
-        margin-bottom: 14px;
+        max-width: 520px;
+        padding: 48px;
+        background: var(--card-bg);
+        border: 1px solid var(--border-soft);
+        border-radius: 22px;
+        backdrop-filter: blur(14px);
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.45);
+        animation: rise 1.2s cubic-bezier(0.22, 1, 0.25, 1);
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .login-shell h1 {
+        font-size: 32px;
+        margin-bottom: 12px;
+      }
+
+      .login-shell p {
+        font-size: 14px;
+        color: var(--text-muted);
+        line-height: 1.7;
+        margin-bottom: 32px;
+      }
+
+      .role-select {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+
+      .role {
+        padding: 18px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-soft);
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
         font-size: 14px;
       }
+
+      .role:hover {
+        transform: translateY(-4px);
+        border-color: rgba(0, 201, 255, 0.5);
+        box-shadow: 0 12px 30px rgba(0, 201, 255, 0.15);
+      }
+
+      .role.active {
+        border-color: rgba(0, 201, 255, 0.9);
+        box-shadow: 0 0 0 1px rgba(0, 201, 255, 0.6);
+      }
+
+      form {
+        display: grid;
+        gap: 18px;
+      }
+
+      input {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 12px;
+        border: 1px solid var(--border-soft);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text-main);
+        font-family: inherit;
+        font-size: 14px;
+        outline: none;
+      }
+
       input::placeholder {
-        color: #fff;
-        opacity: 0.6;
+        color: var(--text-muted);
       }
-      .password-wrapper {
-        position: relative;
-      }
-      .password-wrapper .eye-icon {
-        position: absolute;
-        right: 16px;
-        top: 35%;
-        transform: translateY(-50%);
-        cursor: pointer;
-        color: #aaa;
-        font-size: 16px;
-      }
-      .btn-primary {
-        width: 100%;
-        padding: 12px;
-        background: linear-gradient(to right, #00c6ff, #0072ff);
+
+      button {
+        margin-top: 12px;
+        padding: 14px;
+        border-radius: 14px;
         border: none;
-        border-radius: 12px;
-        color: white;
-        font-weight: bold;
-        font-size: 14px;
-        margin-bottom: 14px;
         cursor: pointer;
-        transition: all 0.2s ease;
+        font-family: inherit;
+        font-size: 15px;
+        font-weight: 500;
+        background: linear-gradient(135deg, #00c9ff 0%, #005bff 100%);
+        color: #ffffff;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
       }
-      .btn-primary:hover {
-        opacity: 0.9;
+
+      button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 40px rgba(0, 91, 255, 0.4);
       }
-      .divider {
+
+      .hint {
+        margin-top: 18px;
+        font-size: 12px;
+        color: var(--text-muted);
         text-align: center;
-        margin: 16px 0;
-        color: #aaa;
-        font-size: 13px;
       }
-      .btn-google {
-        width: 100%;
-        padding: 12px;
-        background: none;
-        border: 1px solid #2c2f40;
-        border-radius: 12px;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        cursor: pointer;
-        transition: background 0.2s;
-      }
-      .btn-google:hover {
-        background: rgba(255, 255, 255, 0.05);
-      }
-      .btn-google img {
-        width: 18px;
-      }
-      .bottom-link {
-        text-align: center;
-        font-size: 13px;
+
+      .error {
         margin-top: 16px;
-      }
-      .bottom-link a {
-        color: #1a90ff;
-        text-decoration: none;
-      }
-      .tiny-footer {
+        font-size: 13px;
+        color: #ff6b6b;
         text-align: center;
-        font-size: 11px;
-        margin-top: 20px;
-        color: #666;
+        display: none;
       }
-      .tiny-footer a {
-        color: #1a90ff;
+
+      .school-register {
+        margin-top: 32px;
+        text-align: center;
+        font-size: 13px;
+      }
+
+      .school-register a {
+        color: #00c9ff;
         text-decoration: none;
+      }
+
+      .school-register a:hover {
+        text-decoration: underline;
       }
     </style>
   </head>
+
   <body>
-    <a class="back" href="index.html">Back to Home</a>
-    <div class="container">
-      <div class="welcome-msg">
-        <p>Welcome back to</p>
-        <svg
-          width="100"
-          height="100"
-          viewBox="0 0 64 64"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#00C9FF" />
-              <stop offset="100%" stop-color="#005BFF" />
-            </linearGradient>
-          </defs>
-          <rect width="64" height="64" rx="16" fill="url(#bgGradient)" />
-          <path
-            d="M26 20 L16 32 L26 44"
-            stroke="white"
-            stroke-width="4"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M38 20 L48 32 L38 44"
-            stroke="white"
-            stroke-width="4"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-        <h2 class="gradient-text">The Book of Code</h2>
+    <div class="login-shell">
+      <h1>Login to <span class="gradient-text">The Book of Code</span></h1>
+
+      <p>
+        Access is provided through your school. Students and teachers log in
+        using the same school credentials.
+      </p>
+
+      <div class="role-select">
+        <div class="role active" data-role="student">Student Login</div>
+        <div class="role" data-role="teacher">Teacher Login</div>
       </div>
 
       <form id="loginForm">
-        <label for="email">Email</label>
         <input
           type="email"
           id="email"
-          placeholder="Enter your email"
+          placeholder="School email (e.g. name@redbrickseducation.org)"
           required
         />
 
-        <label for="password">Password</label>
-        <div class="password-wrapper">
-          <input
-            type="password"
-            id="password"
-            placeholder="Enter password"
-            required
-          />
-          <span class="eye-icon" onclick="toggleVisibility('password')"
-            >&#128065;</span
-          >
-        </div>
+        <input
+          type="password"
+          id="password"
+          placeholder="School password"
+          required
+        />
 
-        <button type="submit" class="btn-primary">Log in →</button>
+        <button type="submit">Enter Workspace</button>
       </form>
 
-      <div class="divider">or</div>
+      <div class="error" id="errorBox"></div>
 
-      <button type="button" class="btn-google" id="googleLogin">
-        <img
-          src="https://www.svgrepo.com/show/475656/google-color.svg"
-          alt="Google Icon"
-        />
-        Log in with Google
-      </button>
+      <div class="hint">
+        Sample school domain: <strong>@redbrickseducation.org</strong><br />
+        Shared password (demo): <strong>1234567890</strong>
+      </div>
 
-      <div class="bottom-link">
-        Don't have an account? <a href="login.html">Create one</a><br />
-        Forgot Password? <a href="">Click here</a>
+      <div class="school-register">
+        Not a registered school?
+        <a href="#">Request school onboarding</a>
       </div>
     </div>
 
+    <!-- Firebase -->
+    <input
+      type="email"
+      id="studentEmail"
+      placeholder="Enter your school email"
+    />
+    <button id="studentLoginBtn">Login</button>
+
+    <script src="https://www.gstatic.com/firebasejs/10.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.6.1/firebase-firestore-compat.js"></script>
+
     <script>
-      // Toggle password visibility
-      function toggleVisibility(fieldId) {
-        const field = document.getElementById(fieldId);
-        field.type = field.type === "password" ? "text" : "password";
-      }
-    </script>
-
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
-      import {
-        getAuth,
-        signInWithEmailAndPassword,
-        GoogleAuthProvider,
-        signInWithPopup,
-      } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js";
-
       const firebaseConfig = {
         apiKey: "AIzaSyBGeAln9WrYu07QrOlANYLINLWcq9NpBHA",
         authDomain: "the-book-of-code.firebaseapp.com",
@@ -282,42 +247,35 @@
         measurementId: "G-29P13DSLTZ",
       };
 
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      const provider = new GoogleAuthProvider();
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
 
-      // Email/password login
       document
-        .getElementById("loginForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const email = document.getElementById("email").value.trim();
-          const password = document.getElementById("password").value;
+        .getElementById("studentLoginBtn")
+        .addEventListener("click", async () => {
+          const email = document.getElementById("studentEmail").value.trim();
+          const domain = email.split("@")[1];
 
-          // Basic check
-          if (!email || !password) {
-            alert("Please fill in both fields before logging in.");
+          // Fetch the shared password from Firestore
+          const schoolsSnap = await db
+            .collection("schoolRegistrations")
+            .where("domain", "==", domain)
+            .get();
+
+          if (schoolsSnap.empty) {
+            alert("No school found for this domain!");
             return;
           }
 
-          try {
-            await signInWithEmailAndPassword(auth, email, password);
-            window.location.href = "home.html";
-          } catch (error) {
-            alert("Error: " + error.message);
-          }
-        });
+          const password = schoolsSnap.docs[0].data().sharedPassword;
 
-      // Google login
-      document
-        .getElementById("googleLogin")
-        .addEventListener("click", async () => {
           try {
-            await signInWithPopup(auth, provider);
-            alert("Google login successful!");
-            window.location.href = "home.html";
-          } catch (error) {
-            alert("Error: " + error.message);
+            await auth.signInWithEmailAndPassword(email, password);
+            alert("Login successful!");
+            // Redirect or load dashboard
+          } catch (err) {
+            alert(err.message);
           }
         });
     </script>
