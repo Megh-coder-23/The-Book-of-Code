@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Onboarding — The Book of Code</title>
+
+    <!-- Sora font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg: #0a0e27;
+        --muted: rgba(255, 255, 255, 0.08);
+        --panel: #0f1633;
+        --cta1: #00c9ff;
+        --cta2: #005bff;
+        --text: #ffffff;
+        --soft: rgba(255, 255, 255, 0.06);
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: var(--bg);
+        font-family: "Sora", system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial;
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* Page layout */
+      .stage {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 36px 20px;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 980px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        border-radius: 16px;
+        padding: 28px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+        position: relative;
+        overflow: visible;
+      }
+
+      /* Progress bar (placed lower so mascot won't overlap) */
+      .progress {
+        height: 10px;
+        background: var(--soft);
+        border-radius: 999px;
+        overflow: hidden;
+        margin-top: 60px;
+      }
+      .progress > .bar {
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(135deg, var(--cta1), var(--cta2));
+        transition: width 0.36s cubic-bezier(0.2, 0.9, 0.2, 1);
+      }
+
+      /* Mascot area (top-left after intro) */
+      .mascot-wrap {
+        position: absolute;
+        left: 32px;
+        top: 32px;
+        transform-origin: left top;
+        transition: transform 0.6s ease, left 0.6s ease, top 0.6s ease;
+        z-index: 30;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .mascot-centered {
+        /* initial center layout (overrides via JS) */
+        position: relative;
+        left: unset;
+        top: unset;
+        transform: none;
+      }
+
+      /* Mascot SVG */
+      .mascot {
+        width: 120px;
+        height: 120px;
+        display: block;
+        transition: width 0.4s ease, height 0.4s ease, transform 0.4s ease;
+      }
+
+      .mascot.small {
+        width: 58px;
+        height: 58px;
+      }
+
+      /* Speech bubble */
+      .bubble {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        border-radius: 12px;
+        padding: 12px 14px;
+        max-width: 520px;
+        box-shadow: 0 8px 20px rgba(2, 6, 23, 0.6);
+        font-size: 1rem;
+        line-height: 1.3;
+        color: var(--text);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+      }
+
+      .bubble.small {
+        font-size: 0.95rem;
+        padding: 10px 12px;
+      }
+
+      /* Main content column */
+      .content {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 18px;
+        align-items: start;
+      }
+
+      .stage-title {
+        font-weight: 600;
+        font-size: 1.6rem;
+        margin: 8px 0 2px;
+      }
+      .stage-sub {
+        color: rgba(255, 255, 255, 0.78);
+        margin: 0 0 8px;
+        font-size: 0.98rem;
+      }
+
+      .panel {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        padding: 18px;
+      }
+
+      /* option cards */
+      .options {
+        display: grid;
+        gap: 12px;
+        margin-top: 6px;
+      }
+      .opt {
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.03);
+        cursor: pointer;
+        transition: transform 0.22s ease, background 0.22s ease;
+        border: 1px solid rgba(255, 255, 255, 0.02);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .opt:hover {
+        transform: translateY(-4px);
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .opt.selected {
+        background: linear-gradient(135deg, var(--cta1), var(--cta2));
+        color: #021033;
+        font-weight: 600;
+      }
+
+      /* inputs */
+      input[type="number"],
+      select,
+      textarea {
+        width: 100%;
+        padding: 12px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--text);
+        outline: none;
+        font-size: 1rem;
+      }
+
+      /* CTA (Next) */
+      .cta {
+        display: inline-block;
+        padding: 12px 22px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--cta1), var(--cta2));
+        color: white;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.25s ease;
+        text-decoration: none;
+      }
+      .cta:hover {
+        transform: translateY(-4px);
+      }
+      .cta:active {
+        transform: translateY(-2px);
+      }
+
+      /* Back link (converted to <a>) - made readable and pretty */
+      .back-btn {
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 600;
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.06);
+        transition: all 0.25s ease;
+        display: inline-block;
+        cursor: pointer;
+        margin-right: 8px;
+      }
+      .back-btn:hover {
+        background: rgba(255, 255, 255, 0.12);
+        transform: translateY(-4px);
+      }
+      .back-btn:active {
+        transform: translateY(-2px);
+      }
+
+      /* nav-link-like (used elsewhere) */
+      .nav-link-like {
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
+      }
+      .nav-link-like:hover {
+        opacity: 0.8;
+        transform: translateY(-4px);
+      }
+
+      /* layout: left column for mascot bubble + right column for stage content */
+      .layout {
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        gap: 20px;
+        align-items: start;
+      }
+
+      /* footer controls */
+      .controls {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        align-items: center;
+        margin-top: 12px;
+      }
+
+      .small-muted {
+        font-size: 0.92rem;
+        color: rgba(255, 255, 255, 0.62);
+      }
+
+      /* confetti pieces */
+      .confetti {
+        pointer-events: none;
+        position: absolute;
+        left: 50%;
+        top: 40%;
+        width: 0;
+        height: 0;
+        transform: translate(-50%, -50%);
+      }
+      .confetti-piece {
+        position: absolute;
+        width: 8px;
+        height: 14px;
+        opacity: 0;
+        transform-origin: center;
+        border-radius: 2px;
+      }
+
+      /* Error wobble */
+      .wobble {
+        animation: wobble 0.28s ease;
+      }
+      @keyframes wobble {
+        0% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-6px);
+        }
+        50% {
+          transform: translateX(6px);
+        }
+        75% {
+          transform: translateX(-6px);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+
+      /* responsive */
+      @media (max-width: 880px) {
+        .layout {
+          grid-template-columns: 120px 1fr;
+        }
+        .mascot {
+          width: 96px;
+          height: 96px;
+        }
+        .mascot.small {
+          width: 48px;
+          height: 48px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .mascot-wrap {
+          position: static;
+          transform: none;
+          margin-bottom: 10px;
+        }
+        .mascot-centered {
+          display: block;
+          margin: 0 auto 8px;
+        }
+        .mascot.small {
+          width: 56px;
+          height: 56px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="stage">
+      <div class="card" id="card">
+        <!-- Mascot (SVG) -->
+        <div id="mascotWrap" class="mascot-wrap mascot-centered" aria-hidden="true">
+          <svg id="mascotSVG" class="mascot" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mascot">
+            <rect x="12" y="12" rx="18" ry="18" width="96" height="72" fill="#cfe9ff" opacity="0.12"/>
+            <rect x="20" y="18" rx="14" ry="14" width="80" height="56" fill="#cfdff6" opacity="0.14"/>
+            <rect x="18" y="16" rx="16" ry="16" width="84" height="60" fill="#dbe9ff" opacity="0.06"/>
+            <circle cx="40" cy="46" r="12" fill="#04233d" opacity="0.9"/>
+            <circle cx="80" cy="46" r="12" fill="#04233d" opacity="0.9"/>
+            <circle cx="40" cy="46" r="7" fill="#00c9ff"/>
+            <circle cx="80" cy="46" r="7" fill="#00c9ff"/>
+            <path d="M40 64 q20 14 40 0" stroke="#021033" stroke-width="3" fill="none" stroke-linecap="round" />
+            <rect x="26" y="72" rx="12" ry="12" width="68" height="36" fill="#cfe9ff" opacity="0.06"/>
+            <rect x="36" y="80" rx="8" ry="8" width="48" height="20" fill="#05233f" opacity="0.35"/>
+            <path d="M60 14 q-8 -12 -22 -4" stroke="#ff6b6b" stroke-width="4" stroke-linecap="round" fill="none"/>
+            <path d="M60 12 q0 -16 18 -10" stroke="#ffd166" stroke-width="4" stroke-linecap="round" fill="none"/>
+            <path d="M60 12 q10 -14 30 -6" stroke="#6ce0be" stroke-width="4" stroke-linecap="round" fill="none"/>
+            <path d="M60 14 q18 -8 36 2" stroke="#6fb3ff" stroke-width="4" stroke-linecap="round" fill="none"/>
+          </svg>
+
+          <div id="bubble" class="bubble">Hello!</div>
+        </div>
+
+        <!-- confetti container -->
+        <div id="confetti" class="confetti" aria-hidden="true"></div>
+
+        <!-- main layout -->
+        <div class="content">
+          <div class="progress">
+            <div id="bar" class="bar"></div>
+          </div>
+
+          <div class="layout" style="margin-top: 6px">
+            <div style="min-width: 120px"></div>
+
+            <div>
+              <div id="stageHeading" class="stage-title">Welcome</div>
+              <div id="stageSub" class="stage-sub">C.O.D.E. will guide you through a short setup.</div>
+
+              <div id="stagePanel" class="panel" style="margin-top: 12px">
+                <div id="stageContent"></div>
+
+                <div class="controls" style="margin-top: 14px">
+                  <div style="flex: 1"></div>
+
+                  <!-- BACK AS <a> (styled) -->
+                  <a id="prevBtn" class="back-btn" style="display: none" href="#">← Back</a>
+
+                  <!-- NEXT always says "Next" -->
+                  <button id="nextBtn" class="cta">Next</button>
+                </div>
+                <div style="height: 4px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- content -->
+      </div>
+      <!-- card -->
+    </div>
+    <!-- stage -->
+
+    <script>
+      /* ------------------------------
+         Onboarding multi-step script (full file rewitten)
+         Steps:
+           0: Intro (mascot center, greeting)
+           1: Confetti / party text
+           2: Choose course
+           3: How did you hear about us
+           4: Why learn (purpose)
+           5: Prior knowledge
+           6: Achievements (informational)
+           7: Daily learning goal
+           8: Notifications (allow/deny)
+           9: Motivational part A
+           10: Motivational part B (finish)
+         ------------------------------ */
+
+      const stepsTotal = 11; // 0..10
+      let stepIndex = 0;
+
+      // user selections
+      const state = {
+        course: null,
+        referral: null,
+        reason: null,
+        experience: null,
+        dailyMinutes: null,
+        notificationsAllowed: null
+      };
+
+      // DOM refs
+      const bubble = document.getElementById("bubble");
+      const mascotWrap = document.getElementById("mascotWrap");
+      const mascotSVG = document.getElementById("mascotSVG");
+      const confettiEl = document.getElementById("confetti");
+      const stageHeading = document.getElementById("stageHeading");
+      const stageSub = document.getElementById("stageSub");
+      const stageContent = document.getElementById("stageContent");
+      const nextBtn = document.getElementById("nextBtn");
+      const prevBtn = document.getElementById("prevBtn");
+      const bar = document.getElementById("bar");
+      const card = document.getElementById("card");
+
+      // next buttons MUST always read "Next"
+      nextBtn.textContent = "Next";
+
+      // Events
+      nextBtn.addEventListener("click", () => goNext());
+      prevBtn.addEventListener("click", (e) => { e.preventDefault(); goPrev(); });
+
+      function updateProgress() {
+        const pct = Math.round((stepIndex / (stepsTotal - 1)) * 100);
+        bar.style.width = pct + "%";
+      }
+
+      // confetti helper
+      function throwConfetti() {
+        confettiEl.innerHTML = "";
+        const colors = ['#00c9ff', '#005bff', '#ffd166', '#ff6b6b', '#6ce0be'];
+        for (let i = 0; i < 24; i++) {
+          const el = document.createElement('div');
+          el.className = 'confetti-piece';
+          el.style.background = colors[Math.floor(Math.random() * colors.length)];
+          confettiEl.appendChild(el);
+          const angle = Math.random() * Math.PI * 2;
+          const radius = 120 + Math.random() * 60;
+          const x = Math.cos(angle) * radius;
+          const y = Math.sin(angle) * radius;
+          el.animate([
+            { transform: `translate(0px,0px) rotate(0deg)`, opacity: 0 },
+            { transform: `translate(${x}px, ${y}px) rotate(${Math.random() * 720 - 360}deg)`, opacity: 1 }
+          ], { duration: 900 + Math.random() * 600, easing: 'cubic-bezier(.2,.9,.2,1)' });
+        }
+        setTimeout(() => { confettiEl.innerHTML = ''; }, 1200);
+      }
+
+      // move mascot to corner
+      function moveMascotToCorner() {
+        mascotWrap.classList.remove('mascot-centered');
+        mascotWrap.style.left = '18px';
+        mascotWrap.style.top = '18px';
+        mascotWrap.style.transform = 'none';
+        mascotSVG.classList.add('small');
+        bubble.classList.add('small');
+        bubble.style.marginLeft = '8px';
+      }
+
+      // option renderer
+      function makeOptions(list, selectedValue, onSelect) {
+        const cont = document.createElement('div');
+        cont.className = 'options';
+        list.forEach(item => {
+          const d = document.createElement('div');
+          d.className = 'opt';
+          d.textContent = item;
+          if (item === selectedValue) d.classList.add('selected');
+          d.onclick = () => {
+            cont.querySelectorAll('.opt').forEach(n => n.classList.remove('selected'));
+            d.classList.add('selected');
+            onSelect(item);
+            nextBtn.style.display = 'inline-block';
+          };
+          cont.appendChild(d);
+        });
+        return cont;
+      }
+
+      /* ---------- Step renderers ---------- */
+
+      function renderStep0() {
+        // Intro
+        bubble.textContent = "Hey there! I'm C.O.D.E., your personal guide here at The Book of Code.";
+        stageHeading.textContent = "Welcome";
+        stageSub.textContent = "I’ll help personalize your learning path.";
+        stageContent.innerHTML = `<p style="margin:0 0 8px;">I'll ask a few short questions.</p><p style="margin:0;opacity:.9">Click Next to begin.</p>`;
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'inline-block';
+      }
+
+      function renderStep1() {
+        // Confetti + party text
+        bubble.textContent = "Let's get this party started!";
+        stageHeading.textContent = "Ready?";
+        stageSub.textContent = "A quick setup to personalize your experience.";
+        stageContent.innerHTML = `<p style="margin:0 0 8px;">Click Next when you're ready.</p>`;
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'inline-block';
+        // throw confetti and then move mascot when user proceeds (handled in goNext)
+      }
+
+      function renderStep2() {
+        bubble.textContent = "Which course would you like to start with?";
+        stageHeading.textContent = "Choose a course";
+        stageSub.textContent = "Pick the course you'll focus on first.";
+        const courses = ["Web Development","Python","JavaScript","App Development","AI Basics","Game Dev"];
+        stageContent.innerHTML = '';
+        stageContent.appendChild(makeOptions(courses, state.course, v => state.course = v));
+        prevBtn.style.display = 'inline-block';
+        nextBtn.style.display = state.course ? 'inline-block' : 'none';
+      }
+
+      function renderStep3() {
+        bubble.textContent = "How did you hear about us?";
+        stageHeading.textContent = "How did you hear about The Book of Code?";
+        stageSub.textContent = "This helps us improve.";
+        const opts = ["Friend","School","YouTube","Search Engine","Other"];
+        stageContent.innerHTML = '';
+        stageContent.appendChild(makeOptions(opts, state.referral, v => state.referral = v));
+        prevBtn.style.display = 'inline-block';
+        nextBtn.style.display = state.referral ? 'inline-block' : 'none';
+      }
+
+      function renderStep4() {
+        bubble.textContent = `Why do you want to learn ${state.course || 'this course'}? Your reason helps us personalize your learning path.`;
+        stageHeading.textContent = "What's your main reason?";
+        stageSub.textContent = "We'll tailor content based on your goal.";
+        const opts = ["For school","For fun","For a project","To build apps","To gain new skills"];
+        stageContent.innerHTML = '';
+        stageContent.appendChild(makeOptions(opts, state.reason, v => state.reason = v));
+        prevBtn.style.display = 'inline-block';
+        nextBtn.style.display = state.reason ? 'inline-block' : 'none';
+      }
+
+      function renderStep5() {
+        bubble.textContent = "How much experience do you already have?";
+        stageHeading.textContent = "Prior knowledge";
+        stageSub.textContent = "Be honest — it sets the right starting point.";
+        const opts = ["Brand new","I know a little","Used blocks (Scratch)","I have coded before","Advanced"];
+        stageContent.innerHTML = '';
+        stageContent.appendChild(makeOptions(opts, state.experience, v => state.experience = v));
+        prevBtn.style.display = 'inline-block';
+        nextBtn.style.display = state.experience ? 'inline-block' : 'none';
+      }
+
+      function renderStep6() {
+        bubble.textContent = "Here’s what you can achieve with this course.";
+        stageHeading.textContent = "What you'll learn";
+        stageSub.textContent = `${state.course || 'This course'} — milestone preview`;
+        const map = {
+          "Web Development": ["Build responsive websites","Style UI with CSS","Use JavaScript for interactivity","Deploy simple webapps"],
+          "Python": ["Write programs","Work with data","Create simple scripts","Build small projects"],
+          "AI Basics": ["Understand ML concepts","Train small models","Explore datasets","Build simple predictors"],
+          "Cybersecurity": ["Understand common threats","Secure simple apps","Practice safe coding","Learn basic pentesting"],
+          "Game Dev": ["Make basic games","Work with sprites","Add game logic","Publish small games"],
+          "JavaScript": ["Understand language basics","Manipulate the DOM","Build interactive UI","Learn async code"],
+          "App Development": ["Design app UI","Handle inputs","Publish to stores","Manage app state"]
+        };
+        const list = map[state.course] || ["Learn core concepts","Build projects","Level up steadily"];
+        stageContent.innerHTML = '<ul style="margin:0 0 8px 18px;">' + list.map(it => `<li style="margin:8px 0">${it}</li>`).join('') + '</ul>';
+        prevBtn.style.display = 'inline-block';
+        nextBtn.style.display = 'inline-block';
+      }
+
+      function renderStep7() {
+        bubble.textContent = "How much time can you spend each day?";
+        stageHeading.textContent = "Daily learning goal";
+        stageSub.textContent = "Pick a sustainable daily target.";
+        const opts = ["5 minutes (casual)","10 minutes (regular)","20 minutes (serious)","30 minutes (power)"];
+        stageContent.innerHTML = '';
+        stageContent.appendChild(makeOptions(opts, state.dailyMinutes, v => state.dailyMinutes = v));
+        prevBtn.style.display = 'inline-block';
+        nextBtn.style.display = state.dailyMinutes ? 'inline-block' : 'none';
+      }
+
+      function renderStep8() {
+        bubble.textContent = "Can we send you daily reminders?";
+        stageHeading.textContent = "Notifications";
+        stageSub.textContent = "Reminders help keep your streak.";
+        stageContent.innerHTML = `
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button id="allowBtn" class="cta" style="min-width:140px">Allow notifications</button>
+            <button id="denyBtn" class="back-btn" style="min-width:140px">Don't allow</button>
+          </div>
+          <div style="margin-top:10px;font-size:.92rem;color:rgba(255,255,255,0.7)">You can enable or disable notifications from your browser later.</div>
+        `;
+        prevBtn.style.display = 'inline-block';
+        nextBtn.style.display = 'none';
+
+        // attach handlers (deferred to ensure elements present)
+        setTimeout(() => {
+          const allowBtn = document.getElementById('allowBtn');
+          const denyBtn = document.getElementById('denyBtn');
+
+          allowBtn.onclick = async () => {
+            if (!('Notification' in window)) {
+              alert('Notifications not supported in this browser.');
+              state.notificationsAllowed = false;
+              goNext();
+              return;
+            }
+            if (Notification.permission === 'granted') {
+              state.notificationsAllowed = true;
+              goNext();
+              return;
+            }
+            try {
+              const res = await Notification.requestPermission();
+              state.notificationsAllowed = (res === 'granted');
+              goNext();
+            } catch (err) {
+              state.notificationsAllowed = false;
+              goNext();
+            }
+          };
+
+          denyBtn.onclick = (e) => {
+            e.preventDefault();
+            state.notificationsAllowed = false;
+            goNext();
+          };
+        }, 30);
+      }
+
+      function renderStep9() {
+        bubble.textContent = "Learning these concepts can feel challenging.";
+        stageHeading.textContent = "A quick note";
+        stageSub.textContent = "You're not alone — we designed a clear path.";
+        stageContent.innerHTML = `
+          <p style="margin:0 0 8px;">Take small steps, celebrate tiny wins, and come back tomorrow.</p>
+          <div style="margin-top:10px;color:rgba(255,255,255,0.85)">Click Next to continue.</div>
+        `;
+        prevBtn.style.display = 'inline-block';
+        nextBtn.style.display = 'inline-block';
+      }
+
+      function renderStep10() {
+        bubble.textContent = "...So The Book of Code is designed to make learning fun like a game!";
+        stageHeading.textContent = "Ready to begin?";
+        stageSub.textContent = "We’ll guide you with lessons, streaks, and rewards.";
+        stageContent.innerHTML = `
+          <p style="margin:0 0 12px;">Summary:</p>
+          <ul style="margin:0 0 12px 18px">
+            <li>Course: <strong>${state.course || "—"}</strong></li>
+            <li>Goal: <strong>${state.dailyMinutes || "—"}</strong></li>
+            <li>Notifications: <strong>${state.notificationsAllowed ? "Yes" : "No"}</strong></li>
+          </ul>
+          <div style="display:flex;justify-content:flex-end;gap:8px;">
+            <button id="startBtn" class="cta">Start learning →</button>
+          </div>
+        `;
+        prevBtn.style.display = 'inline-block';
+        nextBtn.style.display = 'none';
+
+        setTimeout(() => {
+          const startBtn = document.getElementById('startBtn');
+          startBtn.onclick = () => {
+            saveAndFinish();
+          };
+        }, 20);
+      }
+
+      /* ---------- Navigation logic ---------- */
+
+      function renderCurrent() {
+        updateProgress();
+        if (stepIndex < 0) stepIndex = 0;
+        if (stepIndex > stepsTotal - 1) stepIndex = stepsTotal - 1;
+
+        if (stepIndex === 0) {
+          renderStep0();
+        } else if (stepIndex === 1) {
+          renderStep1();
+        } else {
+          // when leaving step 1 (confetti/party) -> play confetti then move mascot
+          if (!mascotWrap.classList.contains('smallMoved') && stepIndex > 1) {
+            throwConfetti();
+            setTimeout(() => moveMascotToCorner(), 420);
+            mascotWrap.classList.add('smallMoved');
+          }
+
+          switch (stepIndex) {
+            case 2: renderStep2(); break;
+            case 3: renderStep3(); break;
+            case 4: renderStep4(); break;
+            case 5: renderStep5(); break;
+            case 6: renderStep6(); break;
+            case 7: renderStep7(); break;
+            case 8: renderStep8(); break;
+            case 9: renderStep9(); break;
+            case 10: renderStep10(); break;
+            default: renderStep0();
+          }
+        }
+        // make sure Next always reads "Next"
+        nextBtn.textContent = "Next";
+        updateProgress();
+      }
+
+      function goNext() {
+        // validation: require choice in steps that show options
+        // those renderers only show Next when valid; but just in case:
+        if ([2,3,4,5,7].includes(stepIndex)) {
+          // steps where selection must exist:
+          // 2(course)->state.course, 3(referral)->state.referral, 4(reason)->state.reason, 5(experience)->state.experience, 7(daily)->state.dailyMinutes
+          const needMap = {2:'course',3:'referral',4:'reason',5:'experience',7:'dailyMinutes'};
+          const key = needMap[stepIndex];
+          if (!state[key]) {
+            // visual wobble & small message
+            card.classList.add('wobble');
+            setTimeout(()=> card.classList.remove('wobble'), 300);
+            return;
+          }
+        }
+
+        // Special: from step1 -> play confetti then advance; confetti already thrown in renderCurrent if moving
+        if (stepIndex < stepsTotal - 1) {
+          stepIndex++;
+          renderCurrent();
+        }
+      }
+
+      function goPrev() {
+        if (stepIndex > 0) {
+          stepIndex--;
+          renderCurrent();
+        }
+      }
+
+      function saveAndFinish() {
+        // lock answers (store in localStorage and do not provide in-app setting to change)
+        localStorage.setItem('onboard_state', JSON.stringify(state));
+        localStorage.setItem('onboard_complete', 'true');
+        // celebratory confetti then redirect
+        throwConfetti();
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 900);
+      }
+
+      // start
+      renderCurrent();
+
+      // keyboard support
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          if (nextBtn.style.display !== 'none') nextBtn.click();
+        }
+      });
+
+    </script>
+  </body>
+</html>

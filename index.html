@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Book of Code • For Schools</title>
+
+    <!-- Sora Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg-dark: #05070d;
+        --bg-mid: #0b1020;
+        --card-bg: rgba(255, 255, 255, 0.04);
+        --border-soft: rgba(255, 255, 255, 0.08);
+        --text-main: #e8ecf1;
+        --text-muted: #a6b0c3;
+        --accent: linear-gradient(135deg, #00c9ff 0%, #005bff 100%);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Sora", system-ui, sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-main);
+        overflow-x: hidden;
+      }
+
+      a {
+        color: var(--text-muted);
+        text-decoration: none;
+        position: relative;
+        transition: color 0.3s ease;
+      }
+
+      a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -6px;
+        width: 100%;
+        height: 2px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+      }
+
+      a:hover {
+        color: #ffffff;
+      }
+
+      a:hover::after {
+        transform: scaleX(1);
+      }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #00c9ff 0%, #005bff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* ================= NAV ================= */
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        padding: 20px 56px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(5, 7, 13, 0.6);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-soft);
+        z-index: 1000;
+      }
+
+      nav .logo {
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      nav .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        font-size: 14px;
+      }
+
+      .login-link {
+        padding: 10px 18px;
+        border-radius: 999px;
+        background: var(--accent);
+        color: #ffffff !important;
+      }
+
+      .login-link::after {
+        display: none;
+      }
+
+      .login-link:hover {
+        filter: brightness(1.15);
+        transform: translateY(-1px);
+      }
+
+      .register-link {
+        margin-left: 8px;
+        font-size: 13px;
+        opacity: 0.9;
+      }
+
+      /* ================= HERO ================= */
+      #hero {
+        position: relative;
+        min-height: 100vh;
+        perspective: 1200px;
+        overflow: hidden;
+      }
+
+      .hero-visual {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            circle at 20% 30%,
+            rgba(0, 201, 255, 0.25),
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 80% 60%,
+            rgba(0, 91, 255, 0.25),
+            transparent 45%
+          ),
+          linear-gradient(180deg, #05070d, #0b1020 60%, #05070d);
+        animation: slowGlow 14s ease-in-out infinite alternate;
+        z-index: 1;
+      }
+
+      @keyframes slowGlow {
+        from {
+          filter: brightness(1);
+        }
+        to {
+          filter: brightness(1.18);
+        }
+      }
+
+      .noise {
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      .hero-grid {
+        position: relative;
+        z-index: 3;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        transform-style: preserve-3d;
+      }
+
+      .hero-content {
+        max-width: 900px;
+        text-align: center;
+        padding: 0 24px;
+        opacity: 0;
+        transform: translateZ(-320px) scale(0.92);
+        animation: bloom 2.8s cubic-bezier(0.22, 1, 0.25, 1) forwards;
+      }
+
+      @keyframes bloom {
+        0% {
+          opacity: 0;
+          transform: translateZ(-320px) scale(0.92);
+        }
+        60% {
+          opacity: 1;
+          transform: translateZ(30px) scale(1.01);
+        }
+        100% {
+          opacity: 1;
+          transform: translateZ(0) scale(1);
+        }
+      }
+
+      .hero-title {
+        font-size: clamp(36px, 5vw, 64px);
+        line-height: 1.1;
+        font-weight: 600;
+        margin-bottom: 24px;
+      }
+
+      .typing-text {
+        white-space: nowrap;
+      }
+
+      .cursor {
+        display: inline-block;
+        width: 2px;
+        height: 1.1em;
+        margin-left: 4px;
+        background-color: currentColor;
+        animation: blink 1s steps(1) infinite;
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      .hero-content p {
+        font-size: 18px;
+        line-height: 1.7;
+        color: var(--text-muted);
+        margin-bottom: 40px;
+      }
+
+      /* ================= SECTIONS ================= */
+      section {
+        padding: 120px 64px;
+      }
+
+      .section-title {
+        font-size: 40px;
+        margin-bottom: 24px;
+      }
+
+      .section-desc {
+        max-width: 720px;
+        font-size: 16px;
+        line-height: 1.8;
+        color: var(--text-muted);
+        margin-bottom: 64px;
+      }
+
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 32px;
+      }
+
+      .card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-soft);
+        border-radius: 18px;
+        padding: 32px;
+        transition: all 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(0, 201, 255, 0.4);
+      }
+
+      .card h3 {
+        margin-bottom: 16px;
+        font-size: 18px;
+      }
+
+      .card p {
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--text-muted);
+      }
+
+      footer {
+        padding: 80px 64px;
+        border-top: 1px solid var(--border-soft);
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 12px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav>
+      <div class="logo gradient-text">The Book of Code</div>
+      <div class="nav-links">
+        <a href="#">Curriculum</a>
+        <a href="#">About</a>
+        <a href="#">Team</a>
+        <a href="#" class="register-link">Register School</a>
+        <a href="#" class="login-link">Login</a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+      <div class="hero-visual"></div>
+      <div class="noise"></div>
+
+      <div class="hero-grid">
+        <div class="hero-content">
+          <h1 class="hero-title">
+            <span class="typing-text"></span><span class="cursor"></span>
+          </h1>
+
+          <p>
+            A classroom-first programming platform designed to help schools
+            teach coding with clarity, structure, and long-term understanding.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MIDDLE: WHY SCHOOLS -->
+    <section>
+      <h2 class="section-title">
+        Built for <span class="gradient-text">Schools</span>, Not Just Screens
+      </h2>
+      <p class="section-desc">
+        We work with institutions, not individuals, because meaningful learning
+        happens when students, teachers, and curriculum move together.
+      </p>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3 class="gradient-text">Students Learn Together</h3>
+          <p>
+            Lessons are designed for classrooms, encouraging discussion,
+            collaboration, and shared problem solving.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3 class="gradient-text">Teachers Stay Aligned</h3>
+          <p>
+            Clear lesson flow, predictable pacing, and visibility into progress
+            without extra administrative burden.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3 class="gradient-text">Curriculum That Compounds</h3>
+          <p>
+            Concepts build steadily across weeks and terms instead of isolated,
+            one-off tutorials.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHILOSOPHY -->
+    <section>
+      <h2 class="section-title">
+        Our <span class="gradient-text">Philosophy</span>
+      </h2>
+      <p class="section-desc">
+        Programming education should develop thinking, not dependency.
+        That is why we prioritize structure, depth, and institutional continuity.
+      </p>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>Concepts Before Tools</h3>
+          <p>Understanding systems matters more than memorizing syntax.</p>
+        </div>
+        <div class="card">
+          <h3>Teachers as Anchors</h3>
+          <p>Technology supports educators, it does not replace them.</p>
+        </div>
+        <div class="card">
+          <h3>Learning That Lasts</h3>
+          <p>We optimize for retention, clarity, and confidence.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © 2026 The Book of Code. Built for schools.
+    </footer>
+
+    <script>
+      const sentence =
+        'Teaching students to <br /><span class="gradient-text">think in code,</span> together.';
+
+      const typingSpeed = 55;
+      const typingElement = document.querySelector(".typing-text");
+
+      let index = 0;
+      let rendered = "";
+
+      function typeLine() {
+        if (sentence[index] === "<") {
+          const tagEnd = sentence.indexOf(">", index);
+          rendered += sentence.slice(index, tagEnd + 1);
+          index = tagEnd + 1;
+        } else {
+          rendered += sentence[index];
+          index++;
+        }
+
+        typingElement.innerHTML = rendered;
+
+        if (index < sentence.length) {
+          setTimeout(typeLine, typingSpeed);
+        }
+      }
+
+      typeLine();
+    </script>
+  </body>
+</html>

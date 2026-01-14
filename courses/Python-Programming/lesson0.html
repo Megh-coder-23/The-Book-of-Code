@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../style.css" />
+    <style>
+      .tab {
+        overflow: hidden;
+        border-bottom: 2px solid #ccc;
+      }
+      .tab button {
+        background-color: inherit;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 20px;
+        transition: all 0.3s;
+        font-size: 16px;
+      }
+      .tab button:hover {
+        background-color: #ddd;
+      }
+      .tab button.active {
+        background-color: #ccc;
+      }
+      .tabcontent {
+        display: none;
+        padding: 20px;
+        border-top: none;
+      }
+      .tablinks {
+        border-radius: 8px 8px 0 0;
+      }
+      .tablinks[onclick="openTab(event, 'Windows')"] {
+        margin-left: 100px;
+      }
+      .tabcontent h3,
+      .tabcontent p {
+        color: #c0d5e1;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Lesson 0 - Downloading VS code</h1>
+    <h2>What is VS code?</h2>
+    <h4>
+      Visual Studio Code (VS Code) is a free, lightweight, and powerful code
+      editor made by Microsoft. You’ll use it throughout this course to write,
+      edit, and run Python code.
+    </h4>
+    <div class="tab">
+      <button class="tablinks" onclick="openTab(event, 'Windows')">
+        Windows
+      </button>
+      <button class="tablinks" onclick="openTab(event, 'Mac')">Mac</button>
+      <button class="tablinks" onclick="openTab(event, 'Linux')">Linux</button>
+    </div>
+    <div id="Windows" class="tabcontent">
+      <h3>Installing VS code on Windows</h3>
+      <p>To install VS code on your computer, perform the following tasks:</p>
+      <br />
+      <ol>
+        <li>Go to <a href="code.visualstudio.com">code.visualstudio.com</a></li>
+        <p><br /></p>
+        <li>Click Windows (User Installer)</li>
+        <p><br /></p>
+        <li>
+          Run the installer and:
+          <ul>
+            <li>Accept the licence agreements</li>
+            <li>Check <b>"Add to PATH"</b></li>
+            <li>Finish Installation</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+    <div id="Mac" class="tabcontent">
+      <h3>Installing VS code on MacOS</h3>
+      <p>To install VS code on your Mac, perform the following tasks:</p>
+      <p><br></p>
+      <ol>
+        <li>Go to <a href="code.visualstudio.com">code.visualstudio.com</a></li>
+        <p><br /></p>
+        <li>Download the MacOS Universal version</li>
+        <p><br /></p>
+        <li>
+          Open the .zip and drag Visual Studio Code into Your Applications
+          folder
+        </li>
+      </ol>
+    </div>
+    <div id="Linux" class="tabcontent">
+      <h3>Installing VS code on Linux </h3>
+      <p>To download VS code on Linux, you have to run a command based on the distro of linux you are using:</p>
+      <p><br /></p>
+      <ul>
+        <li>
+          Debarian/Ubuntu (.deb)<br />
+          <div class="code">
+            <div class="code-header">
+              <p>bash</p>
+            </div>
+            <code>
+              $ sudo apt install ./&lt;downloaded-file&gt;.deb
+            </code>
+          </div>
+        </li>
+        <li>
+          Fedora (.fed)
+          <div class="code">
+            <div class="code-header">
+              <p>bash</p>
+            </div>
+            <code>
+              $ sudo rpm -i &lt;downloaded-file&gt;.rpm
+          </div>
+        </li>
+        <li>
+          Snap Store (Any distro with Snap)
+          <div class="code">
+            <div class="code-header">
+              <p>bash</p>
+            </div>
+            <code>
+              $ sudo snap install code --classic
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="lesson-footer">
+      <button class="previous-button-disabled">
+        &larr; Previous
+      </button>
+      <button class="complete-lesson">
+        <span class="circle-check">✔</span>
+        Complete Lesson
+      </button>
+    </div>
+    <script>
+      function openTab(evt, tabName) {
+        let i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.classList.add("active");
+      }
+      document.querySelector(".tab button").click();
+    </script>
+  </body>
+</html>

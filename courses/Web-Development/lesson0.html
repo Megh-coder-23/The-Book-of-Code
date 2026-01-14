@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../style.css" />
+    <style>
+      .tab {
+        overflow: hidden;
+        border-bottom: 2px solid #ccc;
+      }
+      .tab button {
+        background-color: inherit;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 20px;
+        transition: all 0.3s;
+        font-size: 16px;
+        color: #ffffff;
+      }
+      .tab button:hover {
+        background-color: #ddd;
+        color: #000;
+      }
+      .tab button.active {
+        background-color: #ccc;
+        color: #000;
+      }
+      .tabcontent {
+        display: none;
+        padding: 20px;
+        border-top: none;
+      }
+      .tablinks {
+        border-radius: 8px 8px 0 0;
+      }
+      .tablinks[onclick="openTab(event, 'Windows')"] {
+        margin-left: 100px;
+      }
+      .tabcontent h3,
+      .tabcontent p {
+        color: #c0d5e1;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Lesson 0 - Downloading the nescessary tools</h1>
+    <h2>
+      This lesson shall help you download the nescessary tools for learning from
+      this course.
+    </h2>
+    <ol type="1">
+      <li>
+        <h2>VS Code</h2>
+        <h3>What is VS code?</h3>
+        <h4>
+          Visual Studio Code (VS Code) is a free, lightweight code editor that
+          helps you write websites and programs. It works on Windows, Mac, and
+          Linux. A very crucial feature is that it shows errors and suggestions
+          while coding, and can run commands in a built-in terminal. You can
+          will be using extensions like Live Server to see your website update
+          in real time.
+        </h4>
+        <div class="tab">
+          <button class="tablinks" onclick="openTab(event, 'Windows')">
+            Windows
+          </button>
+          <button class="tablinks" onclick="openTab(event, 'Mac')">Mac</button>
+          <button class="tablinks" onclick="openTab(event, 'Linux')">
+            Linux
+          </button>
+        </div>
+        <div id="Windows" class="tabcontent">
+          <h3>Installing VS code on Windows</h3>
+          <p>
+            To install VS code on your computer, perform the following tasks:
+          </p>
+          <br />
+          <ol>
+            <li>
+              Go to
+              <a
+                href="https://code.visualstudio.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                >code.visualstudio.com</a
+              >
+            </li>
+            <p><br /></p>
+            <li>Click Windows (User Installer)</li>
+            <p><br /></p>
+            <li>
+              Run the installer and:
+              <ul>
+                <li>Accept the licence agreements</li>
+                <li>Check <b>"Add to PATH"</b></li>
+                <li>Finish Installation</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+        <div id="Mac" class="tabcontent">
+          <h3>Installing VS code on MacOS</h3>
+          <p>To install VS code on your Mac, perform the following tasks:</p>
+          <p><br /></p>
+          <ol>
+            <li>
+              Go to
+              <a
+                href="https://code.visualstudio.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                >code.visualstudio.com</a
+              >
+            </li>
+            <p><br /></p>
+            <li>Download the MacOS Universal version</li>
+            <p><br /></p>
+            <li>
+              Open the .zip and drag Visual Studio Code into Your Applications
+              folder
+            </li>
+          </ol>
+        </div>
+        <div id="Linux" class="tabcontent">
+          <h3>Installing VS code on Linux</h3>
+          <p>
+            To download VS code on Linux, you have to run a command based on the
+            distro of linux you are using:
+          </p>
+          <p><br /></p>
+          <ul>
+            <li>
+              Debarian/Ubuntu (.deb)<br />
+              <div class="code">
+                <div class="code-header">
+                  <p>bash</p>
+                </div>
+                <code> $ sudo apt install ./&lt;downloaded-file&gt;.deb </code>
+              </div>
+            </li>
+            <li>
+              Fedora (.fed)
+              <div class="code">
+                <div class="code-header">
+                  <p>bash</p>
+                </div>
+                <code> $ sudo rpm -i &lt;downloaded-file&gt;.rpm </code>
+              </div>
+            </li>
+            <li>
+              Snap Store (Any distro with Snap)
+              <div class="code">
+                <div class="code-header">
+                  <p>bash</p>
+                </div>
+                <code> $ sudo snap install code --classic </code>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <h2>Live Server Extension</h2>
+        <h3>What is live server extension?</h3>
+        <h4>
+          Live server extension is an extension that helps you instantly preview
+          the output of your HTML code when you save it. The process for
+          installing it is same for any OS.
+        </h4>
+
+        <h3>Installing Live server Extension for VS Code</h3>
+        <p>
+          To download Live Server Extension on VS Code, you have to follow the
+          steps given below:
+        </p>
+        <div style="display: flex">
+          <p
+            style="display: flex; justify-content: center; align-items: center"
+          >
+            1. Open the extensions tab by clicking the highlighted button on the
+            sidebar showed among the five when you open VScode, or by using the
+            shortcut Ctrl + Shift + X(Mac ⇧⌘X):
+          </p>
+          <img src="Assets/Lsn0-Img1.png" alt="" />
+          <img
+            style="display: flex; justify-content: center; align-items: center"
+            src="Assets/Lsn0-Img2.png"
+            alt=""
+            height="200"
+            width="200"
+          />
+        </div>
+        <div>
+          <p>
+            2. Write "live server" in the search bar and click the one shown in
+            the image:
+          </p>
+          <img src="Assets/Lsn0-Img3.png" alt="" />
+        </div>
+        <div>
+          <p>3. You'll see something like this:</p>
+          <img src="Assets/Lsn0-Img4.png" alt="" />
+        </div>
+        <div>
+          <p>4. Click the install button</p>
+        </div>
+        <div>
+          <p>5. The live server extension is installed!</p>
+        </div>
+      </li>
+    </ol>
+    <div class="lesson-footer">
+      <button class="previous-button-disabled">&larr; Previous</button>
+      <button class="complete-lesson">
+        <span class="circle-check">✔</span>
+        Complete Lesson
+      </button>
+    </div>
+    <script>
+      function openTab(evt, tabName) {
+        let i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.classList.add("active");
+      }
+      document.querySelector(".tab button").click();
+    </script>
+  </body>
+</html>

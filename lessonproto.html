@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>The Book of Code • Python Lesson</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Sora', sans-serif;
+      background: #0a0e27;
+      color: #ffffff;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top bar */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem 0.75rem;
+    }
+
+    .back-btn {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 1.4rem;
+      transform: translateY(-2px);
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 10px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(135deg, #00c9ff, #005bff);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    /* Lesson */
+    .lesson {
+      flex: 1;
+      padding: 1.5rem 1.5rem 6rem;
+      max-width: 720px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      color: #ffcc66;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      margin-bottom: 1rem;
+    }
+
+    .code-block {
+      background: #06091c;
+      padding: 1rem;
+      border-radius: 12px;
+      font-family: monospace;
+      margin-bottom: 1.5rem;
+      color: #d4e6ff;
+      white-space: pre-wrap;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .option {
+      padding: 0.9rem 1rem;
+      border-radius: 12px;
+      background: #11163a;
+      border: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer;
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .option-number {
+      opacity: 0.6;
+      font-weight: 600;
+    }
+
+    .option.selected {
+      outline: 2px solid #00c9ff;
+      background: #171d4f;
+    }
+
+    .option.correct {
+      border-color: #2ecc71;
+      background: rgba(46,204,113,0.15);
+    }
+
+    .option.wrong {
+      border-color: #e74c3c;
+      background: rgba(231,76,60,0.15);
+    }
+
+    /* Typing challenge */
+    textarea {
+      width: 100%;
+      min-height: 90px;
+      background: #06091c;
+      color: #d4e6ff;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 1rem;
+      font-family: monospace;
+      resize: none;
+    }
+
+    /* Bottom bar */
+    .lesson-actions {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1rem 1.5rem;
+      background: rgba(10,14,39,0.95);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .next-btn {
+      padding: 0.7rem 1.6rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #00c9ff, #005bff);
+      color: #ffffff;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .next-btn.enabled {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .complete {
+      text-align: center;
+      margin-top: 6rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <a href="home.html" class="back-btn">←</a>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressBar"></div>
+    </div>
+  </div>
+
+  <div class="lesson" id="lesson">
+    <div class="tag" id="tag"></div>
+    <h2 id="question"></h2>
+    <div class="code-block" id="code"></div>
+    <div class="options" id="options"></div>
+    <div id="typingArea" style="display:none;">
+      <textarea id="codeInput" placeholder="Type your code here…"></textarea>
+    </div>
+  </div>
+
+  <div class="lesson-actions">
+    <button class="next-btn" id="nextBtn">Continue</button>
+  </div>
+
+  <script>
+    const steps = [
+      {
+        type: "mcq",
+        question: "What does this Python code do?",
+        code: 'print("Hello")',
+        options: [
+          { text: "Displays text on the screen", correct: true },
+          { text: "Stores text in memory", correct: false },
+          { text: "Creates a variable", correct: false }
+        ]
+      },
+      {
+        type: "mcq",
+        question: "Which function prints output in Python?",
+        code: "",
+        options: [
+          { text: "print()", correct: true },
+          { text: "show()", correct: false },
+          { text: "echo()", correct: false }
+        ]
+      },
+      {
+        type: "mcq",
+        question: "What will this display?",
+        code: "print(7)",
+        options: [
+          { text: '"7"', correct: false },
+          { text: "seven", correct: false },
+          { text: "7", correct: true }
+        ]
+      }
+    ];
+
+    const finalChallenge = {
+      type: "type",
+      question: "Final challenge: print Hello",
+      prompt: "Type Python code to print the word Hello",
+      answer: 'print("Hello")'
+    };
+
+    let index = 0;
+    let answered = false;
+    let reviewMode = false;
+    let mistakes = [];
+    let selectedOptionIndex = null;
+    let phase = "main"; // main → review → final
+
+    const optionsEl = document.getElementById("options");
+    const typingArea = document.getElementById("typingArea");
+    const codeInput = document.getElementById("codeInput");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function loadStep(step, tagText = "") {
+      answered = false;
+      selectedOptionIndex = null;
+      nextBtn.classList.remove("enabled");
+
+      document.getElementById("tag").textContent = tagText;
+      document.getElementById("question").textContent = step.question;
+      document.getElementById("code").textContent = step.code || "";
+
+      optionsEl.innerHTML = "";
+      typingArea.style.display = "none";
+
+      if (step.type === "mcq") {
+        step.options.forEach((opt, i) => {
+          const el = document.createElement("div");
+          el.className = "option";
+          el.innerHTML = `<span class="option-number">${i + 1}</span><span>${opt.text}</span>`;
+          el.onclick = () => selectOption(i);
+          optionsEl.appendChild(el);
+        });
+      }
+
+      if (step.type === "type") {
+        typingArea.style.display = "block";
+        codeInput.value = "";
+        codeInput.oninput = () => nextBtn.classList.add("enabled");
+      }
+
+      updateProgress();
+    }
+
+    function selectOption(i) {
+      if (answered) return;
+      selectedOptionIndex = i;
+      document.querySelectorAll(".option").forEach((opt, idx) =>
+        opt.classList.toggle("selected", idx === i)
+      );
+      nextBtn.classList.add("enabled");
+    }
+
+    function normalize(s) {
+      return s.replace(/\s+/g, "").toLowerCase();
+    }
+
+    function checkAnswer() {
+      const step =
+        phase === "review" ? mistakes[index] :
+        phase === "final" ? finalChallenge :
+        steps[index];
+
+      answered = true;
+
+      if (step.type === "mcq") {
+        const correct = step.options[selectedOptionIndex].correct;
+        document.querySelectorAll(".option")[selectedOptionIndex]
+          .classList.add(correct ? "correct" : "wrong");
+
+        if (!correct && phase === "main" && !mistakes.includes(step)) {
+          mistakes.push(step);
+        }
+      }
+
+      if (step.type === "type") {
+        const correct = normalize(codeInput.value) === normalize(step.answer);
+        codeInput.style.borderColor = correct ? "#2ecc71" : "#e74c3c";
+      }
+
+      nextBtn.classList.add("enabled");
+    }
+
+    function nextStep() {
+      if (!answered) return;
+
+      if (phase === "main") {
+        index++;
+        if (index < steps.length) loadStep(steps[index]);
+        else if (mistakes.length) {
+          phase = "review";
+          index = 0;
+          loadStep(mistakes[index], "Previous mistake");
+        } else {
+          phase = "final";
+          loadStep(finalChallenge, "Final challenge");
+        }
+      } else if (phase === "review") {
+        index++;
+        if (index < mistakes.length) {
+          loadStep(mistakes[index], "Previous mistake");
+        } else {
+          phase = "final";
+          loadStep(finalChallenge, "Final challenge");
+        }
+      } else {
+        document.getElementById("lesson").innerHTML = `
+          <div class="complete">
+            <h2>Lesson complete 🎉</h2>
+            <p>You finished with a real coding challenge.</p>
+          </div>
+        `;
+        document.querySelector(".lesson-actions").style.display = "none";
+        document.getElementById("progressBar").style.width = "100%";
+      }
+    }
+
+    function updateProgress() {
+      const total = steps.length + mistakes.length + 1;
+      let done =
+        phase === "main" ? index :
+        phase === "review" ? steps.length + index :
+        steps.length + mistakes.length;
+
+      document.getElementById("progressBar").style.width =
+        Math.min((done / total) * 100, 100) + "%";
+    }
+
+    document.addEventListener("keydown", e => {
+      if (e.key >= "1" && e.key <= "3") selectOption(Number(e.key) - 1);
+      if (e.key === "Enter") {
+        if (!answered) checkAnswer();
+        else nextStep();
+      }
+    });
+
+    nextBtn.onclick = () => {
+      if (!answered) checkAnswer();
+      else nextStep();
+    };
+
+    loadStep(steps[0]);
+  </script>
+
+</body>
+</html>

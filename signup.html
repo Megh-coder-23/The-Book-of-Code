@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up - The Book of Code</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap");
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Sora", sans-serif;
+      }
+      body {
+        min-height: 100vh;
+        background: linear-gradient(
+          135deg,
+          #0f172a 0%,
+          #1d283a 50%,
+          #0f172a 100%
+        );
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+      }
+      .container {
+        background-color: rgba(255, 255, 255, 0.02);
+        padding: 40px;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        margin: 50px 0;
+      }
+      .back {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        font-size: 14px;
+        color: #aaa;
+        text-decoration: none;
+      }
+      .back::before {
+        content: "← ";
+      }
+      .logo {
+        display: block;
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 16px auto;
+        background-color: #1a90ff;
+        border-radius: 50%;
+      }
+      h2 {
+        text-align: center;
+        margin-bottom: 6px;
+        font-size: 24px;
+      }
+      h2 span {
+        color: #1a90ff;
+      }
+      p {
+        text-align: center;
+        font-size: 14px;
+        color: #bbb;
+        margin-bottom: 24px;
+      }
+      label {
+        font-size: 13px;
+        display: block;
+        margin-bottom: 6px;
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #2c2f40;
+        border-radius: 12px;
+        background-color: #0e1320;
+        color: white;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+      input::placeholder {
+        color: #fff;
+        opacity: 0.6;
+      }
+      .password-wrapper {
+        position: relative;
+      }
+      .confirm-wrapper {
+        position: relative;
+      }
+      .password-wrapper > .eye-icon {
+        position: absolute;
+        right: 16px;
+        top: 62.5%;
+        bottom: unset;
+        margin: 0;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #aaa;
+        font-size: 16px;
+      }
+      .confirm-wrapper > .eye-icon {
+        position: absolute;
+        right: 16px;
+        top: 37.5%;
+        bottom: unset;
+        margin: 0;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #aaa;
+        font-size: 16px;
+      }
+      .strength-bar {
+        height: 8px;
+        border-radius: 6px;
+        background: #2c2f40;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: white;
+        user-select: none;
+        padding: 0 4px;
+      }
+
+      .strength-bar.red {
+        background: red;
+      }
+      .strength-bar.yellow {
+        background: yellow;
+      }
+      .strength-bar.green {
+        background: limegreen;
+      }
+
+      .strength-fill {
+        height: 100%;
+        width: 0%;
+        transition: width 0.3s, background 0.3s;
+        background: #2c2f40;
+      }
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: 1rem;
+      }
+      .checkbox-group input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        accent-color: linear-gradient(135deg, #00c9ff 0%, #005bff 100%);
+      }
+      .checkbox-group label {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+      }
+      .password-wrapper > span {
+        font-size: small;
+      }
+      .btn-primary {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(to right, #00c6ff, #0072ff);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-weight: bold;
+        font-size: 14px;
+        margin-bottom: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .btn-primary:hover {
+        opacity: 0.9;
+      }
+      .divider {
+        text-align: center;
+        margin: 16px 0;
+        color: #aaa;
+        font-size: 13px;
+      }
+      .btn-google {
+        width: 100%;
+        padding: 12px;
+        background: none;
+        border: 1px solid #2c2f40;
+        border-radius: 12px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn-google:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .btn-google img {
+        width: 18px;
+      }
+      .bottom-link {
+        text-align: center;
+        font-size: 13px;
+        margin-top: 16px;
+      }
+      .bottom-link a {
+        color: #1a90ff;
+        text-decoration: none;
+      }
+      .tiny-footer {
+        text-align: center;
+        font-size: 11px;
+        margin-top: 20px;
+        color: #666;
+      }
+      .tiny-footer a {
+        color: #1a90ff;
+        text-decoration: none;
+      }
+      .container svg {
+        display: block;
+        margin: 0 auto 16px auto;
+      }
+      .gradient-text {
+        background: linear-gradient(90deg, #00c9ff, #005bff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+        margin-left: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <a class="back" href="index.html">Back to Home</a>
+    <div class="container">
+      <!-- SVG Logo (not edited) -->
+      <svg
+        width="100"
+        height="100"
+        viewBox="0 0 64 64"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00C9FF" />
+            <stop offset="100%" stop-color="#005BFF" />
+          </linearGradient>
+        </defs>
+        <rect width="64" height="64" rx="16" fill="url(#bgGradient)" />
+        <path
+          d="M26 20 L16 32 L26 44"
+          stroke="white"
+          stroke-width="4"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M38 20 L48 32 L38 44"
+          stroke="white"
+          stroke-width="4"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+
+      <h2>Join<span class="gradient-text">The Book of Code</span></h2>
+      <p>Start your programming adventure today!</p>
+
+      <form id="signupForm">
+        <label for="name">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          placeholder="Enter your full name"
+          required
+        />
+
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your email"
+          required
+        />
+
+        <label for="password">Password</label>
+        <div class="password-wrapper">
+          <!-- Strength indicator above input -->
+          <span id="strengthText">0 characters</span>
+          <div class="strength-bar" id="strengthBar"></div>
+
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter password"
+            required
+          />
+          <span class="eye-icon" onclick="toggleVisibility('password')"
+            >&#128065;</span
+          >
+        </div>
+
+        <label for="confirm">Confirm Password</label>
+        <div class="confirm-wrapper">
+          <input
+            type="password"
+            id="confirm"
+            placeholder="Confirm password"
+            required
+          />
+          <span class="eye-icon" onclick="toggleVisibility('confirm')"
+            >&#128065;</span
+          >
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="terms" required />
+          <label for="terms"
+            >I agree to The Book of Code's Terms of Service</label
+          >
+        </div>
+
+        <button type="submit" class="btn-primary">Start learning &rarr;</button>
+
+        <div class="divider">or</div>
+
+        <button type="button" class="btn-google" id="googleSignIn">
+          <img
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            alt="Google Icon"
+          />
+          Sign up with Google
+        </button>
+      </form>
+
+      <div class="bottom-link">
+        Already have an account? <a href="login.html">Log in here</a>
+      </div>
+
+      <div class="tiny-footer">
+        By creating an account, you agree to our
+        <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+    <script>
+      // Toggle password visibility
+      function toggleVisibility(fieldId) {
+        const field = document.getElementById(fieldId);
+        if (field.type === "password") {
+          field.type = "text";
+        } else {
+          field.type = "password";
+        }
+      }
+    </script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+        GoogleAuthProvider,
+        signInWithPopup,
+      } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js";
+      import {
+        getFirestore,
+        setDoc,
+        doc,
+        serverTimestamp,
+      } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBGeAln9WrYu07QrOlANYLINLWcq9NpBHA",
+        authDomain: "the-book-of-code.firebaseapp.com",
+        projectId: "the-book-of-code",
+        storageBucket: "the-book-of-code.firebasestorage.app",
+        messagingSenderId: "598679975161",
+        appId: "1:598679975161:web:a2c465f0ac6d9a56531e28",
+        measurementId: "G-29P13DSLTZ",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+
+      // EMAIL SIGNUP
+      document
+        .getElementById("signupForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const fullName = document.getElementById("name").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value;
+          const confirm = document.getElementById("confirm").value;
+
+          if (password !== confirm) return alert("Passwords do not match.");
+          if (!document.getElementById("terms").checked)
+            return alert("You must agree to the terms.");
+
+          try {
+            const cred = await createUserWithEmailAndPassword(
+              auth,
+              email,
+              password
+            );
+
+            await setDoc(doc(db, "users", cred.user.uid), {
+              fullName,
+              email,
+              createdAt: serverTimestamp(),
+            });
+
+            window.location.href = "onboarding.html";
+          } catch (err) {
+            console.error(err);
+            alert(err.message);
+          }
+        });
+
+      // GOOGLE SIGN-IN
+      document
+        .getElementById("googleSignIn")
+        .addEventListener("click", async () => {
+          try {
+            const provider = new GoogleAuthProvider();
+            provider.setCustomParameters({ prompt: "select_account" });
+
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+
+            await setDoc(doc(db, "users", user.uid), {
+              fullName: user.displayName || "",
+              email: user.email,
+              createdAt: serverTimestamp(),
+            });
+
+            window.location.href = "onboarding.html";
+          } catch (err) {
+            console.error(err);
+            alert(err.message);
+          }
+        });
+
+      // PASSWORD STRENGTH
+      const passwordInput = document.getElementById("password");
+      const strengthBar = document.getElementById("strengthBar");
+      const strengthText = document.getElementById("strengthText");
+
+      passwordInput.addEventListener("input", () => {
+        const len = passwordInput.value.length;
+        strengthText.textContent = `${len} characters`;
+
+        if (len < 4) {
+          strengthBar.className = "strength-bar red";
+        } else if (len <= 7) {
+          strengthBar.className = "strength-bar yellow";
+        } else {
+          strengthBar.className = "strength-bar green";
+        }
+      });
+
+      // SHOW/HIDE PASSWORD
+      window.toggleVisibility = function (id) {
+        const input = document.getElementById(id);
+        input.type = input.type === "password" ? "text" : "password";
+      };
+    </script>
+  </body>
+</html>
