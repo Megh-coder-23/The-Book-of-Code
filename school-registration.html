@@ -75,6 +75,27 @@ button:hover { transform:translateY(-3px); box-shadow:0 16px 40px rgba(0,91,255,
   <div class="success" id="successBox"></div>
 </form>
 
+<script>
+  document.getElementById("sumbit").addEventListener("click", async () => {
+    const schoolName = document.getElementById("schoolName").value.trim();
+    const adminEmail = document.getElementById("adminEmail").value.trim();
+    const domain = document.getElementById("domain").value.trim();
+    const sharedPassword = document.getElementById("sharedPassword").value.trim();
+
+    try {
+      const response = await fetch("https://<your-cloud-function-region>-<your-project-id>.cloudfunctions.net/registerSchool", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ schoolName, adminEmail, domain, sharedPassword })
+      });
+      const result = await response.json();
+      if (response.ok) alert(result.message);
+      else alert(result.error);
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+</script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
