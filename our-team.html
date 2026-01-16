@@ -122,13 +122,64 @@
       /* ================= HERO ================= */
       #hero {
         position: relative;
-        min-height: 60vh;
+        min-height: 100vh;
         perspective: 1200px;
         overflow: hidden;
+      }
+
+      .hero-visual {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            circle at 20% 30%,
+            rgba(0, 201, 255, 0.25),
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 80% 60%,
+            rgba(0, 91, 255, 0.25),
+            transparent 45%
+          ),
+          linear-gradient(180deg, #05070d, #0b1020 60%, #05070d);
+        animation: slowGlow 14s ease-in-out infinite alternate;
+        z-index: 1;
+      }
+
+      @keyframes slowGlow {
+        from { filter: brightness(1); }
+        to { filter: brightness(1.18); }
+      }
+
+      .noise {
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      .hero-grid {
+        position: relative;
+        z-index: 3;
+        min-height: 100vh;
         display: grid;
         place-items: center;
+        transform-style: preserve-3d;
+      }
+
+      .hero-content {
+        max-width: 900px;
         text-align: center;
-        padding-top: 120px;
+        padding: 0 24px;
+        opacity: 0;
+        transform: translateZ(-320px) scale(0.92);
+        animation: bloom 2.8s cubic-bezier(0.22, 1, 0.25, 1) forwards;
+      }
+
+      @keyframes bloom {
+        0% { opacity: 0; transform: translateZ(-320px) scale(0.92); }
+        60% { opacity: 1; transform: translateZ(30px) scale(1.01); }
+        100% { opacity: 1; transform: translateZ(0) scale(1); }
       }
 
       .hero-title {
@@ -138,15 +189,39 @@
         margin-bottom: 24px;
       }
 
-      /* ================= SECTIONS ================= */
-      section {
-        padding: 120px 64px;
+      .typing-text {
+        white-space: nowrap;
+      }
+
+      .cursor {
+        display: inline-block;
+        width: 2px;
+        height: 1.1em;
+        margin-left: 4px;
+        background-color: currentColor;
+        animation: blink 1s steps(1) infinite;
+      }
+
+      @keyframes blink {
+        50% { opacity: 0; }
+      }
+
+      .hero-content p {
+        font-size: 18px;
+        line-height: 1.7;
+        color: var(--text-muted);
+        margin-bottom: 40px;
+      }
+
+      /* ================= TEAM SECTION ================= */
+      section.team {
+        padding: 80px 64px;
+        text-align: center;
       }
 
       .section-title {
         font-size: 40px;
         margin-bottom: 24px;
-        text-align: center;
       }
 
       .section-desc {
@@ -155,13 +230,13 @@
         line-height: 1.8;
         color: var(--text-muted);
         margin: 0 auto 64px;
-        text-align: center;
       }
 
       .card-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
         gap: 32px;
+        justify-items: center;
       }
 
       .card {
@@ -171,6 +246,8 @@
         padding: 32px;
         transition: all 0.3s ease;
         text-align: center;
+        width: 100%;
+        max-width: 280px;
       }
 
       .card:hover {
@@ -212,15 +289,43 @@
       }
 
       @media(max-width: 600px){
-        section{
-          padding: 80px 24px;
-        }
+        section.team { padding: 60px 24px; }
       }
     </style>
   </head>
 
   <body>
     <nav>
+      <svg
+        width="64"
+        height="64"
+        viewBox="0 0 64 64"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00C9FF" />
+            <stop offset="100%" stop-color="#005BFF" />
+          </linearGradient>
+        </defs>
+        <rect width="64" height="64" rx="16" fill="url(#bgGradient)" />
+        <path
+          d="M26 20 L16 32 L26 44"
+          stroke="white"
+          stroke-width="4"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M38 20 L48 32 L38 44"
+          stroke="white"
+          stroke-width="4"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
       <div class="logo gradient-text">The Book of Code</div>
       <div class="nav-links">
         <a href="#">Curriculum</a>
@@ -233,40 +338,52 @@
 
     <!-- HERO -->
     <section id="hero">
-      <h1 class="hero-title gradient-text">Meet Our Team</h1>
-      <p class="section-desc">
-        The people building The Book of Code. Innovation, design, and coding expertise combined.
-      </p>
+      <div class="hero-visual"></div>
+      <div class="noise"></div>
+
+      <div class="hero-grid">
+        <div class="hero-content">
+          <h1 class="hero-title">
+            <span class="typing-text"></span><span class="cursor"></span>
+          </h1>
+
+          <p>
+            A classroom-first programming platform designed to help schools
+            teach coding with clarity, structure, and long-term understanding.
+          </p>
+        </div>
+      </div>
     </section>
 
     <!-- TEAM SECTION -->
-    <section>
+    <section class="team">
       <h2 class="section-title">Our <span class="gradient-text">Team</span></h2>
-      <p class="section-desc">Three passionate minds driving clarity, structure, and creativity in coding education.</p>
+      <p class="section-desc">Meet the passionate minds building The Book of Code.</p>
 
       <div class="card-grid">
         <!-- Member 1 -->
         <div class="card">
           <img src="images/megh.jpg" alt="Megh Dudhara" />
           <h3>Megh Dudhara</h3>
-          <div class="role">Founder & Lead Developer</div>
-          <p>Visionary coder, obsessed with elegant solutions and sleek interfaces. Leading development and product vision.</p>
+          <div class="role">Founder, CEO & Lead Developer</div>
+          <p>Visionary coder leading development and product design, obsessed with clean solutions.</p>
+          <p></p>
         </div>
 
         <!-- Member 2 -->
         <div class="card">
-          <img src="images/jane.jpg" alt="Jane Doe" />
-          <h3>Jane Doe</h3>
-          <div class="role">UI/UX Designer</div>
-          <p>Crafting beautiful and intuitive user experiences. Focused on classroom-first design for learning clarity.</p>
+          <img src="images/advait.jpg" alt="Jane Doe" />
+          <h3>Advait Pandit</h3>
+          <div class="role">CFO</div>
+          <p>Managing all our profits, losses and assets.</p>
         </div>
 
         <!-- Member 3 -->
         <div class="card">
-          <img src="images/alex.jpg" alt="Alex Smith" />
-          <h3>Alex Smith</h3>
-          <div class="role">Curriculum Lead</div>
-          <p>Developing structured, long-term learning paths. Ensures coding lessons are clear, deep, and effective.</p>
+          <img src="images/dev.jpg" alt="Alex Smith" />
+          <h3>Dav Parikh</h3>
+          <div class="role">HR & Marketing Leader</div>
+          <p>Handles all the employees which work at our place and does all the market research.</p>
         </div>
       </div>
     </section>
@@ -274,5 +391,32 @@
     <footer>
       © 2026 The Book of Code. Built for schools.
     </footer>
+
+    <script>
+      const sentence = 'Our <span class="gradient-text">team</span>';
+      const typingSpeed = 55;
+      const typingElement = document.querySelector(".typing-text");
+      let index = 0;
+      let rendered = "";
+
+      function typeLine() {
+        if (sentence[index] === "<") {
+          const tagEnd = sentence.indexOf(">", index);
+          rendered += sentence.slice(index, tagEnd + 1);
+          index = tagEnd + 1;
+        } else {
+          rendered += sentence[index];
+          index++;
+        }
+
+        typingElement.innerHTML = rendered;
+
+        if (index < sentence.length) {
+          setTimeout(typeLine, typingSpeed);
+        }
+      }
+
+      typeLine();
+    </script>
   </body>
 </html>
