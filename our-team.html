@@ -85,9 +85,15 @@
         z-index: 1000;
       }
 
+      nav .logo-div {
+        display: flex;
+        align-items: center;
+      }
+
       nav .logo {
         font-size: 20px;
         font-weight: 600;
+        margin-left: 30px;
       }
 
       nav .nav-links {
@@ -146,8 +152,12 @@
       }
 
       @keyframes slowGlow {
-        from { filter: brightness(1); }
-        to { filter: brightness(1.18); }
+        from {
+          filter: brightness(1);
+        }
+        to {
+          filter: brightness(1.18);
+        }
       }
 
       .noise {
@@ -177,9 +187,18 @@
       }
 
       @keyframes bloom {
-        0% { opacity: 0; transform: translateZ(-320px) scale(0.92); }
-        60% { opacity: 1; transform: translateZ(30px) scale(1.01); }
-        100% { opacity: 1; transform: translateZ(0) scale(1); }
+        0% {
+          opacity: 0;
+          transform: translateZ(-320px) scale(0.92);
+        }
+        60% {
+          opacity: 1;
+          transform: translateZ(30px) scale(1.01);
+        }
+        100% {
+          opacity: 1;
+          transform: translateZ(0) scale(1);
+        }
       }
 
       .hero-title {
@@ -203,7 +222,9 @@
       }
 
       @keyframes blink {
-        50% { opacity: 0; }
+        50% {
+          opacity: 0;
+        }
       }
 
       .hero-content p {
@@ -288,52 +309,58 @@
         font-size: 12px;
       }
 
-      @media(max-width: 600px){
-        section.team { padding: 60px 24px; }
+      @media (max-width: 600px) {
+        section.team {
+          padding: 60px 24px;
+        }
       }
     </style>
   </head>
 
   <body>
     <nav>
-      <svg
-        width="64"
-        height="64"
-        viewBox="0 0 64 64"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#00C9FF" />
-            <stop offset="100%" stop-color="#005BFF" />
-          </linearGradient>
-        </defs>
-        <rect width="64" height="64" rx="16" fill="url(#bgGradient)" />
-        <path
-          d="M26 20 L16 32 L26 44"
-          stroke="white"
-          stroke-width="4"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <path
-          d="M38 20 L48 32 L38 44"
-          stroke="white"
-          stroke-width="4"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-      <div class="logo gradient-text">The Book of Code</div>
+      <div class="logo-div">
+        <svg
+          width="64"
+          height="64"
+          viewBox="0 0 64 64"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00C9FF" />
+              <stop offset="100%" stop-color="#005BFF" />
+            </linearGradient>
+          </defs>
+          <rect width="64" height="64" rx="16" fill="url(#bgGradient)" />
+          <path
+            d="M26 20 L16 32 L26 44"
+            stroke="white"
+            stroke-width="4"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M38 20 L48 32 L38 44"
+            stroke="white"
+            stroke-width="4"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <div class="logo gradient-text">The Book of Code</div>
+      </div>
       <div class="nav-links">
         <a href="#">Curriculum</a>
         <a href="#">About</a>
         <a href="#">Team</a>
-        <a href="school-registration.html" class="register-link">Register School</a>
+        <a href="school-registration.html" class="register-link"
+          >Register School</a
+        >
         <a href="login.html" class="login-link">Login</a>
-      </div>  
+      </div>
     </nav>
 
     <!-- HERO -->
@@ -358,7 +385,9 @@
     <!-- TEAM SECTION -->
     <section class="team">
       <h2 class="section-title">Our <span class="gradient-text">Team</span></h2>
-      <p class="section-desc">Meet the passionate minds building The Book of Code.</p>
+      <p class="section-desc">
+        Meet the passionate minds building The Book of Code.
+      </p>
 
       <div class="card-grid">
         <!-- Member 1 -->
@@ -366,7 +395,10 @@
           <img src="images/megh.jpg" alt="Megh Dudhara" />
           <h3>Megh Dudhara</h3>
           <div class="role">Founder, CEO & Lead Developer</div>
-          <p>Visionary coder leading development and product design, obsessed with clean solutions.</p>
+          <p>
+            Visionary coder leading development and product design, obsessed
+            with clean solutions.
+          </p>
           <p></p>
         </div>
 
@@ -383,14 +415,15 @@
           <img src="images/dev.jpg" alt="Alex Smith" />
           <h3>Dav Parikh</h3>
           <div class="role">HR & Marketing Leader</div>
-          <p>Handles all the employees which work at our place and does all the market research.</p>
+          <p>
+            Handles all the employees which work at our place and does all the
+            market research.
+          </p>
         </div>
       </div>
     </section>
 
-    <footer>
-      © 2026 The Book of Code. Built for schools.
-    </footer>
+    <footer>© 2026 The Book of Code. Built for schools.</footer>
 
     <script>
       const sentence = 'Our <span class="gradient-text">team</span>';

@@ -3,9 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <title>Register School • The Book of Code</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Sora Font -->
+    <!-- Sora -->
     <link
       href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap"
       rel="stylesheet"
@@ -24,23 +23,18 @@
 
       * {
         box-sizing: border-box;
-        margin: 0;
-        padding: 0;
         font-family: "Sora", system-ui, sans-serif;
       }
 
       body {
+        margin: 0;
         min-height: 100vh;
         background: var(--bg-dark);
         color: var(--text-main);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 96px 24px;
       }
 
-      /* ===== SAME HERO BACKGROUND ===== */
-      .background {
+      /* ===== HERO BACKGROUND ===== */
+      .bg {
         position: fixed;
         inset: 0;
         background: radial-gradient(
@@ -54,7 +48,17 @@
             transparent 45%
           ),
           linear-gradient(180deg, #05070d, #0b1020 60%, #05070d);
+        animation: glow 14s ease-in-out infinite alternate;
         z-index: -2;
+      }
+
+      @keyframes glow {
+        from {
+          filter: brightness(1);
+        }
+        to {
+          filter: brightness(1.18);
+        }
       }
 
       .noise {
@@ -65,191 +69,217 @@
         z-index: -1;
       }
 
-      /* ===== CARD ===== */
+      /* ===== LAYOUT ===== */
+      .wrap {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 120px 24px;
+      }
+
       .card {
         width: 100%;
-        max-width: 540px;
+        max-width: 620px;
         background: var(--card-bg);
         border: 1px solid var(--border-soft);
-        border-radius: 22px;
-        padding: 42px;
+        border-radius: 20px;
+        padding: 40px;
+        backdrop-filter: blur(14px);
       }
 
       h1 {
         font-size: 28px;
         font-weight: 600;
-        margin-bottom: 10px;
-      }
-
-      p {
-        color: var(--text-muted);
-        font-size: 14px;
-        margin-bottom: 32px;
+        margin-bottom: 28px;
+        text-align: center;
       }
 
       label {
+        display: block;
         font-size: 13px;
         color: var(--text-muted);
-        display: block;
-        margin-bottom: 6px;
+        margin: 18px 0 8px;
       }
 
       input,
       select {
         width: 100%;
-        padding: 14px 16px;
-        margin-bottom: 22px;
-        border-radius: 14px;
-        border: 1px solid var(--border-soft);
+        padding: 12px 14px;
         background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-soft);
+        border-radius: 12px;
         color: var(--text-main);
-        font-size: 14px;
-      }
-
-      input:focus,
-      select:focus {
         outline: none;
-        border-color: rgba(0, 201, 255, 0.6);
       }
 
-      /* ONLY OPTIONS STYLED */
+      input::placeholder {
+        color: #7e88a8;
+      }
+
       select option {
         background: #0b1020;
-        color: #e8ecf1;
-        border-radius: 12px;
+        color: #fff;
+        border-radius: 10px;
       }
 
-      button {
+      .teachers {
+        margin-top: 6px;
+      }
+
+      .teacher-row {
+        margin-bottom: 10px;
+      }
+
+      .add-btn {
+        margin-top: 12px;
+        background: transparent;
+        border: 1px dashed var(--border-soft);
+        color: var(--text-muted);
+        padding: 10px;
+        border-radius: 999px;
+        cursor: pointer;
+      }
+
+      .submit {
+        margin-top: 32px;
         width: 100%;
         padding: 14px;
         border-radius: 999px;
         border: none;
         background: var(--accent);
-        color: white;
-        font-size: 14px;
-        font-weight: 500;
+        color: #fff;
+        font-weight: 600;
         cursor: pointer;
       }
 
-      button:hover {
-        filter: brightness(1.15);
-      }
-
-      .status {
-        margin-top: 16px;
-        font-size: 13px;
-        color: var(--text-muted);
+      .submit:hover {
+        filter: brightness(1.1);
       }
     </style>
   </head>
 
   <body>
-    <div class="background"></div>
+    <div class="bg"></div>
     <div class="noise"></div>
 
-    <div class="card">
-      <h1>Register Your School</h1>
-      <p>Administrative access for your institution</p>
+    <div class="wrap">
+      <div class="card">
+        <h1>Register Your School</h1>
 
-      <form id="schoolForm">
         <label>School Name</label>
-        <input type="text" id="schoolName" required />
+        <input id="schoolName" required />
 
         <label>Admin Email</label>
-        <input type="email" id="adminEmail" required />
+        <input id="adminEmail" type="email" required />
 
         <label>Admin Password</label>
-        <input type="password" id="adminPassword" required />
+        <input id="adminPassword" type="password" required />
 
         <label>Board</label>
         <select id="board" required>
-          <option value="">Select Board</option>
-          <option value="CBSE">CBSE</option>
-          <option value="ICSE">ICSE</option>
-          <option value="IGCSE">IGCSE</option>
-          <option value="IB">IB</option>
+          <option value="">Select board</option>
+          <option>CBSE</option>
+          <option>ICSE</option>
+          <option>IGCSE</option>
+          <option>IB</option>
         </select>
 
-        <label>Number of Students</label>
-        <input type="number" id="students" min="100" required />
+        <label>No. of Students</label>
+        <input id="students" type="number" min="1" required />
 
-        <label>Grades Provided (optional override)</label>
-        <input
-          type="text"
-          id="grades"
-          placeholder="e.g. 6–10 (leave blank for all grades)"
-        />
+        <label>Grades Provided (optional)</label>
+        <input id="grades" placeholder="Leave blank for all grades" />
 
-        <button type="submit">Create School Account</button>
-      </form>
+        <label>Shared Student Password</label>
+        <input id="studentPwd" type="password" required />
 
-      <div class="status" id="status"></div>
+        <label>Shared Teacher Password</label>
+        <input id="teacherPwd" type="password" required />
+
+        <label>Teacher Emails</label>
+        <div class="teachers" id="teachers">
+          <div class="teacher-row">
+            <input type="email" placeholder="teacher@school.com" />
+          </div>
+        </div>
+
+        <button class="add-btn" onclick="addTeacher()">
+          + Add another teacher
+        </button>
+        <button class="submit" onclick="registerSchool()">
+          Register School
+        </button>
+      </div>
     </div>
 
-    <!-- ===== FIREBASE ===== -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-      import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-      import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+      import {
+        getFirestore,
+        doc,
+        setDoc,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyBGeAln9WrYu07QrOlANYLINLWcq9NpBHA",
         authDomain: "the-book-of-code.firebaseapp.com",
+        databaseURL:"https://the-book-of-code-default-rtdb.asia-southeast1.firebasedatabase.app",
         projectId: "the-book-of-code",
         storageBucket: "the-book-of-code.firebasestorage.app",
         messagingSenderId: "598679975161",
-        appId: "1:598679975161:web:a2c465f0ac6d9a56531e28"
+        appId: "1:598679975161:web:a2c465f0ac6d9a56531e28",
+        measurementId: "G-29P13DSLTZ",
       };
 
       const app = initializeApp(firebaseConfig);
       const auth = getAuth(app);
       const db = getFirestore(app);
 
-      function getPlan(studentCount) {
-        if (studentCount >= 1500) return { tier: "Enterprise", price: 175000 };
-        if (studentCount >= 500) return { tier: "Growth", price: 100000 };
+      window.addTeacher = () => {
+        const div = document.createElement("div");
+        div.className = "teacher-row";
+        div.innerHTML = `<input type="email" placeholder="teacher@school.com">`;
+        document.getElementById("teachers").appendChild(div);
+      };
+
+      function getPlan(n) {
+        if (n >= 1500) return { tier: "Enterprise", price: 175000 };
+        if (n >= 500) return { tier: "Growth", price: 100000 };
         return { tier: "Starter", price: 50000 };
       }
 
-      const form = document.getElementById("schoolForm");
-      const status = document.getElementById("status");
+      window.registerSchool = async () => {
+        const plan = getPlan(+students.value);
+        const teachers = [...document.querySelectorAll("#teachers input")]
+          .map((i) => i.value.trim())
+          .filter(Boolean);
 
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        status.textContent = "Creating account...";
+        const cred = await createUserWithEmailAndPassword(
+          auth,
+          adminEmail.value,
+          adminPassword.value
+        );
 
-        const schoolName = schoolNameInput.value = document.getElementById("schoolName").value.trim();
-        const adminEmail = document.getElementById("adminEmail").value.trim();
-        const password = document.getElementById("adminPassword").value;
-        const board = document.getElementById("board").value;
-        const students = Number(document.getElementById("students").value);
-        const grades = document.getElementById("grades").value.trim();
+        await setDoc(doc(db, "schools", cred.user.uid), {
+          schoolName: schoolName.value,
+          adminEmail: adminEmail.value,
+          adminPassword: adminPassword.value,
+          board: board.value,
+          students: +students.value,
+          gradesProvided: grades.value || "All",
+          subscriptionTier: plan.tier,
+          subscriptionPrice: plan.price,
+          sharedStudentPassword: studentPwd.value,
+          sharedTeacherPassword: teacherPwd.value,
+          teachers,
+        });
 
-        const plan = getPlan(students);
-
-        try {
-          const cred = await createUserWithEmailAndPassword(
-            auth,
-            adminEmail,
-            password
-          );
-
-          await setDoc(doc(db, "schools", cred.user.uid), {
-            schoolName,
-            adminEmail,
-            board,
-            students,
-            gradesProvided: grades || "All",
-            subscriptionTier: plan.tier,
-            subscriptionPrice: plan.price
-          });
-
-          status.textContent = "School registered successfully.";
-          form.reset();
-        } catch (err) {
-          status.textContent = err.message;
-        }
-      });
+        alert("School registered successfully.");
+      };
     </script>
   </body>
 </html>

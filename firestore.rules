@@ -1,36 +1,9 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // Schools collection
-    match /schools/{schoolId} {
-      
-      // Anyone can read the school list (optional, remove if private)
-      allow read: if true;
-
-      // Only allow creating a school through cloud function (secured via Firebase Auth token)
-      allow create: if false;
-
-      // Teachers can update their school info (you'll need to set custom claims)
-      allow update: if request.auth != null 
-                     && request.auth.token.school == schoolId 
-                     && request.auth.token.role == "teacher";
-
-      // Students cannot delete/update school
-      allow delete: if false;
-
-      // Students subcollection
-      match /students/{studentId} {
-        
-        // Only the student themselves or teacher can read/write
-        allow read, write: if request.auth != null &&
-          (
-            request.auth.token.school == schoolId && (
-              request.auth.token.role == "teacher" ||
-              request.auth.token.email == studentId
-            )
-          );
-      }
+    match /{document=**} {
+      allow read, write: if true;
     }
   }
 }
+ 
