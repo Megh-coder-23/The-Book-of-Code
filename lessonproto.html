@@ -92,6 +92,7 @@ main {
   text-align: right;
   color: #555;
   user-select: none;
+  white-space: pre;
 }
 
 textarea {
@@ -163,114 +164,59 @@ button.primary:disabled {
 
 <script>
 /* =========================
-   SLIDES — DEMO: PRINT ONLY
+   SLIDES (5-MINUTE LESSON)
 ========================= */
 
 const slides = [
-  {
-    type: "info",
-    text: `
-      Computers do not speak naturally.<br><br>
-      They follow instructions silently unless we tell them to
-      <b>show something</b>.
-    `
-  },
-  {
-    type: "info",
-    text: `
-      In Python, the command used to display information
-      on the screen is called <b>print</b>.
-    `
-  },
-  {
-    type: "info",
-    text: `
-      When Python reaches a <b>print</b> command,
-      it sends information to the <b>console</b>.<br><br>
-      The console is where program output appears.
-    `
-  },
-  {
-    type: "info",
-    text: `
-      Example:<br><br>
-      <b>print("hello")</b><br><br>
-      Python reads this line and displays the word
-      <b>hello</b> exactly as written.
-    `
-  },
-  {
-    type: "info",
-    text: `
-      Text written inside quotation marks is called a
-      <b>string</b>.<br><br>
-      Quotation marks tell Python:
-      “This is text, not an instruction.”
-    `
-  },
-  {
-    type: "mcq",
-    question: "What does the print command do?",
-    options: [
-      { text: "Stores data inside the computer", correct: false },
-      { text: "Displays output on the screen", correct: true },
-      { text: "Stops the program", correct: false }
-    ]
-  },
-  {
-    type: "info",
-    text: `
-      Numbers do not need quotation marks.<br><br>
-      Example:<br>
-      <b>print(5)</b> displays the number 5.
-    `
-  },
-  {
-    type: "mcq",
-    question: "What is the difference between print(\"5\") and print(5)?",
-    options: [
-      { text: "There is no difference", correct: false },
-      { text: "One prints text, the other prints a number", correct: true },
-      { text: "One causes an error", correct: false }
-    ]
-  },
-  {
-    type: "code",
-    prompt: `
-      Write code that prints the word <b>hello</b>.<br>
-      Then run it.
-    `,
-    starter: ``,
-    expectedOutput: "hello"
-  },
-  {
-    type: "info",
-    text: `
-      You can print more than one word by putting them
-      together inside the quotes.
-    `
-  },
-  {
-    type: "code",
-    prompt: `
-      Modify your code to print <b>hello world</b>.
-    `,
-    starter: `print("hello")`,
-    expectedOutput: "hello world"
-  },
-  {
-    type: "info",
-    text: `
-      You now understand the most important debugging tool
-      in programming.<br><br>
-      If you can <b>print</b>, you can see what your program
-      is thinking.
-    `
-  }
+  /* -------- INFO (9) -------- */
+  { type:"info", text:`Computers do exactly what they are told.<br><br>No guessing. No intention. Only instructions.` },
+  { type:"info", text:`A program is a list of instructions written for a computer to follow, one line at a time.` },
+  { type:"info", text:`When a program runs, it executes each line from top to bottom, in order.` },
+  { type:"info", text:`Often, we want a program to <b>show something</b> to the user.` },
+  { type:"info", text:`In Python, showing output is done using a command called <b>print</b>.` },
+  { type:"info", text:`<b>print</b> is a function.<br><br>A function is a named instruction that performs an action.` },
+  { type:"info", text:`Text written inside quotation marks is called a <b>string</b>.<br><br>Strings are data, not commands.` },
+  { type:"info", text:`When Python sees:<br><br><b>print("hello")</b><br><br>it sends the text to the output screen.` },
+  { type:"info", text:`Code → Python → Console<br><br>This is how programs communicate with humans.` },
+
+  /* -------- MCQ (10) -------- */
+  mcq("What does print do?", ["Ends the program","Shows output","Stores text"], 1),
+  mcq("Which part is the string?", [`print`,`"hello"`,`()`], 1),
+  mcq("Functions are:", ["Variables","Named instructions","Errors"], 1),
+  mcq("What runs first?", ["Bottom line","Random line","Top line"], 2),
+  mcq("What must strings use?", ["Brackets","Quotes","Semicolons"], 1),
+  mcq("print outputs to:", ["File","Console","Memory"], 1),
+  mcq("print is executed when:", ["Program is written","Program runs","Program saved"], 1),
+  mcq("Which is valid?", [`print(hello)`,`print("hello")`,`print hello`], 1),
+  mcq("Strings are:", ["Commands","Numbers","Data"], 2),
+  mcq("Programs follow:", ["Order","Emotion","Guessing"], 0),
+
+  /* -------- CODE (5) -------- */
+  code("Type code to print hello.", "", "hello"),
+  code("Print hello world.", `print("")`, "hello world"),
+  code("Print your name.", `print("")`, null),
+  code("Fix the code.", `print("hello"`, "hello"),
+  code("Print two words.", `print("")`, null),
 ];
 
 /* =========================
-   ENGINE (LOGIC ONLY)
+   HELPERS
+========================= */
+
+function mcq(q, opts, correct) {
+  return {
+    type:"mcq",
+    question:q,
+    options: opts.map((t,i)=>({text:t, correct:i===correct}))
+  };
+}
+
+function code(prompt, starter, expected) {
+  return { type:"code", prompt, starter, expectedOutput: expected };
+}
+
+/* =========================
+   ENGINE
 ========================= */
 
 let current = 0;
@@ -290,8 +236,6 @@ function renderSlide() {
   const s = slides[current];
   slideEl.innerHTML = "";
   nextBtn.disabled = true;
-
-  // Change button label on last slide
   nextBtn.textContent =
     current === slides.length - 1 ? "Finish" : "Next";
 
@@ -317,12 +261,12 @@ function renderSlide() {
         if (answered) return;
         answered = true;
 
-        const correct = b.dataset.correct === "true";
-        b.style.boxShadow = correct
+        const ok = b.dataset.correct === "true";
+        b.style.boxShadow = ok
           ? "0 0 0 2px rgba(124,255,196,0.6)"
           : "0 0 0 2px rgba(255,90,90,0.6)";
 
-        if (correct) completed.add(current);
+        if (ok) completed.add(current);
         else mistakes.push(current);
 
         nextBtn.disabled = false;
@@ -345,37 +289,39 @@ function renderSlide() {
     const lines = document.getElementById("lines");
     const consoleEl = document.getElementById("console");
 
-    editor.oninput = () => {
-      lines.textContent = Array(editor.value.split("\n").length)
-        .fill(0).map((_,i)=>i+1).join("\n");
-    };
+    function syncLines() {
+      const count = editor.value.split("\n").length;
+      lines.textContent =
+        Array.from({length:count},(_,i)=>i+1).join("\n");
+    }
+    syncLines();
+
+    editor.oninput = syncLines;
 
     editor.onkeydown = e => {
       const pairs = { "(":")","[":"]","{":"}","\"":"\"","'":"'","`":"`" };
       if (pairs[e.key]) {
         e.preventDefault();
-        const p = editor.selectionStart;
-        editor.value =
-          editor.value.slice(0,p) + e.key + pairs[e.key] + editor.value.slice(p);
-        editor.selectionStart = editor.selectionEnd = p + 1;
-        editor.dispatchEvent(new Event("input"));
+        const {selectionStart:s, selectionEnd:e2} = editor;
+        editor.setRangeText(
+          e.key + pairs[e.key],
+          s, e2, "end"
+        );
+        editor.selectionStart = editor.selectionEnd = s + 1;
+        syncLines();
       }
     };
 
     document.getElementById("runBtn").onclick = () => {
-      consoleEl.textContent = "";
-
       try {
         let output = "";
         const print = (...a) => output += a.join(" ");
         new Function("print", editor.value)(print);
-        consoleEl.textContent = output;
+        consoleEl.textContent = output || "(no output)";
 
-        if (output.trim() === s.expectedOutput) {
+        if (!s.expectedOutput || output.trim() === s.expectedOutput) {
           completed.add(current);
           nextBtn.disabled = false;
-        } else {
-          mistakes.push(current);
         }
       } catch (e) {
         consoleEl.textContent = "Error: " + e.message;
@@ -388,15 +334,11 @@ function renderSlide() {
 
 nextBtn.onclick = () => {
   if (current === slides.length - 1) {
-    window.location.href = "index.html";
+    location.href = "index.html";
     return;
   }
 
-  if (current < slides.length - 1) {
-    current++;
-  } else if (mistakes.length) {
-    current = mistakes.shift();
-  }
+  if (current < slides.length - 1) current++;
   renderSlide();
 };
 
