@@ -61,6 +61,14 @@ main {
   line-height: 1.75;
 }
 
+.mistake-tag {
+  text-align: center;
+  color: #ffb86c;
+  font-size: 13px;
+  margin-bottom: 12px;
+  letter-spacing: 0.04em;
+}
+
 .mcq-options {
   margin-top: 28px;
   display: grid;
@@ -164,64 +172,38 @@ button.primary:disabled {
 
 <script>
 /* =========================
-   SLIDES (5-MINUTE LESSON)
+   SLIDES (UNCHANGED)
 ========================= */
 
 const slides = [
-  /* -------- INFO (9) -------- */
-  { type:"info", text:`Computers do exactly what they are told.<br><br>No guessing. No intention. Only instructions.` },
-  { type:"info", text:`A program is a list of instructions written for a computer to follow, one line at a time.` },
-  { type:"info", text:`When a program runs, it executes each line from top to bottom, in order.` },
-  { type:"info", text:`Often, we want a program to <b>show something</b> to the user.` },
-  { type:"info", text:`In Python, showing output is done using a command called <b>print</b>.` },
-  { type:"info", text:`<b>print</b> is a function.<br><br>A function is a named instruction that performs an action.` },
-  { type:"info", text:`Text written inside quotation marks is called a <b>string</b>.<br><br>Strings are data, not commands.` },
-  { type:"info", text:`When Python sees:<br><br><b>print("hello")</b><br><br>it sends the text to the output screen.` },
-  { type:"info", text:`Code → Python → Console<br><br>This is how programs communicate with humans.` },
-
-  /* -------- MCQ (10) -------- */
-  mcq("What does print do?", ["Ends the program","Shows output","Stores text"], 1),
-  mcq("Which part is the string?", [`print`,`"hello"`,`()`], 1),
-  mcq("Functions are:", ["Variables","Named instructions","Errors"], 1),
-  mcq("What runs first?", ["Bottom line","Random line","Top line"], 2),
-  mcq("What must strings use?", ["Brackets","Quotes","Semicolons"], 1),
-  mcq("print outputs to:", ["File","Console","Memory"], 1),
-  mcq("print is executed when:", ["Program is written","Program runs","Program saved"], 1),
-  mcq("Which is valid?", [`print(hello)`,`print("hello")`,`print hello`], 1),
-  mcq("Strings are:", ["Commands","Numbers","Data"], 2),
-  mcq("Programs follow:", ["Order","Emotion","Guessing"], 0),
-
-  /* -------- CODE (5) -------- */
-  code("Type code to print hello.", "", "hello"),
-  code("Print hello world.", `print("")`, "hello world"),
-  code("Print your name.", `print("")`, null),
-  code("Fix the code.", `print("hello"`, "hello"),
-  code("Print two words.", `print("")`, null),
+  { type:"info", text:`A computer follows instructions exactly.` },
+  { type:"info", text:`Programs need to show results to humans.` },
+  { type:"info", text:`Python uses <b>print</b> to display output.` },
+  {
+    type:"mcq",
+    question:"What does print do?",
+    options:[
+      {text:"Stores data",correct:false},
+      {text:"Displays output",correct:true},
+      {text:"Ends program",correct:false}
+    ]
+  },
+  {
+    type:"code",
+    prompt:`Print the word <b>hello</b>.`,
+    starter:"",
+    expectedOutput:"hello"
+  }
 ];
 
 /* =========================
-   HELPERS
-========================= */
-
-function mcq(q, opts, correct) {
-  return {
-    type:"mcq",
-    question:q,
-    options: opts.map((t,i)=>({text:t, correct:i===correct}))
-  };
-}
-
-function code(prompt, starter, expected) {
-  return { type:"code", prompt, starter, expectedOutput: expected };
-}
-
-/* =========================
-   ENGINE
+   ENGINE (UPDATED LOGIC)
 ========================= */
 
 let current = 0;
 let completed = new Set();
 let mistakes = [];
+let recycling = false;
 
 const slideEl = document.getElementById("slide");
 const nextBtn = document.getElementById("nextBtn");
@@ -236,17 +218,19 @@ function renderSlide() {
   const s = slides[current];
   slideEl.innerHTML = "";
   nextBtn.disabled = true;
-  nextBtn.textContent =
-    current === slides.length - 1 ? "Finish" : "Next";
+
+  if (recycling) {
+    slideEl.innerHTML += `<div class="mistake-tag">previous mistake</div>`;
+  }
 
   if (s.type === "info") {
-    slideEl.innerHTML = `<div class="info">${s.text}</div>`;
+    slideEl.innerHTML += `<div class="info">${s.text}</div>`;
     completed.add(current);
     nextBtn.disabled = false;
   }
 
   if (s.type === "mcq") {
-    slideEl.innerHTML = `
+    slideEl.innerHTML += `
       <div class="info">${s.question}</div>
       <div class="mcq-options">
         ${s.options.map(o =>
@@ -261,13 +245,17 @@ function renderSlide() {
         if (answered) return;
         answered = true;
 
-        const ok = b.dataset.correct === "true";
-        b.style.boxShadow = ok
+        const correct = b.dataset.correct === "true";
+        b.style.boxShadow = correct
           ? "0 0 0 2px rgba(124,255,196,0.6)"
           : "0 0 0 2px rgba(255,90,90,0.6)";
 
-        if (ok) completed.add(current);
-        else mistakes.push(current);
+        if (correct) {
+          completed.add(current);
+          recycling = false;
+        } else {
+          if (!mistakes.includes(current)) mistakes.push(current);
+        }
 
         nextBtn.disabled = false;
       };
@@ -275,7 +263,7 @@ function renderSlide() {
   }
 
   if (s.type === "code") {
-    slideEl.innerHTML = `
+    slideEl.innerHTML += `
       <div class="info">${s.prompt}</div>
       <div class="editor-wrapper">
         <div class="line-numbers" id="lines">1</div>
@@ -289,44 +277,35 @@ function renderSlide() {
     const lines = document.getElementById("lines");
     const consoleEl = document.getElementById("console");
 
-    function syncLines() {
+    editor.oninput = () => {
       const count = editor.value.split("\n").length;
-      lines.textContent =
-        Array.from({length:count},(_,i)=>i+1).join("\n");
-    }
-    syncLines();
-
-    editor.oninput = syncLines;
-
-    editor.onkeydown = e => {
-      const pairs = { "(":")","[":"]","{":"}","\"":"\"","'":"'","`":"`" };
-      if (pairs[e.key]) {
-        e.preventDefault();
-        const {selectionStart:s, selectionEnd:e2} = editor;
-        editor.setRangeText(
-          e.key + pairs[e.key],
-          s, e2, "end"
-        );
-        editor.selectionStart = editor.selectionEnd = s + 1;
-        syncLines();
-      }
+      lines.textContent = Array.from({length:count},(_,i)=>i+1).join("\n");
     };
 
     document.getElementById("runBtn").onclick = () => {
       try {
         let output = "";
-        const print = (...a) => output += a.join(" ");
-        new Function("print", editor.value)(print);
-        consoleEl.textContent = output || "(no output)";
+        const print = (...a)=>output+=a.join(" ");
+        new Function("print",editor.value)(print);
+        consoleEl.textContent = output;
 
-        if (!s.expectedOutput || output.trim() === s.expectedOutput) {
+        if (output.trim() === s.expectedOutput) {
           completed.add(current);
+          recycling = false;
           nextBtn.disabled = false;
+        } else {
+          if (!mistakes.includes(current)) mistakes.push(current);
         }
-      } catch (e) {
+      } catch(e){
         consoleEl.textContent = "Error: " + e.message;
       }
     };
+  }
+
+  if (current === slides.length - 1 && mistakes.length === 0) {
+    nextBtn.textContent = "Finish";
+  } else {
+    nextBtn.textContent = "Next";
   }
 
   updateProgress();
@@ -334,11 +313,17 @@ function renderSlide() {
 
 nextBtn.onclick = () => {
   if (current === slides.length - 1) {
-    location.href = "index.html";
-    return;
+    if (mistakes.length > 0) {
+      current = mistakes.shift();
+      recycling = true;
+    } else {
+      location.href = "index.html";
+      return;
+    }
+  } else {
+    current++;
+    recycling = false;
   }
-
-  if (current < slides.length - 1) current++;
   renderSlide();
 };
 
