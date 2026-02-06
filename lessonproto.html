@@ -1,378 +1,293 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>The Book of Code • Demo Lesson</title>
+<meta charset="UTF-8" />
+<title>Demo Lesson · The Book of Code</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* {
+  box-sizing: border-box;
+  font-family: 'Sora', system-ui, sans-serif;
+}
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Sora', sans-serif;
-      background: #0a0e27;
-      color: #ffffff;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+body {
+  margin: 0;
+  background: #0b0e14;
+  color: #e6e6eb;
+}
 
-    /* Top bar */
-    .top-bar {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem 1.25rem 0.75rem;
-    }
+header {
+  padding: 20px 32px;
+}
 
-    .back-btn {
-      color: #ffffff;
-      text-decoration: none;
-      font-size: 1.4rem;
-      transform: translateY(-2px);
-    }
+h1 {
+  margin: 0 0 12px;
+  font-weight: 600;
+}
 
-    .progress-track {
-      flex: 1;
-      height: 10px;
-      background: rgba(255,255,255,0.15);
-      border-radius: 999px;
-      overflow: hidden;
-    }
+.progress-bar {
+  height: 6px;
+  background: #1b1f36;
+  border-radius: 999px;
+  overflow: hidden;
+}
 
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(135deg, #00c9ff, #005bff);
-      border-radius: 999px;
-      transition: width 0.3s ease;
-    }
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #6ae3ff, #7cffc4);
+  transition: width 0.3s ease;
+}
 
-    /* Lesson */
-    .lesson {
-      flex: 1;
-      padding: 1.5rem 1.5rem 6rem;
-      max-width: 720px;
-      margin: 0 auto;
-      width: 100%;
-    }
+main {
+  padding: 32px;
+  display: flex;
+  justify-content: center;
+}
 
-    .tag {
-      font-size: 0.75rem;
-      color: #ffcc66;
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
+.slide {
+  width: 100%;
+  max-width: 900px;
+}
 
-    h2 {
-      font-size: 1.35rem;
-      margin-bottom: 1rem;
-    }
+/* INFO */
+.info {
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.7;
+}
 
-    .code-block {
-      background: #06091c;
-      padding: 1rem;
-      border-radius: 12px;
-      font-family: monospace;
-      margin-bottom: 1.5rem;
-      color: #d4e6ff;
-      white-space: pre-wrap;
-    }
+/* MCQ */
+.mcq-options {
+  margin-top: 28px;
+  display: grid;
+  gap: 12px;
+}
 
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
+.mcq-options button {
+  padding: 14px 16px;
+  background: #111525;
+  border: 1px solid #242a4a;
+  border-radius: 10px;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
 
-    .option {
-      padding: 0.9rem 1rem;
-      border-radius: 12px;
-      background: #11163a;
-      border: 1px solid rgba(255,255,255,0.1);
-      cursor: pointer;
-      display: flex;
-      gap: 0.75rem;
-      align-items: center;
-    }
+/* EDITOR */
+.editor-wrapper {
+  display: flex;
+  border: 1px solid #242a4a;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0e1220;
+  font-family: ui-monospace, monospace;
+}
 
-    .option-number {
-      opacity: 0.6;
-      font-weight: 600;
-    }
+.line-numbers {
+  background: #0c1020;
+  padding: 12px 10px;
+  text-align: right;
+  color: #555;
+  user-select: none;
+}
 
-    .option.selected {
-      outline: 2px solid #00c9ff;
-      background: #171d4f;
-    }
+textarea {
+  flex: 1;
+  background: transparent;
+  color: #e6e6eb;
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
 
-    .option.correct {
-      border-color: #2ecc71;
-      background: rgba(46,204,113,0.15);
-    }
+/* CONSOLE */
+.console {
+  margin-top: 14px;
+  background: #0c1020;
+  border: 1px solid #242a4a;
+  border-radius: 10px;
+  padding: 10px;
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+  min-height: 52px;
+  white-space: pre-wrap;
+}
 
-    .option.wrong {
-      border-color: #e74c3c;
-      background: rgba(231,76,60,0.15);
-    }
+/* FOOTER */
+footer {
+  padding: 0 32px 24px;
+  display: flex;
+  justify-content: space-between;
+}
 
-    /* Typing challenge */
-    textarea {
-      width: 100%;
-      min-height: 90px;
-      background: #06091c;
-      color: #d4e6ff;
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 12px;
-      padding: 1rem;
-      font-family: monospace;
-      resize: none;
-    }
+button.primary {
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: #6ae3ff;
+  color: #000;
+  font-weight: 500;
+}
 
-    /* Bottom bar */
-    .lesson-actions {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 1rem 1.5rem;
-      background: rgba(10,14,39,0.95);
-      border-top: 1px solid rgba(255,255,255,0.08);
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .next-btn {
-      padding: 0.7rem 1.6rem;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #00c9ff, #005bff);
-      color: #ffffff;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      opacity: 0.4;
-      pointer-events: none;
-    }
-
-    .next-btn.enabled {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .complete {
-      text-align: center;
-      margin-top: 6rem;
-    }
-  </style>
+button.primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+</style>
 </head>
+
 <body>
 
-  <div class="top-bar">
-    <a href="index.html" class="back-btn">←</a>
-    <div class="progress-track">
-      <div class="progress-fill" id="progressBar"></div>
-    </div>
+<header>
+  <h1>Demo Lesson</h1>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
   </div>
+</header>
 
-  <div class="lesson" id="lesson">
-    <div class="tag" id="tag"></div>
-    <h2 id="question"></h2>
-    <div class="code-block" id="code"></div>
-    <div class="options" id="options"></div>
-    <div id="typingArea" style="display:none;">
-      <textarea id="codeInput" placeholder="Type your code here…"></textarea>
-    </div>
-  </div>
+<main>
+  <div class="slide" id="slide"></div>
+</main>
 
-  <div class="lesson-actions">
-    <button class="next-btn" id="nextBtn">Continue</button>
-  </div>
+<footer>
+  <span></span>
+  <button class="primary" id="nextBtn" disabled>Next</button>
+</footer>
 
-  <script>
-    const steps = [
-      {
-        type: "mcq",
-        question: "What does this Python code do?",
-        code: 'print("Hello")',
-        options: [
-          { text: "Displays text on the screen", correct: true },
-          { text: "Stores text in memory", correct: false },
-          { text: "Creates a variable", correct: false }
-        ]
-      },
-      {
-        type: "mcq",
-        question: "Which function prints output in Python?",
-        code: "",
-        options: [
-          { text: "print()", correct: true },
-          { text: "show()", correct: false },
-          { text: "echo()", correct: false }
-        ]
-      },
-      {
-        type: "mcq",
-        question: "What will this display?",
-        code: "print(7)",
-        options: [
-          { text: '"7"', correct: false },
-          { text: "seven", correct: false },
-          { text: "7", correct: true }
-        ]
-      }
-    ];
+<script>
+/* =========================
+   SLIDES
+========================= */
 
-    const finalChallenge = {
-      type: "type",
-      question: "Final challenge: print Hello",
-      prompt: "Type Python code to print the word Hello",
-      answer: 'print("Hello")'
+const slides = [
+  {
+    type: "info",
+    text: `Code is a set of exact instructions given to a computer.`
+  },
+  {
+    type: "info",
+    text: `Computers do not guess. They only do what is written.`
+  },
+  {
+    type: "code",
+    prompt: `Write code that prints the word <b>hello</b>.`,
+    starter: ``,
+    expectedOutput: "hello"
+  },
+  {
+    type: "info",
+    text: `Quotation marks tell the computer that something is text.`
+  },
+  {
+    type: "code",
+    prompt: `Now print <b>hello world</b>.`,
+    starter: `print("")`,
+    expectedOutput: "hello world"
+  }
+];
+
+/* =========================
+   ENGINE
+========================= */
+
+let current = 0;
+const slideEl = document.getElementById("slide");
+const nextBtn = document.getElementById("nextBtn");
+const progressFill = document.getElementById("progressFill");
+
+function updateProgress() {
+  progressFill.style.width =
+    (current / (slides.length - 1)) * 100 + "%";
+}
+
+function renderSlide() {
+  const s = slides[current];
+  slideEl.innerHTML = "";
+  nextBtn.disabled = s.type !== "info";
+
+  if (s.type === "info") {
+    slideEl.innerHTML = `<div class="info">${s.text}</div>`;
+  }
+
+  if (s.type === "code") {
+    slideEl.innerHTML = `
+      <div class="info">${s.prompt}</div>
+      <div class="editor-wrapper">
+        <div class="line-numbers" id="lines">1</div>
+        <textarea id="editor">${s.starter}</textarea>
+      </div>
+      <button class="primary" id="runBtn" style="margin-top:14px;">Run</button>
+      <div class="console" id="console"></div>
+    `;
+
+    const editor = document.getElementById("editor");
+    const lines = document.getElementById("lines");
+    const consoleEl = document.getElementById("console");
+    const initial = editor.value;
+
+    editor.oninput = () => {
+      lines.textContent = Array(editor.value.split("\n").length)
+        .fill(0).map((_,i)=>i+1).join("\n");
     };
 
-    let index = 0;
-    let answered = false;
-    let reviewMode = false;
-    let mistakes = [];
-    let selectedOptionIndex = null;
-    let phase = "main"; // main → review → final
-
-    const optionsEl = document.getElementById("options");
-    const typingArea = document.getElementById("typingArea");
-    const codeInput = document.getElementById("codeInput");
-    const nextBtn = document.getElementById("nextBtn");
-
-    function loadStep(step, tagText = "") {
-      answered = false;
-      selectedOptionIndex = null;
-      nextBtn.classList.remove("enabled");
-
-      document.getElementById("tag").textContent = tagText;
-      document.getElementById("question").textContent = step.question;
-      document.getElementById("code").textContent = step.code || "";
-
-      optionsEl.innerHTML = "";
-      typingArea.style.display = "none";
-
-      if (step.type === "mcq") {
-        step.options.forEach((opt, i) => {
-          const el = document.createElement("div");
-          el.className = "option";
-          el.innerHTML = `<span class="option-number">${i + 1}</span><span>${opt.text}</span>`;
-          el.onclick = () => selectOption(i);
-          optionsEl.appendChild(el);
-        });
+    editor.onkeydown = e => {
+      const pairs = { "(":")","[":"]","{":"}","\"":"\"","'":"'","`":"`" };
+      if (pairs[e.key]) {
+        e.preventDefault();
+        const p = editor.selectionStart;
+        editor.value =
+          editor.value.slice(0,p) + e.key + pairs[e.key] + editor.value.slice(p);
+        editor.selectionStart = editor.selectionEnd = p + 1;
       }
-
-      if (step.type === "type") {
-        typingArea.style.display = "block";
-        codeInput.value = "";
-        codeInput.oninput = () => nextBtn.classList.add("enabled");
-      }
-
-      updateProgress();
-    }
-
-    function selectOption(i) {
-      if (answered) return;
-      selectedOptionIndex = i;
-      document.querySelectorAll(".option").forEach((opt, idx) =>
-        opt.classList.toggle("selected", idx === i)
-      );
-      nextBtn.classList.add("enabled");
-    }
-
-    function normalize(s) {
-      return s.replace(/\s+/g, "").toLowerCase();
-    }
-
-    function checkAnswer() {
-      const step =
-        phase === "review" ? mistakes[index] :
-        phase === "final" ? finalChallenge :
-        steps[index];
-
-      answered = true;
-
-      if (step.type === "mcq") {
-        const correct = step.options[selectedOptionIndex].correct;
-        document.querySelectorAll(".option")[selectedOptionIndex]
-          .classList.add(correct ? "correct" : "wrong");
-
-        if (!correct && phase === "main" && !mistakes.includes(step)) {
-          mistakes.push(step);
-        }
-      }
-
-      if (step.type === "type") {
-        const correct = normalize(codeInput.value) === normalize(step.answer);
-        codeInput.style.borderColor = correct ? "#2ecc71" : "#e74c3c";
-      }
-
-      nextBtn.classList.add("enabled");
-    }
-
-    function nextStep() {
-      if (!answered) return;
-
-      if (phase === "main") {
-        index++;
-        if (index < steps.length) loadStep(steps[index]);
-        else if (mistakes.length) {
-          phase = "review";
-          index = 0;
-          loadStep(mistakes[index], "Previous mistake");
-        } else {
-          phase = "final";
-          loadStep(finalChallenge, "Final challenge");
-        }
-      } else if (phase === "review") {
-        index++;
-        if (index < mistakes.length) {
-          loadStep(mistakes[index], "Previous mistake");
-        } else {
-          phase = "final";
-          loadStep(finalChallenge, "Final challenge");
-        }
-      } else {
-        document.getElementById("lesson").innerHTML = `
-          <div class="complete">
-            <h2>Lesson complete 🎉</h2>
-          </div>
-        `;
-        document.querySelector(".lesson-actions").style.display = "none";
-        document.getElementById("progressBar").style.width = "100%";
-      }
-    }
-
-    function updateProgress() {
-      const total = steps.length + mistakes.length + 1;
-      let done =
-        phase === "main" ? index :
-        phase === "review" ? steps.length + index :
-        steps.length + mistakes.length;
-
-      document.getElementById("progressBar").style.width =
-        Math.min((done / total) * 100, 100) + "%";
-    }
-
-    document.addEventListener("keydown", e => {
-      if (e.key >= "1" && e.key <= "3") selectOption(Number(e.key) - 1);
-      if (e.key === "Enter") {
-        if (!answered) checkAnswer();
-        else nextStep();
-      }
-    });
-
-    nextBtn.onclick = () => {
-      if (!answered) checkAnswer();
-      else nextStep();
     };
 
-    loadStep(steps[0]);
-  </script>
+    document.getElementById("runBtn").onclick = () => {
+      consoleEl.textContent = "";
+
+      if (editor.value.trim() === initial.trim()) {
+        consoleEl.textContent =
+          "Type or modify the code before running it.";
+        return;
+      }
+
+      try {
+        let output = "";
+        const print = (...a) => output += a.join(" ");
+        new Function("print", editor.value)(print);
+        consoleEl.textContent = output;
+
+        if (output.trim() === s.expectedOutput) {
+          nextBtn.disabled = false;
+        }
+      } catch (e) {
+        consoleEl.textContent = "Error: " + e.message;
+      }
+    };
+  }
+
+  updateProgress();
+}
+
+nextBtn.onclick = () => {
+  if (current < slides.length - 1) {
+    current++;
+    renderSlide();
+  }
+};
+
+renderSlide();
+</script>
 
 </body>
 </html>
