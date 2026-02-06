@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
+/* 🔒 STYLING UNCHANGED */
 * {
   box-sizing: border-box;
   font-family: 'Sora', system-ui, sans-serif;
@@ -54,14 +55,12 @@ main {
   max-width: 900px;
 }
 
-/* INFO */
 .info {
   text-align: center;
   font-size: 18px;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
-/* MCQ */
 .mcq-options {
   margin-top: 28px;
   display: grid;
@@ -78,7 +77,6 @@ main {
   text-align: left;
 }
 
-/* EDITOR */
 .editor-wrapper {
   display: flex;
   border: 1px solid #242a4a;
@@ -110,7 +108,6 @@ textarea {
   white-space: pre-wrap;
 }
 
-/* CONSOLE */
 .console {
   margin-top: 14px;
   background: #0c1020;
@@ -123,7 +120,6 @@ textarea {
   white-space: pre-wrap;
 }
 
-/* FOOTER */
 footer {
   padding: 0 32px 24px;
   display: flex;
@@ -167,57 +163,171 @@ button.primary:disabled {
 
 <script>
 /* =========================
-   SLIDES
+   SLIDES — DEMO: PRINT ONLY
 ========================= */
 
 const slides = [
   {
     type: "info",
-    text: `Code is a set of exact instructions given to a computer.`
+    text: `
+      Computers do not speak naturally.<br><br>
+      They follow instructions silently unless we tell them to
+      <b>show something</b>.
+    `
   },
   {
     type: "info",
-    text: `Computers do not guess. They only do what is written.`
+    text: `
+      In Python, the command used to display information
+      on the screen is called <b>print</b>.
+    `
+  },
+  {
+    type: "info",
+    text: `
+      When Python reaches a <b>print</b> command,
+      it sends information to the <b>console</b>.<br><br>
+      The console is where program output appears.
+    `
+  },
+  {
+    type: "info",
+    text: `
+      Example:<br><br>
+      <b>print("hello")</b><br><br>
+      Python reads this line and displays the word
+      <b>hello</b> exactly as written.
+    `
+  },
+  {
+    type: "info",
+    text: `
+      Text written inside quotation marks is called a
+      <b>string</b>.<br><br>
+      Quotation marks tell Python:
+      “This is text, not an instruction.”
+    `
+  },
+  {
+    type: "mcq",
+    question: "What does the print command do?",
+    options: [
+      { text: "Stores data inside the computer", correct: false },
+      { text: "Displays output on the screen", correct: true },
+      { text: "Stops the program", correct: false }
+    ]
+  },
+  {
+    type: "info",
+    text: `
+      Numbers do not need quotation marks.<br><br>
+      Example:<br>
+      <b>print(5)</b> displays the number 5.
+    `
+  },
+  {
+    type: "mcq",
+    question: "What is the difference between print(\"5\") and print(5)?",
+    options: [
+      { text: "There is no difference", correct: false },
+      { text: "One prints text, the other prints a number", correct: true },
+      { text: "One causes an error", correct: false }
+    ]
   },
   {
     type: "code",
-    prompt: `Write code that prints the word <b>hello</b>.`,
+    prompt: `
+      Write code that prints the word <b>hello</b>.<br>
+      Then run it.
+    `,
     starter: ``,
     expectedOutput: "hello"
   },
   {
     type: "info",
-    text: `Quotation marks tell the computer that something is text.`
+    text: `
+      You can print more than one word by putting them
+      together inside the quotes.
+    `
   },
   {
     type: "code",
-    prompt: `Now print <b>hello world</b>.`,
-    starter: `print("")`,
+    prompt: `
+      Modify your code to print <b>hello world</b>.
+    `,
+    starter: ``,
     expectedOutput: "hello world"
+  },
+  {
+    type: "info",
+    text: `
+      You now understand the most important debugging tool
+      in programming.<br><br>
+      If you can <b>print</b>, you can see what your program
+      is thinking.
+    `
   }
 ];
 
 /* =========================
-   ENGINE
+   ENGINE (LOGIC ONLY)
 ========================= */
 
 let current = 0;
+let completed = new Set();
+let mistakes = [];
+
 const slideEl = document.getElementById("slide");
 const nextBtn = document.getElementById("nextBtn");
 const progressFill = document.getElementById("progressFill");
 
 function updateProgress() {
   progressFill.style.width =
-    (current / (slides.length - 1)) * 100 + "%";
+    (completed.size / slides.length) * 100 + "%";
 }
 
 function renderSlide() {
   const s = slides[current];
   slideEl.innerHTML = "";
-  nextBtn.disabled = s.type !== "info";
+  nextBtn.disabled = true;
+
+  // Change button label on last slide
+  nextBtn.textContent =
+    current === slides.length - 1 ? "Finish" : "Next";
 
   if (s.type === "info") {
     slideEl.innerHTML = `<div class="info">${s.text}</div>`;
+    completed.add(current);
+    nextBtn.disabled = false;
+  }
+
+  if (s.type === "mcq") {
+    slideEl.innerHTML = `
+      <div class="info">${s.question}</div>
+      <div class="mcq-options">
+        ${s.options.map(o =>
+          `<button data-correct="${o.correct}">${o.text}</button>`
+        ).join("")}
+      </div>
+    `;
+
+    let answered = false;
+    slideEl.querySelectorAll("button").forEach(b => {
+      b.onclick = () => {
+        if (answered) return;
+        answered = true;
+
+        const correct = b.dataset.correct === "true";
+        b.style.boxShadow = correct
+          ? "0 0 0 2px rgba(124,255,196,0.6)"
+          : "0 0 0 2px rgba(255,90,90,0.6)";
+
+        if (correct) completed.add(current);
+        else mistakes.push(current);
+
+        nextBtn.disabled = false;
+      };
+    });
   }
 
   if (s.type === "code") {
@@ -234,7 +344,6 @@ function renderSlide() {
     const editor = document.getElementById("editor");
     const lines = document.getElementById("lines");
     const consoleEl = document.getElementById("console");
-    const initial = editor.value;
 
     editor.oninput = () => {
       lines.textContent = Array(editor.value.split("\n").length)
@@ -249,17 +358,12 @@ function renderSlide() {
         editor.value =
           editor.value.slice(0,p) + e.key + pairs[e.key] + editor.value.slice(p);
         editor.selectionStart = editor.selectionEnd = p + 1;
+        editor.dispatchEvent(new Event("input"));
       }
     };
 
     document.getElementById("runBtn").onclick = () => {
       consoleEl.textContent = "";
-
-      if (editor.value.trim() === initial.trim()) {
-        consoleEl.textContent =
-          "Type or modify the code before running it.";
-        return;
-      }
 
       try {
         let output = "";
@@ -268,7 +372,10 @@ function renderSlide() {
         consoleEl.textContent = output;
 
         if (output.trim() === s.expectedOutput) {
+          completed.add(current);
           nextBtn.disabled = false;
+        } else {
+          mistakes.push(current);
         }
       } catch (e) {
         consoleEl.textContent = "Error: " + e.message;
@@ -280,10 +387,17 @@ function renderSlide() {
 }
 
 nextBtn.onclick = () => {
+  if (current === slides.length - 1) {
+    window.location.href = "index.html";
+    return;
+  }
+
   if (current < slides.length - 1) {
     current++;
-    renderSlide();
+  } else if (mistakes.length) {
+    current = mistakes.shift();
   }
+  renderSlide();
 };
 
 renderSlide();
