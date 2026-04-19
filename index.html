@@ -8,13 +8,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#03050a">
     
-    <title>The Book of Code • Future of CS Education</title>
+    <title>The Book of Code • Code the Unreal</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
     <style>
       :root {
-        --bg: #0b0b14; 
+        --bg: #03050a; 
         --card-bg: rgba(13, 17, 28, 0.7);
         --border-color: rgba(255, 255, 255, 0.08);
         --accent-blue: #005bff;
@@ -35,7 +35,7 @@
 
       body {
         font-family: "Sora", sans-serif;
-        background-color: #03050a;
+        background-color: var(--bg);
         color: var(--text-main);
         line-height: 1.6;
         overflow-x: hidden;
@@ -47,38 +47,29 @@
         50% { filter: drop-shadow(0 0 20px rgba(0, 201, 255, 0.6)); }
         100% { filter: drop-shadow(0 0 5px rgba(0, 201, 255, 0.3)); }
       }
-
       @keyframes heroBloomScale {
-        0% { transform: scale(1.2); opacity: 0; filter: blur(15px); }
+        0% { transform: scale(1.1); opacity: 0; filter: blur(10px); }
         100% { transform: scale(1); opacity: 1; filter: blur(0px); }
       }
-
-      @keyframes blinkCursor {
-        50% { opacity: 0; }
-      }
+      @keyframes blinkCursor { 50% { opacity: 0; } }
 
       /* ================= NAV ================= */
       nav {
-        position: fixed;
+        position: absolute;
         top: 0;
         width: 100%;
         padding: calc(var(--safe-top) + 20px) 8% 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: rgba(3, 5, 10, 0.85);
-        backdrop-filter: blur(25px);
-        border-bottom: 1px solid var(--border-color);
         z-index: 1000;
       }
-
       .logo-div { display: flex; align-items: center; gap: 15px; text-decoration: none; }
       .logo-svg { animation: logoBloom 3s infinite ease-in-out; }
       .logo-text {
         font-size: 20px; font-weight: 600;
         background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       }
-
       .btn-primary {
         background: var(--gradient); padding: 10px 24px; border-radius: 999px;
         color: #fff !important; font-weight: 600; font-size: 14px; text-decoration: none;
@@ -87,32 +78,27 @@
       /* ================= HERO ================= */
       header.hero {
         position: relative;
-        padding: 240px 8% 120px;
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         text-align: center;
-        background: radial-gradient(circle at 50% -20%, rgba(0, 201, 255, 0.15), transparent 50%);
+        padding: 0 8%;
+        background: radial-gradient(circle at 50% 50%, rgba(0, 201, 255, 0.12), transparent 50%);
         animation: heroBloomScale 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
-
-      .hero h1 {
-        font-size: clamp(2.2rem, 8vw, 4.5rem);
-        font-weight: 700; line-height: 1.05; margin-bottom: 28px;
-      }
-
+      .slogan-eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 0.4em; color: var(--accent-cyan); margin-bottom: 16px; font-weight: 700; opacity: 0.8; }
+      .hero h1 { font-size: clamp(2.2rem, 8vw, 4.5rem); font-weight: 700; line-height: 1.05; margin-bottom: 28px; }
       .gradient-text { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-      .cursor {
-        display: inline-block; width: 3px; height: 1em; background-color: var(--accent-cyan);
-        margin-left: 5px; vertical-align: middle; animation: blinkCursor 0.8s infinite;
-      }
-
-      .hero p { max-width: 720px; margin: 0 auto 56px; color: var(--text-muted); font-size: clamp(16px, 2vw, 20px); }
+      .cursor { display: inline-block; width: 3px; height: 1em; background-color: var(--accent-cyan); margin-left: 5px; vertical-align: middle; animation: blinkCursor 0.8s infinite; }
+      .hero p { max-width: 720px; margin: 0 auto; color: var(--text-muted); font-size: clamp(16px, 2vw, 20px); }
 
       /* ================= DUAL PATH ================= */
-      .dual-path {
-        display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-        gap: 32px; max-width: 1200px; margin: -60px auto 120px; padding: 0 24px; z-index: 10; position: relative;
-      }
-
+      .section-container { padding: 120px 8%; max-width: 1400px; margin: 0 auto; }
+      .dual-path { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 32px; margin-bottom: 80px; }
+      
       .reveal { opacity: 0; transform: translateY(60px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
       .reveal.active { opacity: 1; transform: translateY(0); }
 
@@ -121,28 +107,27 @@
         padding: 56px 48px; border-radius: 32px; backdrop-filter: blur(15px);
         transition: all 0.5s ease;
       }
-
-      .path-card:hover { transform: translateY(-15px) !important; border-color: var(--accent-cyan); box-shadow: 0 30px 60px -12px rgba(0, 201, 255, 0.3); }
-
-      .path-tag { font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent-cyan); margin-bottom: 20px; display: block; font-weight: 700; }
+      .path-card:hover { transform: translateY(-15px); border-color: var(--accent-cyan); box-shadow: 0 30px 60px -12px rgba(0, 201, 255, 0.3); }
+      .path-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent-cyan); margin-bottom: 20px; display: block; font-weight: 700; }
       .path-card h3 { font-size: 28px; margin-bottom: 16px; }
-      .path-card p { font-size: 16px; color: var(--text-muted); }
+
+      /* ================= SYSTEM SPECS GRID ================= */
+      .specs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+      .spec-card {
+        background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color);
+        padding: 32px; border-radius: 24px; transition: all 0.3s ease;
+      }
+      .spec-card:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.2); }
+      .spec-card h4 { font-size: 18px; margin-bottom: 12px; color: var(--text-main); }
+      .spec-card p { font-size: 14px; color: var(--text-muted); }
 
       /* ================= FOOTER ================= */
       footer { background-color: var(--bg); padding: 100px 8% calc(var(--safe-bottom) + 60px); border-top: 1px solid var(--border-color); }
-      .footer-container { display: grid; grid-template-columns: repeat(4, 1fr) 2fr; gap: 40px; }
-      .footer-col h4 { color: #fff; font-size: 18px; margin-bottom: 30px; }
+      .footer-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 40px; }
+      .footer-col h4 { color: #fff; font-size: 16px; margin-bottom: 20px; }
       .footer-col ul { list-style: none; }
-      .footer-col ul li { margin-bottom: 20px; }
-      .footer-col ul li a { color: var(--text-muted); text-decoration: none; font-size: 16px; }
-      
-      .newsletter-col h4 { font-size: 18px; margin-bottom: 20px; }
-      .input-group { position: relative; border-bottom: 1px solid #444; margin-bottom: 25px; display: flex; align-items: center; }
-      .input-group input { background: transparent; border: none; padding: 15px 0; color: #fff; width: 100%; outline: none; }
-      .checkbox-group { display: flex; align-items: center; gap: 12px; font-size: 14px; color: #fff; }
-
-      @media (max-width: 1100px) { .footer-container { grid-template-columns: repeat(2, 1fr); } .newsletter-col { grid-column: span 2; } }
-      @media (max-width: 768px) { .footer-container { grid-template-columns: 1fr; } .newsletter-col { grid-column: span 1; } }
+      .footer-col ul li { margin-bottom: 12px; }
+      .footer-col ul li a { color: var(--text-muted); text-decoration: none; font-size: 14px; }
     </style>
   </head>
   <body>
@@ -150,12 +135,10 @@
     <nav>
       <a href="#" class="logo-div">
         <svg class="logo-svg" width="44" height="44" viewBox="0 0 64 64">
-          <defs>
-            <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00C9FF" /><stop offset="100%" stop-color="#005BFF" /></linearGradient>
-          </defs>
           <rect width="64" height="64" rx="16" fill="url(#bgGradient)" />
-          <path d="M26 20 L16 32 L26 44" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M38 20 L48 32 L38 44" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M26 20 L16 32 L26 44" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" />
+          <path d="M38 20 L48 32 L38 44" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" />
+          <defs><linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00C9FF" /><stop offset="100%" stop-color="#005BFF" /></linearGradient></defs>
         </svg>
         <div class="logo-text">The Book of Code</div>
       </a>
@@ -163,37 +146,50 @@
     </nav>
 
     <header class="hero">
-      <h1>Built for <span id="typing-text" class="gradient-text"></span><span class="cursor"></span></h1>
-      <p>The universal platform that automates Computer Science education. Empowering schools and individuals to master coding with zero friction.</p>
+      <div class="slogan-eyebrow">Code the Unreal</div>
+      <h1>Built for <br><span id="typing-text" class="gradient-text"></span><span class="cursor"></span></h1>
+      <p>Automating Computer Science education with a logic-first approach.</p>
     </header>
 
-    <section class="dual-path">
-      <div class="path-card reveal">
-        <span class="path-tag">Individual Journey</span>
-        <h3>Everyone can code</h3>
-        <p>A gamified, concept-first experience designed for anyone with a curious mind. Master the logic of the future at your own pace.</p>
-      </div>
-      <div class="path-card reveal" style="transition-delay: 0.15s;">
-        <span class="path-tag">School Edition</span>
-        <h3>The Automated Classroom</h3>
-        <p>Turn any classroom into a high-end coding lab. We automate the grading and the teaching, so you can focus on the students.</p>
-      </div>
-    </section>
+    <div class="section-container">
+      <section class="dual-path">
+        <div class="path-card reveal">
+          <span class="path-tag">Individual</span>
+          <h3>Code your Imagination</h3>
+          <p>A gamified experience for curious minds to master the logic of the future at their own pace.</p>
+        </div>
+        <div class="path-card reveal" style="transition-delay: 0.15s;">
+          <span class="path-tag">School Edition</span>
+          <h3>The Automated Classroom</h3>
+          <p>Turn any classroom into a coding lab with automated instruction and instant grading.</p>
+        </div>
+      </section>
+
+      <section class="specs-grid">
+        <div class="spec-card reveal">
+          <h4>Logic Shards</h4>
+          <p>Earn shards through consistent performance. Reinvest them in system backups to protect your progress.</p>
+        </div>
+        <div class="spec-card reveal" style="transition-delay: 0.1s;">
+          <h4>The Terminal</h4>
+          <p>A high-friction, professional environment for deep-focus coding and hardware-level concepts.</p>
+        </div>
+        <div class="spec-card reveal" style="transition-delay: 0.2s;">
+          <h4>25-Day Sprints</h4>
+          <p>Engineered milestones that mirror real-world engineering cycles for long-term retention.</p>
+        </div>
+        <div class="spec-card reveal" style="transition-delay: 0.3s;">
+          <h4>Instant Validation</h4>
+          <p>Automated grading engine provides real-time feedback, eliminating the instructor bottleneck.</p>
+        </div>
+      </section>
+    </div>
 
     <footer>
       <div class="footer-container">
-        <div class="footer-col"><h4>Work</h4><ul><li><a href="#">Showcase</a></li><li><a href="#">Methodology</a></li></ul></div>
-        <div class="footer-col"><h4>About</h4><ul><li><a href="#">Our Story</a></li><li><a href="#">Philosophy</a></li></ul></div>
-        <div class="footer-col"><h4>Solutions</h4><ul><li><a href="#">Curriculum</a></li><li><a href="#">Automation</a></li></ul></div>
-        <div class="footer-col"><h4>Career</h4><ul><li><a href="#">Join Us</a></li><li><a href="#">Contact</a></li></ul></div>
-        <div class="newsletter-col">
-          <h4>Subscribe to our newsletter</h4>
-          <div class="input-group">
-            <input type="email" placeholder="Email address">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </div>
-          <div class="checkbox-group"><input type="checkbox" checked><span>I agree to receive communications</span></div>
-        </div>
+        <div class="footer-col"><h4>Product</h4><ul><li><a href="#">Methodology</a></li><li><a href="#">Curriculum</a></li></ul></div>
+        <div class="footer-col"><h4>Company</h4><ul><li><a href="#">Our Story</a></li><li><a href="#">Philosophy</a></li></ul></div>
+        <div class="footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li></ul></div>
       </div>
     </footer>
 
@@ -213,7 +209,7 @@
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
-      }, { threshold: 0.15 });
+      }, { threshold: 0.1 });
 
       document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
       window.onload = type;
