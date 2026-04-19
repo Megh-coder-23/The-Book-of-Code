@@ -14,7 +14,7 @@
 
     <style>
       :root {
-        --bg: #0b0b14; /* Aubergine footer dark shade */
+        --bg: #0b0b14; 
         --card-bg: rgba(13, 17, 28, 0.7);
         --border-color: rgba(255, 255, 255, 0.08);
         --accent-blue: #005bff;
@@ -39,6 +39,17 @@
         color: var(--text-main);
         line-height: 1.6;
         overflow-x: hidden;
+      }
+
+      /* ================= LOGO BLOOM ANIMATION ================= */
+      @keyframes logoBloom {
+        0% { filter: drop-shadow(0 0 5px rgba(0, 201, 255, 0.3)); }
+        50% { filter: drop-shadow(0 0 20px rgba(0, 201, 255, 0.6)); }
+        100% { filter: drop-shadow(0 0 5px rgba(0, 201, 255, 0.3)); }
+      }
+
+      .logo-svg {
+        animation: logoBloom 3s infinite ease-in-out;
       }
 
       /* ================= NAV ================= */
@@ -96,7 +107,7 @@
         transition: all 0.3s ease;
       }
 
-      /* ================= HERO ================= */
+      /* ================= HERO & TYPING ================= */
       header.hero {
         position: relative;
         padding: 220px 8% 120px;
@@ -109,6 +120,7 @@
         font-weight: 700;
         line-height: 1.05;
         margin-bottom: 28px;
+        min-height: 1.2em;
       }
 
       .gradient-text {
@@ -117,11 +129,31 @@
         -webkit-text-fill-color: transparent;
       }
 
+      #typing-text::after {
+        content: "|";
+        animation: blink 1s infinite;
+        color: var(--accent-cyan);
+      }
+
+      @keyframes blink { 50% { opacity: 0; } }
+
       .hero p {
         max-width: 720px;
         margin: 0 auto 56px;
         color: var(--text-muted);
         font-size: clamp(16px, 2vw, 20px);
+      }
+
+      /* ================= SCROLL REVEAL ANIMATION ================= */
+      .reveal {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
       }
 
       /* ================= DUAL PATH SELECTION ================= */
@@ -147,7 +179,7 @@
       }
 
       .path-card:hover {
-        transform: translateY(-15px);
+        transform: translateY(-15px) !important; /* Keep hover lift dominant */
         border-color: rgba(0, 201, 255, 0.5);
         box-shadow: 0 30px 60px -12px rgba(0, 201, 255, 0.3);
       }
@@ -162,10 +194,10 @@
         font-weight: 700;
       }
 
-      .path-card h3 { font-size: 28px; margin-bottom: 16px; }
+      .path-card h3 { font-size: 24px; margin-bottom: 12px; }
       .path-card p { font-size: 16px; color: var(--text-muted); }
 
-      /* ================= AUBERGINE STYLE FOOTER ================= */
+      /* ================= FOOTER ================= */
       footer {
         background-color: var(--bg);
         padding: 100px 8% calc(var(--safe-bottom) + 60px);
@@ -185,34 +217,18 @@
         margin-bottom: 30px;
       }
 
-      .footer-col ul {
-        list-style: none;
-      }
-
-      .footer-col ul li {
-        margin-bottom: 20px;
-      }
-
+      .footer-col ul { list-style: none; }
+      .footer-col ul li { margin-bottom: 20px; }
       .footer-col ul li a {
         color: var(--text-muted);
         text-decoration: none;
         font-size: 16px;
         transition: 0.3s;
       }
-
       .footer-col ul li a:hover { color: #fff; }
 
-      .newsletter-col h4 {
-        font-size: 18px;
-        margin-bottom: 20px;
-      }
-
-      .newsletter-col p {
-        color: var(--text-muted);
-        font-size: 15px;
-        margin-bottom: 30px;
-        max-width: 400px;
-      }
+      .newsletter-col h4 { font-size: 18px; margin-bottom: 20px; }
+      .newsletter-col p { color: var(--text-muted); font-size: 15px; margin-bottom: 30px; max-width: 400px; }
 
       .input-group {
         position: relative;
@@ -232,12 +248,6 @@
         font-size: 16px;
       }
 
-      .input-group svg {
-        position: absolute;
-        right: 0;
-        opacity: 0.5;
-      }
-
       .checkbox-group {
         display: flex;
         align-items: center;
@@ -246,11 +256,7 @@
         color: #fff;
       }
 
-      .checkbox-group input {
-        accent-color: var(--accent-blue);
-        width: 18px;
-        height: 18px;
-      }
+      .checkbox-group input { accent-color: var(--accent-blue); width: 18px; height: 18px; }
 
       @media (max-width: 1100px) {
         .footer-container { grid-template-columns: repeat(2, 1fr); }
@@ -267,7 +273,7 @@
 
     <nav>
       <a href="index.html" class="logo-div">
-        <svg width="44" height="44" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <svg class="logo-svg" width="44" height="44" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#00C9FF" />
@@ -290,17 +296,17 @@
     </nav>
 
     <header class="hero">
-      <h1>Built for <span class="gradient-text">classrooms,</span><br>designed for impact.</h1>
+      <h1 id="typing-container">Built for <span id="typing-text" class="gradient-text"></span></h1>
       <p>The universal platform that automates Computer Science education. Empowering schools to deliver elite coding lessons without needing specialized faculty.</p>
     </header>
 
     <section class="dual-path">
-      <div class="path-card">
+      <div class="path-card reveal">
         <span class="path-tag">Personal Edition</span>
         <h3>Student Journey</h3>
         <p>A gamified, concept-first experience for individual learners. Master the logic behind the code at your own speed.</p>
       </div>
-      <div class="path-card" style="border-color: rgba(0, 145, 255, 0.4);">
+      <div class="path-card reveal" style="border-color: rgba(0, 145, 255, 0.4); transition-delay: 0.1s;">
         <span class="path-tag">Enterprise Edition</span>
         <h3>School Automation</h3>
         <p>Turn any classroom into a high-end coding lab. Automated grading, teacher dashboards, and ready-to-use curriculum.</p>
@@ -354,5 +360,41 @@
       </div>
     </footer>
 
+    <script>
+      // Typing Logic
+      const textElement = document.getElementById("typing-text");
+      const phrases = ["classrooms.", "future creators.", "impact.", "innovation."];
+      let phraseIndex = 0;
+      let charIndex = 0;
+      let isDeleting = false;
+
+      function type() {
+        const currentPhrase = phrases[phraseIndex];
+        if (isDeleting) { charIndex--; } else { charIndex++; }
+        textElement.textContent = currentPhrase.substring(0, charIndex);
+        let typeSpeed = isDeleting ? 100 : 150;
+        if (!isDeleting && charIndex === currentPhrase.length) {
+          typeSpeed = 2000;
+          isDeleting = true;
+        } else if (isDeleting && charIndex === 0) {
+          isDeleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+          typeSpeed = 500;
+        }
+        setTimeout(type, typeSpeed);
+      }
+
+      // Intersection Observer for the "Fly Up" scroll effect
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+      document.addEventListener("DOMContentLoaded", type);
+    </script>
   </body>
 </html>
