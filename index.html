@@ -2,72 +2,43 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Book of Code • For Schools</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#03050a">
+    
+    <title>The Book of Code • Future of CS Education</title>
 
-    <!-- Sora Font -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
     <style>
       :root {
-        --bg-dark: #05070d;
-        --bg-mid: #0b1020;
-        --card-bg: rgba(255, 255, 255, 0.04);
-        --border-soft: rgba(255, 255, 255, 0.08);
-        --text-main: #e8ecf1;
+        --bg: #0b0b14; /* Aubergine footer dark shade */
+        --card-bg: rgba(13, 17, 28, 0.7);
+        --border-color: rgba(255, 255, 255, 0.08);
+        --accent-blue: #005bff;
+        --accent-cyan: #00c9ff;
+        --text-main: #f5f7fa;
         --text-muted: #a6b0c3;
-        --accent: linear-gradient(135deg, #00c9ff 0%, #005bff 100%);
+        --gradient: linear-gradient(135deg, #00c9ff 0%, #005bff 100%);
+        --safe-top: env(safe-area-inset-top, 0px);
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
       }
 
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
+        -webkit-tap-highlight-color: transparent;
       }
 
       body {
-        font-family: "Sora", system-ui, sans-serif;
-        background: var(--bg-dark);
+        font-family: "Sora", sans-serif;
+        background-color: #03050a;
         color: var(--text-main);
+        line-height: 1.6;
         overflow-x: hidden;
-      }
-
-      a {
-        color: var(--text-muted);
-        text-decoration: none;
-        position: relative;
-        transition: color 0.3s ease;
-      }
-
-      a::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: -6px;
-        width: 100%;
-        height: 2px;
-        background: var(--accent);
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.3s ease;
-      }
-
-      a:hover {
-        color: #ffffff;
-      }
-
-      a:hover::after {
-        transform: scaleX(1);
-      }
-
-      .gradient-text {
-        background: linear-gradient(135deg, #00c9ff 0%, #005bff 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
       }
 
       /* ================= NAV ================= */
@@ -75,232 +46,228 @@
         position: fixed;
         top: 0;
         width: 100%;
-        padding: 20px 56px;
+        padding: calc(var(--safe-top) + 20px) 8% 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: rgba(5, 7, 13, 0.6);
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid var(--border-soft);
+        background: rgba(3, 5, 10, 0.85);
+        backdrop-filter: blur(25px);
+        border-bottom: 1px solid var(--border-color);
         z-index: 1000;
       }
 
-      nav .logo-div {
+      .logo-div {
         display: flex;
         align-items: center;
+        gap: 15px;
+        text-decoration: none;
       }
-      nav .logo {
+
+      .logo-text {
         font-size: 20px;
         font-weight: 600;
-        margin-left: 30px;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
 
-      nav .nav-links {
+      .nav-links {
         display: flex;
-        align-items: center;
-        gap: 28px;
-        font-size: 14px;
-      }
-
-      .login-link {
-        padding: 10px 18px;
-        border-radius: 999px;
-        background: var(--accent);
-        color: #ffffff !important;
-      }
-
-      .login-link::after {
-        display: none;
-      }
-
-      .login-link:hover {
-        filter: brightness(1.15);
-        transform: translateY(-1px);
-      }
-
-      .register-link {
-        margin-left: 8px;
-        font-size: 13px;
-        opacity: 0.9;
-      }
-
-      /* ================= HERO ================= */
-      #hero {
-        position: relative;
-        min-height: 100vh;
-        perspective: 1200px;
-        overflow: hidden;
-      }
-
-      .hero-visual {
-        position: absolute;
-        inset: 0;
-        background:
-          radial-gradient(
-            circle at 20% 30%,
-            rgba(0, 201, 255, 0.25),
-            transparent 40%
-          ),
-          radial-gradient(
-            circle at 80% 60%,
-            rgba(0, 91, 255, 0.25),
-            transparent 45%
-          ),
-          linear-gradient(180deg, #05070d, #0b1020 60%, #05070d);
-        animation: slowGlow 14s ease-in-out infinite alternate;
-        z-index: 1;
-      }
-
-      @keyframes slowGlow {
-        from {
-          filter: brightness(1);
-        }
-        to {
-          filter: brightness(1.18);
-        }
-      }
-
-      .noise {
-        position: absolute;
-        inset: 0;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-        pointer-events: none;
-        z-index: 2;
-      }
-
-      .hero-grid {
-        position: relative;
-        z-index: 3;
-        min-height: 100vh;
-        display: grid;
-        place-items: center;
-        transform-style: preserve-3d;
-      }
-
-      .hero-content {
-        max-width: 900px;
-        text-align: center;
-        padding: 0 24px;
-        opacity: 0;
-        transform: translateZ(-320px) scale(0.92);
-        animation: bloom 2.8s cubic-bezier(0.22, 1, 0.25, 1) forwards;
-      }
-
-      @keyframes bloom {
-        0% {
-          opacity: 0;
-          transform: translateZ(-320px) scale(0.92);
-        }
-        60% {
-          opacity: 1;
-          transform: translateZ(30px) scale(1.01);
-        }
-        100% {
-          opacity: 1;
-          transform: translateZ(0) scale(1);
-        }
-      }
-
-      .hero-title {
-        font-size: clamp(36px, 5vw, 64px);
-        line-height: 1.1;
-        font-weight: 600;
-        margin-bottom: 24px;
-      }
-
-      .typing-text {
-        white-space: nowrap;
-      }
-
-      .cursor {
-        display: inline-block;
-        width: 2px;
-        height: 1.1em;
-        margin-left: 4px;
-        background-color: currentColor;
-        animation: blink 1s steps(1) infinite;
-      }
-
-      @keyframes blink {
-        50% {
-          opacity: 0;
-        }
-      }
-
-      .hero-content p {
-        font-size: 18px;
-        line-height: 1.7;
-        color: var(--text-muted);
-        margin-bottom: 40px;
-      }
-
-      /* ================= SECTIONS ================= */
-      section {
-        padding: 120px 64px;
-      }
-
-      .section-title {
-        font-size: 40px;
-        margin-bottom: 24px;
-      }
-
-      .section-desc {
-        max-width: 720px;
-        font-size: 16px;
-        line-height: 1.8;
-        color: var(--text-muted);
-        margin-bottom: 64px;
-      }
-
-      .card-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
         gap: 32px;
+        align-items: center;
       }
 
-      .card {
-        background: var(--card-bg);
-        border: 1px solid var(--border-soft);
-        border-radius: 18px;
-        padding: 32px;
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text-muted);
+        font-size: 14px;
+        transition: 0.3s ease;
+      }
+
+      .nav-links a:hover { color: #fff; }
+
+      .btn-primary {
+        background: var(--gradient);
+        padding: 10px 24px;
+        border-radius: 999px;
+        color: #ffffff !important;
+        font-weight: 600;
+        font-size: 14px;
         transition: all 0.3s ease;
       }
 
-      .card:hover {
-        transform: translateY(-6px);
-        border-color: rgba(0, 201, 255, 0.4);
-      }
-
-      .card h3 {
-        margin-bottom: 16px;
-        font-size: 18px;
-      }
-
-      .card p {
-        font-size: 14px;
-        line-height: 1.7;
-        color: var(--text-muted);
-      }
-
-      footer {
-        padding: 80px 64px;
-        border-top: 1px solid var(--border-soft);
+      /* ================= HERO ================= */
+      header.hero {
+        position: relative;
+        padding: 220px 8% 120px;
         text-align: center;
+        background: radial-gradient(circle at 50% -20%, rgba(0, 201, 255, 0.15), transparent 50%);
+      }
+
+      .hero h1 {
+        font-size: clamp(2.2rem, 8vw, 4.5rem);
+        font-weight: 700;
+        line-height: 1.05;
+        margin-bottom: 28px;
+      }
+
+      .gradient-text {
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero p {
+        max-width: 720px;
+        margin: 0 auto 56px;
         color: var(--text-muted);
+        font-size: clamp(16px, 2vw, 20px);
+      }
+
+      /* ================= DUAL PATH SELECTION ================= */
+      .dual-path {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 32px;
+        max-width: 1200px;
+        margin: -60px auto 120px;
+        padding: 0 24px;
+        position: relative;
+        z-index: 10;
+      }
+
+      .path-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        padding: 56px 48px;
+        border-radius: 32px;
+        backdrop-filter: blur(15px);
+        transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      }
+
+      .path-card:hover {
+        transform: translateY(-15px);
+        border-color: rgba(0, 201, 255, 0.5);
+        box-shadow: 0 30px 60px -12px rgba(0, 201, 255, 0.3);
+      }
+
+      .path-tag {
         font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: var(--accent-cyan);
+        margin-bottom: 20px;
+        display: block;
+        font-weight: 700;
+      }
+
+      .path-card h3 { font-size: 28px; margin-bottom: 16px; }
+      .path-card p { font-size: 16px; color: var(--text-muted); }
+
+      /* ================= AUBERGINE STYLE FOOTER ================= */
+      footer {
+        background-color: var(--bg);
+        padding: 100px 8% calc(var(--safe-bottom) + 60px);
+        border-top: 1px solid var(--border-color);
+      }
+
+      .footer-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr) 2fr;
+        gap: 40px;
+      }
+
+      .footer-col h4 {
+        color: #fff;
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 30px;
+      }
+
+      .footer-col ul {
+        list-style: none;
+      }
+
+      .footer-col ul li {
+        margin-bottom: 20px;
+      }
+
+      .footer-col ul li a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 16px;
+        transition: 0.3s;
+      }
+
+      .footer-col ul li a:hover { color: #fff; }
+
+      .newsletter-col h4 {
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+
+      .newsletter-col p {
+        color: var(--text-muted);
+        font-size: 15px;
+        margin-bottom: 30px;
+        max-width: 400px;
+      }
+
+      .input-group {
+        position: relative;
+        border-bottom: 1px solid #444;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+      }
+
+      .input-group input {
+        background: transparent;
+        border: none;
+        padding: 15px 0;
+        color: #fff;
+        width: 100%;
+        outline: none;
+        font-size: 16px;
+      }
+
+      .input-group svg {
+        position: absolute;
+        right: 0;
+        opacity: 0.5;
+      }
+
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        color: #fff;
+      }
+
+      .checkbox-group input {
+        accent-color: var(--accent-blue);
+        width: 18px;
+        height: 18px;
+      }
+
+      @media (max-width: 1100px) {
+        .footer-container { grid-template-columns: repeat(2, 1fr); }
+        .newsletter-col { grid-column: span 2; margin-top: 40px; }
+      }
+
+      @media (max-width: 768px) {
+        .footer-container { grid-template-columns: 1fr; }
+        .newsletter-col { grid-column: span 1; }
       }
     </style>
   </head>
-
   <body>
+
     <nav>
       <a href="index.html" class="logo-div">
-        <svg
-          width="64"
-          height="64"
-          viewBox="0 0 64 64"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="44" height="44" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#00C9FF" />
@@ -308,157 +275,84 @@
             </linearGradient>
           </defs>
           <rect width="64" height="64" rx="16" fill="url(#bgGradient)" />
-          <path
-            d="M26 20 L16 32 L26 44"
-            stroke="white"
-            stroke-width="4"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M38 20 L48 32 L38 44"
-            stroke="white"
-            stroke-width="4"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+          <path d="M26 20 L16 32 L26 44" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M38 20 L48 32 L38 44" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
-        <div class="logo gradient-text">The Book of Code</div>
+        <div class="logo-text">The Book of Code</div>
       </a>
+      
       <div class="nav-links">
-        <a href="curriculum.html">Curriculum</a>
-        <a href="about-us.html">About</a>
-        <a href="lessonproto.html">Demo</a>
-        <a href="our-team.html">Team</a>
-        <a href="school-registration.html" class="register-link"
-          >Register School</a
-        >
-        <a href="login.html" class="login-link">Login</a>
+        <a href="#philosophy">Philosophy</a>
+        <a href="#curriculum">Curriculum</a>
+        <a href="login.html">Login</a>
+        <a href="#" class="btn-primary">Get Started</a>
       </div>
     </nav>
 
-    <!-- HERO -->
-    <section id="hero">
-      <div class="hero-visual"></div>
-      <div class="noise"></div>
+    <header class="hero">
+      <h1>Built for <span class="gradient-text">classrooms,</span><br>designed for impact.</h1>
+      <p>The universal platform that automates Computer Science education. Empowering schools to deliver elite coding lessons without needing specialized faculty.</p>
+    </header>
 
-      <div class="hero-grid">
-        <div class="hero-content">
-          <h1 class="hero-title">
-            <span class="typing-text"></span><span class="cursor"></span>
-          </h1>
-
-          <p>
-            A classroom-first programming platform designed to help schools
-            teach coding with clarity, structure, and long-term understanding.
-          </p>
-        </div>
+    <section class="dual-path">
+      <div class="path-card">
+        <span class="path-tag">Personal Edition</span>
+        <h3>Student Journey</h3>
+        <p>A gamified, concept-first experience for individual learners. Master the logic behind the code at your own speed.</p>
+      </div>
+      <div class="path-card" style="border-color: rgba(0, 145, 255, 0.4);">
+        <span class="path-tag">Enterprise Edition</span>
+        <h3>School Automation</h3>
+        <p>Turn any classroom into a high-end coding lab. Automated grading, teacher dashboards, and ready-to-use curriculum.</p>
       </div>
     </section>
 
-    <!-- Benefits Section -->
-    <section>
-      <h2 class="section-title gradient-text">
-        Built for Schools. Nothing Else Is.
-      </h2>
-      <p class="section-desc">
-        We have designed a system in which sudents can learn in class by just
-        logging into their school account and doing the prescribed lesson.
-      </p>
-
-      <div class="card-grid">
-        <div class="card">
-          <h3>No experienced faculty needed</h3>
-          <p>
-            Our service is so self-reliant that you will not have to hire a
-            special faculty just to teach programming.
-          </p>
+    <footer>
+      <div class="footer-container">
+        <div class="footer-col">
+          <h4>Work</h4>
+          <ul>
+            <li><a href="#">Showcase</a></li>
+            <li><a href="#">Methodology</a></li>
+          </ul>
         </div>
-
-        <div class="card">
-          <h3>Kid-friendly IDE (Ideal Development Environment)</h3>
-          <p>
-            We have a development environment in which kids can easily learn.
-          </p>
+        <div class="footer-col">
+          <h4>About</h4>
+          <ul>
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Philosophy</a></li>
+            <li><a href="#">Clients</a></li>
+          </ul>
         </div>
-
-        <div class="card">
-          <h3>Interactive and gamified lessons</h3>
-          <p>
-            We offer gamified and really interactive lessons so that children
-            look forward to learning.
-          </p>
+        <div class="footer-col">
+          <h4>Solutions</h4>
+          <ul>
+            <li><a href="#">Curriculum</a></li>
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Automation</a></li>
+          </ul>
         </div>
-      </div>
-    </section>
-
-    <!-- PHILOSOPHY -->
-    <section>
-      <h2 class="section-title">
-        Our <span class="gradient-text">Philosophy</span>
-      </h2>
-      <p class="section-desc">
-        We believe in a concept-first approach to programming, so that it is
-        easier for learners to retain and re-use the concepts they learned
-      </p>
-
-      <div class="card-grid">
-        <div class="card">
-          <h3>Concepts Before Tools</h3>
-          <p>
-            We develop a deeper understanding in students on how programming
-            actually works.
-          </p>
+        <div class="footer-col">
+          <h4>Career</h4>
+          <ul>
+            <li><a href="#">Join Us</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
         </div>
-        <div class="card">
-          <h3>Staying up to date</h3>
-          <p>
-            We update our courses based on the latest innovations and technology
-            in their respective fiels.
-          </p>
-        </div>
-        <div class="card">
-          <h3>Learning That Lasts</h3>
-          <p>
-            We use techniques like spaced repitition and surprise tests so that
-            learners can remember and recall what they learned.
-          </p>
+        <div class="newsletter-col">
+          <h4>Subscribe to our newsletter</h4>
+          <p>Get valuable strategy, culture, and insights straight to your inbox.</p>
+          <div class="input-group">
+            <input type="email" placeholder="Email address">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </div>
+          <div class="checkbox-group">
+            <input type="checkbox" checked>
+            <span>I agree to receive communication from The Book of Code</span>
+          </div>
         </div>
       </div>
-    </section>
+    </footer>
 
-    <footer>© 2026 The Book of Code. Built for schools.</footer>
-
-    <script>
-      const sentence =
-        'Built for <span class="gradient-text">classrooms,</span> <br />not individuals.';
-
-      const typingSpeed = 55;
-      const typingElement = document.querySelector(".typing-text");
-
-      let index = 0;
-      let rendered = "";
-
-      function typeLine() {
-        if (sentence[index] === "<") {
-          const tagEnd = sentence.indexOf(">", index);
-          rendered += sentence.slice(index, tagEnd + 1);
-          index = tagEnd + 1;
-        } else {
-          rendered += sentence[index];
-          index++;
-        }
-
-        typingElement.innerHTML = rendered;
-
-        if (index < sentence.length) {
-          setTimeout(typeLine, typingSpeed);
-        }
-      }
-
-      typeLine();
-    </script>
   </body>
 </html>
