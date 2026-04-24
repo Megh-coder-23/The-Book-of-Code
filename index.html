@@ -3,15 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#03050a">
-    
     <title>The Book of Code • Code the Unreal</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
     <style>
       :root {
         --bg: #03050a; 
@@ -25,23 +21,8 @@
         --safe-top: env(safe-area-inset-top, 0px);
         --safe-bottom: env(safe-area-inset-bottom, 0px);
       }
-
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        -webkit-tap-highlight-color: transparent;
-      }
-
-      body {
-        font-family: "Sora", sans-serif;
-        background-color: var(--bg);
-        color: var(--text-main);
-        line-height: 1.6;
-        overflow-x: hidden;
-      }
-
-      /* ================= ANIMATIONS ================= */
+      * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+      body { font-family: "Sora", sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
       @keyframes logoBloom {
         0% { filter: drop-shadow(0 0 5px rgba(0, 201, 255, 0.3)); }
         50% { filter: drop-shadow(0 0 20px rgba(0, 201, 255, 0.6)); }
@@ -52,8 +33,6 @@
         100% { transform: scale(1); opacity: 1; filter: blur(0px); }
       }
       @keyframes blinkCursor { 50% { opacity: 0; } }
-
-      /* ================= NAV ================= */
       nav {
         position: absolute;
         top: 0;
@@ -66,16 +45,12 @@
       }
       .logo-div { display: flex; align-items: center; gap: 15px; text-decoration: none; }
       .logo-svg { animation: logoBloom 3s infinite ease-in-out; }
-      .logo-text {
-        font-size: 20px; font-weight: 600;
-        background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      }
-      .btn-primary {
-        background: var(--gradient); padding: 10px 24px; border-radius: 999px;
-        color: #fff !important; font-weight: 600; font-size: 14px; text-decoration: none;
-      }
-
-      /* ================= HERO ================= */
+      .logo-text { font-size: 20px; font-weight: 600; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+      .nav-links { display: flex; gap: 32px; align-items: center; }
+      .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.3s; }
+      .nav-links a:hover { color: var(--text-main); }
+      .btn-primary { background: var(--gradient); padding: 10px 24px; border-radius: 999px; color: #fff !important; font-weight: 600; font-size: 14px; text-decoration: none; transition: transform 0.3s ease; }
+      .btn-primary:hover { transform: scale(1.05); }
       header.hero {
         position: relative;
         height: 100vh;
@@ -94,34 +69,25 @@
       .gradient-text { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
       .cursor { display: inline-block; width: 3px; height: 1em; background-color: var(--accent-cyan); margin-left: 5px; vertical-align: middle; animation: blinkCursor 0.8s infinite; }
       .hero p { max-width: 720px; margin: 0 auto; color: var(--text-muted); font-size: clamp(16px, 2vw, 20px); }
-
-      /* ================= DUAL PATH ================= */
-      .section-container { padding: 120px 8%; max-width: 1400px; margin: 0 auto; }
-      .dual-path { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 32px; margin-bottom: 80px; }
-      
+      .section-container { padding: 80px 8% 120px; max-width: 1400px; margin: 0 auto; }
+      .dual-path { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 32px; margin-bottom: 64px; }
+      .specs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; }
       .reveal { opacity: 0; transform: translateY(60px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
       .reveal.active { opacity: 1; transform: translateY(0); }
-
-      .path-card {
+      .path-card, .spec-card {
         background: var(--card-bg); border: 1px solid var(--border-color);
-        padding: 56px 48px; border-radius: 32px; backdrop-filter: blur(15px);
-        transition: all 0.5s ease;
+        padding: 48px; border-radius: 32px; backdrop-filter: blur(15px);
+        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
       }
-      .path-card:hover { transform: translateY(-15px); border-color: var(--accent-cyan); box-shadow: 0 30px 60px -12px rgba(0, 201, 255, 0.3); }
+      .path-card:hover, .spec-card:hover { 
+        transform: translateY(-15px); 
+        border-color: var(--accent-cyan); 
+        box-shadow: 0 30px 60px -12px rgba(0, 201, 255, 0.3);
+      }
       .path-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent-cyan); margin-bottom: 20px; display: block; font-weight: 700; }
-      .path-card h3 { font-size: 28px; margin-bottom: 16px; }
-
-      /* ================= SYSTEM SPECS GRID ================= */
-      .specs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-      .spec-card {
-        background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color);
-        padding: 32px; border-radius: 24px; transition: all 0.3s ease;
-      }
-      .spec-card:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.2); }
-      .spec-card h4 { font-size: 18px; margin-bottom: 12px; color: var(--text-main); }
-      .spec-card p { font-size: 14px; color: var(--text-muted); }
-
-      /* ================= FOOTER ================= */
+      .path-card h3, .spec-card h4 { font-size: 26px; margin-bottom: 16px; font-weight: 600; }
+      .path-card p, .spec-card p { font-size: 16px; color: var(--text-muted); }
       footer { background-color: var(--bg); padding: 100px 8% calc(var(--safe-bottom) + 60px); border-top: 1px solid var(--border-color); }
       .footer-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 40px; }
       .footer-col h4 { color: #fff; font-size: 16px; margin-bottom: 20px; }
@@ -131,7 +97,6 @@
     </style>
   </head>
   <body>
-
     <nav>
       <a href="#" class="logo-div">
         <svg class="logo-svg" width="44" height="44" viewBox="0 0 64 64">
@@ -142,49 +107,48 @@
         </svg>
         <div class="logo-text">The Book of Code</div>
       </a>
-      <a href="#" class="btn-primary">Get Started</a>
+      <div class="nav-links">
+        <a href="#philosophy">Philosophy</a>
+        <a href="#curriculum">Curriculum</a>
+        <a href="#" class="btn-primary">Get Started</a>
+      </div>
     </nav>
-
     <header class="hero">
       <div class="slogan-eyebrow">Code the Unreal</div>
       <h1>Built for <br><span id="typing-text" class="gradient-text"></span><span class="cursor"></span></h1>
-      <p>Automating Computer Science education with a logic-first approach.</p>
+      <p>Stop memorizing syntax. Start mastering the logic that builds the world.</p>
     </header>
-
     <div class="section-container">
       <section class="dual-path">
         <div class="path-card reveal">
-          <span class="path-tag">Individual</span>
-          <h3>Code your Imagination</h3>
-          <p>A gamified experience for curious minds to master the logic of the future at their own pace.</p>
+          <span class="path-tag">The Maker</span>
+          <h3>Own your craft</h3>
+          <p>We built this for the curious ones. Forget boring tutorials—dive straight into the logic and build what others say is impossible.</p>
         </div>
         <div class="path-card reveal" style="transition-delay: 0.15s;">
-          <span class="path-tag">School Edition</span>
-          <h3>The Automated Classroom</h3>
-          <p>Turn any classroom into a coding lab with automated instruction and instant grading.</p>
+          <span class="path-tag">The Educator</span>
+          <h3>Kill the friction</h3>
+          <p>Teaching shouldn't be about grading syntax errors. We handle the heavy lifting so you can actually mentor the next generation.</p>
         </div>
       </section>
-
       <section class="specs-grid">
         <div class="spec-card reveal">
+          <span class="path-tag">The Game</span>
           <h4>Logic Shards</h4>
-          <p>Earn shards through consistent performance. Reinvest them in system backups to protect your progress.</p>
+          <p>Coding is a grind, so we made it worth it. Earn shards for every breakthrough and use them to safeguard your progress.</p>
         </div>
         <div class="spec-card reveal" style="transition-delay: 0.1s;">
+          <span class="path-tag">The Forge</span>
           <h4>The Terminal</h4>
-          <p>A high-friction, professional environment for deep-focus coding and hardware-level concepts.</p>
+          <p>Real work happens in the dark. Our terminal is a focused environment designed for deep work and hardware-level obsession.</p>
         </div>
         <div class="spec-card reveal" style="transition-delay: 0.2s;">
-          <h4>25-Day Sprints</h4>
-          <p>Engineered milestones that mirror real-world engineering cycles for long-term retention.</p>
-        </div>
-        <div class="spec-card reveal" style="transition-delay: 0.3s;">
-          <h4>Instant Validation</h4>
-          <p>Automated grading engine provides real-time feedback, eliminating the instructor bottleneck.</p>
+          <span class="path-tag">The Pulse</span>
+          <h4>Instant Truth</h4>
+          <p>No waiting. No guessing. Our engine checks your logic in milliseconds, giving you the truth so you can iterate faster.</p>
         </div>
       </section>
     </div>
-
     <footer>
       <div class="footer-container">
         <div class="footer-col"><h4>Product</h4><ul><li><a href="#">Methodology</a></li><li><a href="#">Curriculum</a></li></ul></div>
@@ -192,12 +156,10 @@
         <div class="footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li></ul></div>
       </div>
     </footer>
-
     <script>
       const textElement = document.getElementById("typing-text");
       const phrases = ["classrooms.", "future creators.", "impact.", "everyone."];
       let pIdx = 0, cIdx = 0, isDeleting = false;
-
       function type() {
         const current = phrases[pIdx];
         textElement.textContent = isDeleting ? current.substring(0, cIdx--) : current.substring(0, cIdx++);
@@ -206,11 +168,9 @@
         else if (isDeleting && cIdx === 0) { isDeleting = false; pIdx = (pIdx + 1) % phrases.length; speed = 500; }
         setTimeout(type, speed);
       }
-
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
       }, { threshold: 0.1 });
-
       document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
       window.onload = type;
     </script>
