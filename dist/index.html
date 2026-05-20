@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="theme-color" content="#03050a" />
+    <title>The Book of Code • Code the Unreal</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #03050a;
+        --card-bg: rgba(13, 17, 28, 0.7);
+        --border-color: rgba(255, 255, 255, 0.08);
+        --accent-blue: #005bff;
+        --accent-cyan: #00c9ff;
+        --text-main: #f5f7fa;
+        --text-muted: #a6b0c3;
+        --gradient: linear-gradient(135deg, #00c9ff 0%, #005bff 100%);
+        --safe-top: env(safe-area-inset-top, 0px);
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+      body {
+        font-family: "Sora", sans-serif;
+        background-color: var(--bg);
+        color: var(--text-main);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+      @keyframes logoBloom {
+        0% {
+          filter: drop-shadow(0 0 5px rgba(0, 201, 255, 0.3));
+        }
+        50% {
+          filter: drop-shadow(0 0 20px rgba(0, 201, 255, 0.6));
+        }
+        100% {
+          filter: drop-shadow(0 0 5px rgba(0, 201, 255, 0.3));
+        }
+      }
+      @keyframes heroBloomScale {
+        0% {
+          transform: scale(1.1);
+          opacity: 0;
+          filter: blur(10px);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+          filter: blur(0px);
+        }
+      }
+      @keyframes blinkCursor {
+        50% {
+          opacity: 0;
+        }
+      }
+      nav {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        padding: calc(var(--safe-top) + 20px) 8% 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+      }
+      .logo-div {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        text-decoration: none;
+      }
+      .logo-svg {
+        animation: logoBloom 3s infinite ease-in-out;
+      }
+      .logo-text {
+        font-size: 20px;
+        font-weight: 600;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        align-items: center;
+      }
+      .nav-links a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 400;
+        transition: color 0.3s;
+      }
+      .nav-links a:hover {
+        color: var(--text-main);
+      }
+      .btn-primary {
+        background: var(--gradient);
+        padding: 10px 24px;
+        border-radius: 999px;
+        color: #fff !important;
+        font-weight: 600;
+        font-size: 14px;
+        text-decoration: none;
+        transition: transform 0.3s ease;
+        transform: translateY(-4px);
+      }
+      .btn-primary:hover {
+        transform: scale(1.05);
+      }
+      header.hero {
+        position: relative;
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 8%;
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(0, 201, 255, 0.12),
+          transparent 50%
+        );
+        animation: heroBloomScale 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      .slogan-eyebrow {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.4em;
+        color: var(--accent-cyan);
+        margin-bottom: 16px;
+        font-weight: 700;
+        opacity: 0.8;
+      }
+      .hero h1 {
+        font-size: clamp(2.2rem, 8vw, 4.5rem);
+        font-weight: 700;
+        line-height: 1.05;
+        margin-bottom: 28px;
+      }
+      .gradient-text {
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .cursor {
+        display: inline-block;
+        width: 3px;
+        height: 1em;
+        background-color: var(--accent-cyan);
+        margin-left: 5px;
+        vertical-align: middle;
+        animation: blinkCursor 0.8s infinite;
+      }
+      .hero p {
+        max-width: 720px;
+        margin: 0 auto;
+        color: var(--text-muted);
+        font-size: clamp(16px, 2vw, 20px);
+      }
+      .section-container {
+        padding: 80px 8% 120px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .dual-path {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 32px;
+        margin-bottom: 64px;
+      }
+      .specs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 32px;
+      }
+      .reveal {
+        opacity: 0;
+        transform: translateY(60px);
+        transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .path-card,
+      .spec-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        padding: 48px;
+        border-radius: 32px;
+        backdrop-filter: blur(15px);
+        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+      }
+      .path-card:hover,
+      .spec-card:hover {
+        transform: translateY(-15px);
+        border-color: var(--accent-cyan);
+        box-shadow: 0 30px 60px -12px rgba(0, 201, 255, 0.3);
+      }
+      .path-tag {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: var(--accent-cyan);
+        margin-bottom: 20px;
+        display: block;
+        font-weight: 700;
+      }
+      .path-card h3,
+      .spec-card h4 {
+        font-size: 26px;
+        margin-bottom: 16px;
+        font-weight: 600;
+      }
+      .path-card p,
+      .spec-card p {
+        font-size: 16px;
+        color: var(--text-muted);
+      }
+      footer {
+        background-color: var(--bg);
+        padding: 100px 8% calc(var(--safe-bottom) + 60px);
+        border-top: 1px solid var(--border-color);
+      }
+      .footer-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 40px;
+      }
+      .footer-col h4 {
+        color: #fff;
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+      .footer-col ul {
+        list-style: none;
+      }
+      .footer-col ul li {
+        margin-bottom: 12px;
+      }
+      .footer-col ul li a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="#" class="logo-div">
+        <svg class="logo-svg" width="44" height="44" viewBox="0 0 64 64">
+          <rect width="64" height="64" rx="16" fill="url(#bgGradient)" />
+          <path
+            d="M26 20 L16 32 L26 44"
+            stroke="white"
+            stroke-width="4"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <path
+            d="M38 20 L48 32 L38 44"
+            stroke="white"
+            stroke-width="4"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <defs>
+            <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00C9FF" />
+              <stop offset="100%" stop-color="#005BFF" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="logo-text">The Book of Code</div>
+      </a>
+      <div class="nav-links">
+        <a href="#philosophy">Philosophy</a>
+        <a href="#curriculum">Curriculum</a>
+        <a href="#" class="btn-primary">Get Started</a>
+      </div>
+    </nav>
+    <header class="hero">
+      <div class="slogan-eyebrow">Code the Unreal</div>
+      <h1>
+        Built for <br /><span id="typing-text" class="gradient-text"></span
+        ><span class="cursor"></span>
+      </h1>
+      <p>
+        Stop memorizing syntax. Start mastering the logic that builds the world.
+      </p>
+    </header>
+    <div class="section-container">
+      <section class="dual-path">
+        <div class="path-card reveal">
+          <span class="path-tag">The Maker</span>
+          <h3>Own your craft</h3>
+          <p>
+            We built this for the curious ones. Forget boring tutorials—dive
+            straight into the logic and build what others say is impossible.
+          </p>
+        </div>
+        <div class="path-card reveal" style="transition-delay: 0.15s">
+          <span class="path-tag">The Educator</span>
+          <h3>Kill the friction</h3>
+          <p>
+            Teaching shouldn't be about grading syntax errors. We handle the
+            heavy lifting so you can actually mentor the next generation.
+          </p>
+        </div>
+      </section>
+      <section class="specs-grid">
+        <div class="spec-card reveal">
+          <span class="path-tag">The Game</span>
+          <h4>Logic Shards</h4>
+          <p>
+            Coding is a grind, so we made it worth it. Earn shards for every
+            breakthrough and use them to safeguard your progress.
+          </p>
+        </div>
+        <div class="spec-card reveal" style="transition-delay: 0.1s">
+          <span class="path-tag">The Forge</span>
+          <h4>The Terminal</h4>
+          <p>
+            Real work happens in the dark. Our terminal is a focused environment
+            designed for deep work and hardware-level obsession.
+          </p>
+        </div>
+        <div class="spec-card reveal" style="transition-delay: 0.2s">
+          <span class="path-tag">The Pulse</span>
+          <h4>Instant Truth</h4>
+          <p>
+            No waiting. No guessing. Our engine checks your logic in
+            milliseconds, giving you the truth so you can iterate faster.
+          </p>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <div class="footer-container">
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#">Methodology</a></li>
+            <li><a href="#">Curriculum</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Philosophy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+    <script>
+      const textElement = document.getElementById("typing-text");
+      const phrases = [
+        "classrooms.",
+        "future creators.",
+        "impact.",
+        "everyone.",
+      ];
+      let pIdx = 0,
+        cIdx = 0,
+        isDeleting = false;
+      function type() {
+        const current = phrases[pIdx];
+        textElement.textContent = isDeleting
+          ? current.substring(0, cIdx--)
+          : current.substring(0, cIdx++);
+        let speed = isDeleting ? 60 : 120;
+        if (!isDeleting && cIdx === current.length + 1) {
+          speed = 2000;
+          isDeleting = true;
+        } else if (isDeleting && cIdx === 0) {
+          isDeleting = false;
+          pIdx = (pIdx + 1) % phrases.length;
+          speed = 500;
+        }
+        setTimeout(type, speed);
+      }
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("active");
+          });
+        },
+        { threshold: 0.1 },
+      );
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => observer.observe(el));
+      window.onload = type;
+    </script>
+  </body>
+</html>
