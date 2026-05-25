@@ -1,0 +1,1196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#03050a" />
+    <title>Curriculum • The Book of Code</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #03050a;
+        --card-bg: rgba(10, 14, 24, 0.65);
+        --border: rgba(255, 255, 255, 0.07);
+        --border-bright: rgba(0, 201, 255, 0.3);
+        --accent-blue: #005bff;
+        --accent-cyan: #00c9ff;
+        --text-main: #eef2ff;
+        --text-muted: #7e8eac;
+        --text-subtle: #424e68;
+        --gradient: linear-gradient(135deg, #00c9ff 0%, #005bff 100%);
+        --safe-top: env(safe-area-inset-top, 0px);
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+      }
+
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: "Sora", sans-serif;
+        background-color: var(--bg);
+        color: var(--text-main);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      /* ─── Background Orbs ─── */
+      .bg-orbs {
+        position: fixed; inset: 0;
+        pointer-events: none; z-index: 0; overflow: hidden;
+      }
+      .orb {
+        position: absolute; border-radius: 50%;
+        filter: blur(120px); will-change: transform;
+      }
+      .orb-1 {
+        width: 900px; height: 900px;
+        background: radial-gradient(circle, rgba(0,201,255,0.13), transparent 65%);
+        top: -350px; right: -250px;
+        animation: floatOrb 24s ease-in-out infinite;
+      }
+      .orb-2 {
+        width: 700px; height: 700px;
+        background: radial-gradient(circle, rgba(0,91,255,0.13), transparent 65%);
+        bottom: -250px; left: -200px;
+        animation: floatOrb 32s ease-in-out infinite reverse;
+      }
+      @keyframes floatOrb {
+        0%, 100% { transform: translate(0, 0); }
+        25%       { transform: translate(50px, -40px); }
+        50%       { transform: translate(30px, 55px); }
+        75%       { transform: translate(-45px, 20px); }
+      }
+
+      /* ─── Nav ─── */
+      nav {
+        position: fixed; top: 0; width: 100%;
+        padding: calc(var(--safe-top) + 20px) 8% 20px;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        transition: background 0.35s, border-color 0.35s, backdrop-filter 0.35s;
+        border-bottom: 1px solid transparent;
+      }
+      nav.scrolled {
+        background: rgba(3,5,10,0.82);
+        backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+        border-bottom-color: var(--border);
+      }
+      .logo-div {
+        display: flex; align-items: center; gap: 12px;
+        text-decoration: none;
+      }
+      .logo-svg { animation: logoBloom 3s infinite ease-in-out; flex-shrink: 0; }
+      @keyframes logoBloom {
+        0%, 100% { filter: drop-shadow(0 0 6px rgba(0,201,255,0.3)); }
+        50%       { filter: drop-shadow(0 0 20px rgba(0,201,255,0.65)); }
+      }
+      .logo-text {
+        font-size: 17px; font-weight: 700;
+        background: var(--gradient);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        background-clip: text; letter-spacing: -0.02em;
+      }
+      .nav-links { display: flex; gap: 36px; align-items: center; }
+      .nav-links a {
+        color: var(--text-muted); text-decoration: none;
+        font-size: 14px; font-weight: 400;
+        transition: color 0.2s; letter-spacing: 0.01em;
+      }
+      .nav-links a:hover { color: var(--text-main); }
+      .nav-links a.active { color: var(--text-main); }
+      .btn-nav {
+        background: var(--gradient);
+        padding: 10px 22px; border-radius: 999px;
+        color: #fff !important; font-weight: 600; font-size: 14px;
+        text-decoration: none; letter-spacing: 0.01em;
+        transition: opacity 0.2s, transform 0.2s; white-space: nowrap;
+      }
+      .btn-nav:hover { opacity: 0.88; transform: translateY(-1px); }
+
+      /* ─── Animations ─── */
+      @keyframes heroFadeUp {
+        from { opacity: 0; transform: translateY(28px); filter: blur(5px); }
+        to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+      }
+      @keyframes badgePulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(0,201,255,0.35); }
+        50%       { box-shadow: 0 0 0 5px rgba(0,201,255,0); }
+      }
+
+      /* ─── Page Hero ─── */
+      .page-hero {
+        position: relative;
+        padding: calc(var(--safe-top) + 160px) 8% 80px;
+        text-align: center; z-index: 1; overflow: hidden;
+      }
+      .hero-grid {
+        position: absolute; inset: 0;
+        background-image: radial-gradient(circle, rgba(255,255,255,0.085) 1px, transparent 1px);
+        background-size: 38px 38px;
+        mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, black, transparent);
+        -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, black, transparent);
+        pointer-events: none; z-index: 0;
+      }
+      .hero-glow {
+        position: absolute; inset: 0;
+        background: radial-gradient(ellipse 55% 45% at 50% 58%, rgba(0,201,255,0.09), transparent);
+        pointer-events: none; z-index: 0;
+      }
+      .page-hero-content {
+        position: relative; z-index: 1;
+        display: flex; flex-direction: column; align-items: center;
+      }
+      .hero-badge {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: rgba(0,201,255,0.07);
+        border: 1px solid rgba(0,201,255,0.22);
+        border-radius: 999px; padding: 7px 18px;
+        font-size: 13px; font-weight: 500; color: var(--accent-cyan);
+        margin-bottom: 32px; letter-spacing: 0.01em;
+        opacity: 0; animation: heroFadeUp 0.75s ease forwards;
+      }
+      .badge-dot {
+        width: 7px; height: 7px; background: var(--accent-cyan);
+        border-radius: 50%; flex-shrink: 0;
+        animation: badgePulse 2s infinite;
+      }
+      .page-hero h1 {
+        font-size: clamp(2.8rem, 7vw, 4.8rem);
+        font-weight: 800; line-height: 1.06;
+        letter-spacing: -0.035em; margin-bottom: 20px;
+        opacity: 0; animation: heroFadeUp 0.75s ease 0.1s forwards;
+      }
+      .gradient-text {
+        background: var(--gradient);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .page-hero p {
+        max-width: 500px; color: var(--text-muted);
+        font-size: clamp(15px, 2vw, 17px); line-height: 1.75;
+        margin-bottom: 52px;
+        opacity: 0; animation: heroFadeUp 0.75s ease 0.2s forwards;
+      }
+
+      /* ─── Tab Toggle ─── */
+      .tab-toggle {
+        display: inline-flex;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 999px; padding: 5px; gap: 4px;
+        opacity: 0; animation: heroFadeUp 0.75s ease 0.3s forwards;
+        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      }
+      .tab-btn {
+        padding: 10px 28px; border-radius: 999px; border: none;
+        background: transparent; color: var(--text-muted);
+        font-family: "Sora", sans-serif; font-size: 14px; font-weight: 600;
+        cursor: pointer; transition: color 0.2s, background 0.2s; letter-spacing: 0.01em;
+      }
+      .tab-btn.active { background: var(--gradient); color: #fff; }
+      .tab-btn:not(.active):hover { color: var(--text-main); }
+
+      /* ─── Curriculum Section wrapper ─── */
+      .curriculum-section {
+        padding: 80px 8% 100px;
+        max-width: 1380px; margin: 0 auto;
+        position: relative; z-index: 1;
+      }
+      .section-label {
+        font-size: 11px; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.36em;
+        color: var(--accent-cyan); opacity: 0.8; margin-bottom: 14px;
+      }
+      .section-heading {
+        font-size: clamp(1.6rem, 3vw, 2.4rem);
+        font-weight: 700; letter-spacing: -0.03em;
+        line-height: 1.2; margin-bottom: 52px;
+      }
+
+      /* ─── Course Grid ─── */
+      .course-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px;
+      }
+
+      /* ─── Course Card (Maker) ─── */
+      .course-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 28px; padding: 40px;
+        backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+        transition: transform 0.4s cubic-bezier(0.16,1,0.3,1),
+                    border-color 0.3s, box-shadow 0.4s;
+        position: relative; overflow: hidden;
+        display: flex; flex-direction: column; gap: 0;
+      }
+      .course-card::after {
+        content: '';
+        position: absolute; top: 0; left: 0; right: 0; height: 1px;
+        background: var(--gradient); opacity: 0; transition: opacity 0.3s;
+      }
+      .course-card:hover {
+        transform: translateY(-9px);
+        border-color: rgba(0,201,255,0.22);
+        box-shadow: 0 28px 64px -16px rgba(0,91,255,0.22);
+      }
+      .course-card:hover::after { opacity: 1; }
+
+      /* Course number watermark */
+      .course-num {
+        position: absolute; top: 28px; right: 32px;
+        font-size: 56px; font-weight: 800;
+        background: var(--gradient);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        background-clip: text;
+        opacity: 0.09; letter-spacing: -0.04em; line-height: 1; pointer-events: none;
+      }
+
+      .course-meta {
+        display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+      }
+      .course-tag {
+        font-size: 11px; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.2em;
+        color: var(--accent-cyan); opacity: 0.75;
+      }
+      .course-level {
+        font-size: 11px; font-weight: 600;
+        padding: 3px 10px; border-radius: 999px;
+        border: 1px solid var(--border); color: var(--text-subtle);
+        letter-spacing: 0.06em; text-transform: uppercase;
+      }
+      .course-level.beginner { color: #4ade80; border-color: rgba(74,222,128,0.25); background: rgba(74,222,128,0.06); }
+      .course-level.intermediate { color: #facc15; border-color: rgba(250,204,21,0.25); background: rgba(250,204,21,0.06); }
+      .course-level.advanced { color: #f97316; border-color: rgba(249,115,22,0.25); background: rgba(249,115,22,0.06); }
+
+      .course-title {
+        font-size: clamp(19px, 2vw, 22px);
+        font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px;
+      }
+      .course-desc {
+        font-size: 14px; color: var(--text-muted); line-height: 1.7; margin-bottom: 24px;
+      }
+
+      /* Topics */
+      .course-topics {
+        display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px;
+      }
+      .topic-chip {
+        font-size: 12px; font-weight: 500;
+        padding: 5px 12px; border-radius: 999px;
+        background: rgba(0,201,255,0.07);
+        border: 1px solid rgba(0,201,255,0.14);
+        color: var(--text-muted); letter-spacing: 0.01em;
+      }
+
+      /* Course footer row */
+      .course-footer {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 16px; margin-top: auto; padding-top: 24px;
+        border-top: 1px solid var(--border);
+      }
+      .course-stats {
+        display: flex; gap: 20px;
+      }
+      .course-stat {
+        display: flex; flex-direction: column;
+      }
+      .course-stat-val {
+        font-size: 15px; font-weight: 700;
+        background: var(--gradient);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        background-clip: text; letter-spacing: -0.01em;
+      }
+      .course-stat-label {
+        font-size: 10px; color: var(--text-subtle);
+        text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500;
+      }
+      .btn-course {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 10px 20px; border-radius: 999px;
+        background: var(--gradient); color: #fff;
+        font-family: "Sora", sans-serif; font-size: 13px; font-weight: 700;
+        text-decoration: none; letter-spacing: 0.01em;
+        white-space: nowrap; flex-shrink: 0;
+        transition: opacity 0.2s, transform 0.2s;
+      }
+      .btn-course:hover { opacity: 0.88; transform: translateY(-1px); }
+      .btn-course-outline {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 9px 20px; border-radius: 999px;
+        border: 1px solid var(--border); color: var(--text-muted);
+        font-family: "Sora", sans-serif; font-size: 13px; font-weight: 600;
+        text-decoration: none; letter-spacing: 0.01em;
+        white-space: nowrap; flex-shrink: 0;
+        transition: color 0.2s, border-color 0.2s, transform 0.2s;
+      }
+      .btn-course-outline:hover {
+        color: var(--text-main); border-color: rgba(255,255,255,0.2);
+        transform: translateY(-1px);
+      }
+
+      /* ─── Language Cards (Educator) ─── */
+      .lang-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px;
+      }
+      .lang-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 24px; padding: 32px;
+        backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+        transition: transform 0.4s cubic-bezier(0.16,1,0.3,1),
+                    border-color 0.3s, box-shadow 0.4s;
+        position: relative; overflow: hidden;
+        display: flex; flex-direction: column;
+      }
+      .lang-card::after {
+        content: '';
+        position: absolute; top: 0; left: 0; right: 0; height: 1px;
+        background: var(--gradient); opacity: 0; transition: opacity 0.3s;
+      }
+      .lang-card:hover {
+        transform: translateY(-7px);
+        border-color: rgba(0,201,255,0.22);
+        box-shadow: 0 24px 56px -12px rgba(0,91,255,0.2);
+      }
+      .lang-card:hover::after { opacity: 1; }
+
+      .lang-header {
+        display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px;
+      }
+      .lang-icon {
+        width: 46px; height: 46px; flex-shrink: 0;
+        background: rgba(0,201,255,0.07);
+        border: 1px solid rgba(0,201,255,0.14);
+        border-radius: 13px;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .lang-icon svg { width: 22px; height: 22px; }
+      .lang-info { flex: 1; min-width: 0; }
+      .lang-name {
+        font-size: 17px; font-weight: 700; letter-spacing: -0.02em;
+        margin-bottom: 4px;
+      }
+      .lang-use {
+        font-size: 12px; color: var(--text-subtle);
+        font-weight: 500; letter-spacing: 0.02em;
+      }
+
+      .lang-desc {
+        font-size: 13px; color: var(--text-muted);
+        line-height: 1.65; margin-bottom: 16px;
+      }
+
+      .lang-topics {
+        display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px;
+      }
+      .lang-chip {
+        font-size: 11px; font-weight: 500;
+        padding: 4px 10px; border-radius: 999px;
+        background: rgba(0,201,255,0.07);
+        border: 1px solid rgba(0,201,255,0.14);
+        color: var(--text-muted);
+      }
+
+      .lang-footer {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 12px; margin-top: auto; padding-top: 18px;
+        border-top: 1px solid var(--border);
+      }
+      .lang-lessons {
+        font-size: 12px; color: var(--text-subtle); font-weight: 500;
+      }
+      .lang-lessons span {
+        color: var(--text-muted); font-weight: 600;
+      }
+      .btn-lang {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 8px 16px; border-radius: 999px;
+        background: var(--gradient); color: #fff;
+        font-family: "Sora", sans-serif; font-size: 12px; font-weight: 700;
+        text-decoration: none; letter-spacing: 0.01em;
+        white-space: nowrap; flex-shrink: 0;
+        transition: opacity 0.2s, transform 0.2s;
+      }
+      .btn-lang:hover { opacity: 0.88; transform: translateY(-1px); }
+
+      /* ─── Reveal ─── */
+      .reveal {
+        opacity: 0; transform: translateY(36px);
+        transition: opacity 0.85s cubic-bezier(0.16,1,0.3,1),
+                    transform 0.85s cubic-bezier(0.16,1,0.3,1);
+      }
+      .reveal.active { opacity: 1; transform: translateY(0); }
+
+      /* ─── CTA Banner ─── */
+      .cta-section { position: relative; z-index: 1; padding: 0 8% 120px; }
+      .cta-banner {
+        background: linear-gradient(135deg, rgba(0,201,255,0.07), rgba(0,91,255,0.07));
+        border: 1px solid rgba(0,201,255,0.14);
+        border-radius: 32px; padding: 84px 60px;
+        text-align: center; position: relative; overflow: hidden;
+        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        max-width: 1200px; margin: 0 auto;
+      }
+      .cta-banner::before {
+        content: '';
+        position: absolute; top: 0; left: 0; right: 0; height: 1px;
+        background: var(--gradient); opacity: 0.55;
+      }
+      .cta-banner::after {
+        content: '';
+        position: absolute; inset: 0;
+        background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+        background-size: 34px 34px;
+        mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent);
+        -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent);
+        pointer-events: none;
+      }
+      .cta-inner { position: relative; z-index: 1; }
+      .cta-banner h2 {
+        font-size: clamp(1.9rem, 4vw, 3.1rem);
+        font-weight: 800; letter-spacing: -0.035em; margin-bottom: 16px;
+      }
+      .cta-banner p { font-size: 17px; color: var(--text-muted); margin-bottom: 40px; }
+      .btn-primary-lg {
+        display: inline-block;
+        background: var(--gradient);
+        padding: 15px 34px; border-radius: 999px;
+        color: #fff; font-weight: 700; font-size: 15px;
+        text-decoration: none; letter-spacing: 0.01em;
+        box-shadow: 0 0 48px rgba(0,91,255,0.32);
+        transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+      }
+      .btn-primary-lg:hover {
+        opacity: 0.9; transform: translateY(-2px);
+        box-shadow: 0 10px 48px rgba(0,91,255,0.55);
+      }
+
+      /* ─── Footer ─── */
+      footer {
+        background-color: var(--bg);
+        border-top: 1px solid var(--border);
+        position: relative; z-index: 1;
+      }
+      .footer-inner { max-width: 1380px; margin: 0 auto; padding: 0 8%; }
+      .footer-top {
+        display: grid;
+        grid-template-columns: 1.6fr repeat(3, 1fr);
+        gap: 56px; padding: 80px 0 60px;
+      }
+      .footer-brand .logo-div { margin-bottom: 18px; }
+      .footer-tagline {
+        font-size: 14px; color: var(--text-muted);
+        line-height: 1.75; max-width: 270px; margin-bottom: 28px;
+      }
+      .social-links { display: flex; gap: 10px; }
+      .social-link {
+        width: 38px; height: 38px;
+        background: var(--card-bg); border: 1px solid var(--border);
+        border-radius: 10px; display: flex; align-items: center; justify-content: center;
+        text-decoration: none; color: var(--text-muted);
+        transition: color 0.2s, border-color 0.2s, background 0.2s;
+      }
+      .social-link:hover {
+        color: var(--accent-cyan);
+        border-color: rgba(0,201,255,0.28);
+        background: rgba(0,201,255,0.05);
+      }
+      .social-link svg { width: 15px; height: 15px; }
+      .footer-col h4 {
+        color: #fff; font-size: 12px; font-weight: 600;
+        text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 20px;
+      }
+      .footer-col ul { list-style: none; }
+      .footer-col ul li { margin-bottom: 12px; }
+      .footer-col ul li a {
+        color: var(--text-muted); text-decoration: none;
+        font-size: 14px; transition: color 0.2s;
+      }
+      .footer-col ul li a:hover { color: var(--text-main); }
+      .footer-bottom {
+        border-top: 1px solid var(--border);
+        padding: 24px 0 calc(var(--safe-bottom) + 28px);
+        display: flex; justify-content: space-between; align-items: center;
+        gap: 16px; flex-wrap: wrap;
+      }
+      .footer-bottom p { font-size: 13px; color: var(--text-subtle); }
+
+      /* ─── Responsive ─── */
+      @media (max-width: 1024px) {
+        .course-grid { grid-template-columns: 1fr; }
+        .lang-grid { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 860px) {
+        .footer-top { grid-template-columns: 1fr 1fr; }
+        .footer-brand { grid-column: 1 / -1; }
+      }
+      @media (max-width: 640px) {
+        .nav-links a:not(.btn-nav) { display: none; }
+        .footer-top { grid-template-columns: 1fr; padding: 60px 0 40px; gap: 36px; }
+        .footer-brand { grid-column: auto; }
+        .cta-banner { padding: 60px 32px; }
+        .footer-bottom { justify-content: center; text-align: center; }
+        .tab-btn { padding: 10px 20px; font-size: 13px; }
+        .course-footer { flex-direction: column; align-items: flex-start; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="bg-orbs" aria-hidden="true">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="nav">
+      <a href="index.html" class="logo-div">
+        <svg class="logo-svg" width="40" height="40" viewBox="0 0 64 64">
+          <rect width="64" height="64" rx="16" fill="url(#ng)" />
+          <path d="M26 20 L16 32 L26 44" stroke="white" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M38 20 L48 32 L38 44" stroke="white" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs>
+            <linearGradient id="ng" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00C9FF" />
+              <stop offset="100%" stop-color="#005BFF" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="logo-text">The Book of Code</div>
+      </a>
+      <div class="nav-links">
+        <a href="philosophy.html">Philosophy</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="curriculum.html" class="active">Curriculum</a>
+        <a href="#" class="btn-nav">Get Started</a>
+      </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <div class="page-hero">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="page-hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Continuously updated
+        </div>
+        <h1>
+          The full<br />
+          <span class="gradient-text">curriculum.</span>
+        </h1>
+        <p>Every course. Every concept. Built around the logic that matters — not the syntax you'll Google anyway.</p>
+        <div class="tab-toggle" role="tablist" aria-label="Audience">
+          <button class="tab-btn active" role="tab" aria-selected="true" data-target="maker" id="tab-maker">The Maker</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-target="educator" id="tab-educator">The Educator</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ MAKER SECTION ═══ -->
+    <section class="curriculum-section" id="section-maker" role="tabpanel" aria-labelledby="tab-maker">
+      <p class="section-label reveal">For the builder</p>
+      <h2 class="section-heading reveal" style="transition-delay:.05s">Five paths.<br />One destination: mastery.</h2>
+      <div class="course-grid">
+
+        <!-- 01 · Logic Foundations -->
+        <div class="course-card reveal" style="transition-delay:.1s">
+          <div class="course-num">01</div>
+          <div class="course-meta">
+            <span class="course-tag">Module 01</span>
+            <span class="course-level beginner">Beginner</span>
+          </div>
+          <div class="course-title">Logic Foundations</div>
+          <div class="course-desc">Stop thinking in syntax and start thinking in systems. This course rewires how you approach every problem — from variables to recursion — by teaching the mental model first.</div>
+          <div class="course-topics">
+            <span class="topic-chip">Boolean Logic</span>
+            <span class="topic-chip">Control Flow</span>
+            <span class="topic-chip">Loops & Recursion</span>
+            <span class="topic-chip">Pseudocode</span>
+            <span class="topic-chip">Complexity Basics</span>
+          </div>
+          <div class="course-footer">
+            <div class="course-stats">
+              <div class="course-stat">
+                <span class="course-stat-val">24</span>
+                <span class="course-stat-label">Lessons</span>
+              </div>
+              <div class="course-stat">
+                <span class="course-stat-val">~8 hrs</span>
+                <span class="course-stat-label">Duration</span>
+              </div>
+            </div>
+            <a href="#" class="btn-course">Start &rarr;</a>
+          </div>
+        </div>
+
+        <!-- 02 · Python Craft -->
+        <div class="course-card reveal" style="transition-delay:.18s">
+          <div class="course-num">02</div>
+          <div class="course-meta">
+            <span class="course-tag">Module 02</span>
+            <span class="course-level beginner">Beginner</span>
+          </div>
+          <div class="course-title">Python Craft</div>
+          <div class="course-desc">Python is your first real weapon. Learn it properly — not just the print statements but the data structures, file I/O, and Pythonic patterns that separate rookies from builders.</div>
+          <div class="course-topics">
+            <span class="topic-chip">Data Types</span>
+            <span class="topic-chip">Functions & Scope</span>
+            <span class="topic-chip">Lists, Dicts, Sets</span>
+            <span class="topic-chip">OOP Basics</span>
+            <span class="topic-chip">File I/O</span>
+            <span class="topic-chip">Error Handling</span>
+          </div>
+          <div class="course-footer">
+            <div class="course-stats">
+              <div class="course-stat">
+                <span class="course-stat-val">36</span>
+                <span class="course-stat-label">Lessons</span>
+              </div>
+              <div class="course-stat">
+                <span class="course-stat-val">~14 hrs</span>
+                <span class="course-stat-label">Duration</span>
+              </div>
+            </div>
+            <a href="#" class="btn-course">Start &rarr;</a>
+          </div>
+        </div>
+
+        <!-- 03 · Web Craft -->
+        <div class="course-card reveal" style="transition-delay:.1s">
+          <div class="course-num">03</div>
+          <div class="course-meta">
+            <span class="course-tag">Module 03</span>
+            <span class="course-level intermediate">Intermediate</span>
+          </div>
+          <div class="course-title">Web Craft</div>
+          <div class="course-desc">The internet runs on three things: HTML structure, CSS paint, and JavaScript logic. This course teaches all three in context — building real interfaces from day one, not toy examples.</div>
+          <div class="course-topics">
+            <span class="topic-chip">Semantic HTML</span>
+            <span class="topic-chip">CSS Layout & Grid</span>
+            <span class="topic-chip">JavaScript DOM</span>
+            <span class="topic-chip">Async & Fetch</span>
+            <span class="topic-chip">Responsive Design</span>
+          </div>
+          <div class="course-footer">
+            <div class="course-stats">
+              <div class="course-stat">
+                <span class="course-stat-val">42</span>
+                <span class="course-stat-label">Lessons</span>
+              </div>
+              <div class="course-stat">
+                <span class="course-stat-val">~18 hrs</span>
+                <span class="course-stat-label">Duration</span>
+              </div>
+            </div>
+            <a href="#" class="btn-course">Start &rarr;</a>
+          </div>
+        </div>
+
+        <!-- 04 · Systems Thinking -->
+        <div class="course-card reveal" style="transition-delay:.18s">
+          <div class="course-num">04</div>
+          <div class="course-meta">
+            <span class="course-tag">Module 04</span>
+            <span class="course-level intermediate">Intermediate</span>
+          </div>
+          <div class="course-title">Systems Thinking</div>
+          <div class="course-desc">Most developers never learn what's actually happening beneath their code. This course pulls back the curtain: memory, processes, networking, and the OS — without needing a CS degree.</div>
+          <div class="course-topics">
+            <span class="topic-chip">Memory & Pointers</span>
+            <span class="topic-chip">Processes & Threads</span>
+            <span class="topic-chip">Networking Basics</span>
+            <span class="topic-chip">File Systems</span>
+            <span class="topic-chip">Unix Shell</span>
+          </div>
+          <div class="course-footer">
+            <div class="course-stats">
+              <div class="course-stat">
+                <span class="course-stat-val">30</span>
+                <span class="course-stat-label">Lessons</span>
+              </div>
+              <div class="course-stat">
+                <span class="course-stat-val">~12 hrs</span>
+                <span class="course-stat-label">Duration</span>
+              </div>
+            </div>
+            <a href="#" class="btn-course">Start &rarr;</a>
+          </div>
+        </div>
+
+        <!-- 05 · Build Lab -->
+        <div class="course-card reveal" style="transition-delay:.1s" style="grid-column: 1 / -1;">
+          <div class="course-num">05</div>
+          <div class="course-meta">
+            <span class="course-tag">Module 05</span>
+            <span class="course-level advanced">Advanced</span>
+          </div>
+          <div class="course-title">Build Lab</div>
+          <div class="course-desc">Theory ends here. Build Lab is five weeks of shipping real things: a CLI tool, a REST API, a frontend app, a scraper, and a final capstone of your choosing. No hand-holding, no toy projects.</div>
+          <div class="course-topics">
+            <span class="topic-chip">CLI Tools</span>
+            <span class="topic-chip">REST APIs</span>
+            <span class="topic-chip">Databases</span>
+            <span class="topic-chip">Auth & Security</span>
+            <span class="topic-chip">Deployment</span>
+            <span class="topic-chip">Capstone Project</span>
+          </div>
+          <div class="course-footer">
+            <div class="course-stats">
+              <div class="course-stat">
+                <span class="course-stat-val">20</span>
+                <span class="course-stat-label">Projects</span>
+              </div>
+              <div class="course-stat">
+                <span class="course-stat-val">~5 wks</span>
+                <span class="course-stat-label">Duration</span>
+              </div>
+            </div>
+            <a href="#" class="btn-course">Start &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ EDUCATOR SECTION ═══ -->
+    <section class="curriculum-section" id="section-educator" role="tabpanel" aria-labelledby="tab-educator" style="display:none">
+      <p class="section-label reveal">For the classroom</p>
+      <h2 class="section-heading reveal" style="transition-delay:.05s">Ten languages.<br />Ready to teach.</h2>
+      <div class="lang-grid">
+
+        <!-- Python -->
+        <div class="lang-card reveal" style="transition-delay:.08s">
+          <div class="lang-header">
+            <div class="lang-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#00c9ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2C8.13 2 8 4.5 8 6v2h8V6c0-1.5-.13-4-4-4z"/>
+                <path d="M8 8H5a2 2 0 00-2 2v4a2 2 0 002 2h3"/>
+                <path d="M16 8h3a2 2 0 012 2v4a2 2 0 01-2 2h-3"/>
+                <path d="M12 22c3.87 0 4-2.5 4-4v-2H8v2c0 1.5.13 4 4 4z"/>
+                <circle cx="10" cy="6" r="1" fill="#00c9ff" stroke="none"/>
+                <circle cx="14" cy="18" r="1" fill="#00c9ff" stroke="none"/>
+              </svg>
+            </div>
+            <div class="lang-info">
+              <div class="lang-name">Python</div>
+              <div class="lang-use">Data Science · Automation · Backend</div>
+            </div>
+          </div>
+          <div class="lang-desc">The ideal first language. Readable syntax lets students focus on logic, not brackets. Covers variables through OOP with real-world data examples.</div>
+          <div class="lang-topics">
+            <span class="lang-chip">Syntax</span>
+            <span class="lang-chip">Functions</span>
+            <span class="lang-chip">Lists & Dicts</span>
+            <span class="lang-chip">OOP</span>
+            <span class="lang-chip">Libraries</span>
+          </div>
+          <div class="lang-footer">
+            <div class="lang-lessons"><span>36</span> lessons · <span>8</span> projects</div>
+            <a href="#" class="btn-lang">Add to class &rarr;</a>
+          </div>
+        </div>
+
+        <!-- JavaScript -->
+        <div class="lang-card reveal" style="transition-delay:.14s">
+          <div class="lang-header">
+            <div class="lang-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#00c9ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="3"/>
+                <path d="M8 17v-6"/>
+                <path d="M13 11v4a2 2 0 004 0v-4"/>
+              </svg>
+            </div>
+            <div class="lang-info">
+              <div class="lang-name">JavaScript</div>
+              <div class="lang-use">Web · Frontend · Full-Stack</div>
+            </div>
+          </div>
+          <div class="lang-desc">The language of the web. Students see results instantly in the browser, which keeps engagement high. Covers ES6+ and async patterns educators actually need.</div>
+          <div class="lang-topics">
+            <span class="lang-chip">DOM</span>
+            <span class="lang-chip">ES6+</span>
+            <span class="lang-chip">Async/Await</span>
+            <span class="lang-chip">APIs</span>
+            <span class="lang-chip">Closures</span>
+          </div>
+          <div class="lang-footer">
+            <div class="lang-lessons"><span>40</span> lessons · <span>10</span> projects</div>
+            <a href="#" class="btn-lang">Add to class &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Java -->
+        <div class="lang-card reveal" style="transition-delay:.08s">
+          <div class="lang-header">
+            <div class="lang-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#00c9ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 20s-2-1.5-2-4c0-3 2-4 4-6 2 2 4 3 4 6s-2 4-2 4"/>
+                <path d="M8 20h8"/>
+                <path d="M10 4c0 2 2 3 2 5"/>
+                <path d="M14 4c0 2-2 3-2 5"/>
+              </svg>
+            </div>
+            <div class="lang-info">
+              <div class="lang-name">Java</div>
+              <div class="lang-use">Enterprise · Android · AP CS</div>
+            </div>
+          </div>
+          <div class="lang-desc">The AP Computer Science standard. Java's strict typing and verbose structure are actually advantages in a classroom — students can't skip understanding the fundamentals.</div>
+          <div class="lang-topics">
+            <span class="lang-chip">OOP</span>
+            <span class="lang-chip">Inheritance</span>
+            <span class="lang-chip">Interfaces</span>
+            <span class="lang-chip">Collections</span>
+            <span class="lang-chip">Generics</span>
+          </div>
+          <div class="lang-footer">
+            <div class="lang-lessons"><span>44</span> lessons · <span>9</span> projects</div>
+            <a href="#" class="btn-lang">Add to class &rarr;</a>
+          </div>
+        </div>
+
+        <!-- C++ -->
+        <div class="lang-card reveal" style="transition-delay:.14s">
+          <div class="lang-header">
+            <div class="lang-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#00c9ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M9 12h6M12 9v6M16 12h3M17 10v4"/>
+              </svg>
+            </div>
+            <div class="lang-info">
+              <div class="lang-name">C++</div>
+              <div class="lang-use">Systems · Game Dev · Competitive</div>
+            </div>
+          </div>
+          <div class="lang-desc">Where serious computer science happens. Teaching C++ forces students to understand memory, pointers, and performance in a way no other language demands.</div>
+          <div class="lang-topics">
+            <span class="lang-chip">Pointers</span>
+            <span class="lang-chip">Memory Mgmt</span>
+            <span class="lang-chip">STL</span>
+            <span class="lang-chip">Templates</span>
+            <span class="lang-chip">RAII</span>
+          </div>
+          <div class="lang-footer">
+            <div class="lang-lessons"><span>38</span> lessons · <span>7</span> projects</div>
+            <a href="#" class="btn-lang">Add to class &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Rust -->
+        <div class="lang-card reveal" style="transition-delay:.08s">
+          <div class="lang-header">
+            <div class="lang-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#00c9ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+              </svg>
+            </div>
+            <div class="lang-info">
+              <div class="lang-name">Rust</div>
+              <div class="lang-use">Systems · WebAssembly · Safety</div>
+            </div>
+          </div>
+          <div class="lang-desc">The fastest-growing systems language. The borrow checker is difficult to teach but profound — students who master it understand memory safety at a level most engineers never reach.</div>
+          <div class="lang-topics">
+            <span class="lang-chip">Ownership</span>
+            <span class="lang-chip">Borrow Checker</span>
+            <span class="lang-chip">Lifetimes</span>
+            <span class="lang-chip">Traits</span>
+            <span class="lang-chip">Error Handling</span>
+          </div>
+          <div class="lang-footer">
+            <div class="lang-lessons"><span>32</span> lessons · <span>6</span> projects</div>
+            <a href="#" class="btn-lang">Add to class &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Go -->
+        <div class="lang-card reveal" style="transition-delay:.14s">
+          <div class="lang-header">
+            <div class="lang-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#00c9ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"/>
+                <path d="M12 5l7 7-7 7"/>
+                <circle cx="5" cy="12" r="2"/>
+              </svg>
+            </div>
+            <div class="lang-info">
+              <div class="lang-name">Go</div>
+              <div class="lang-use">Backend · Cloud · Concurrency</div>
+            </div>
+          </div>
+          <div class="lang-desc">Designed for simplicity and scale. Go's concurrency model (goroutines and channels) gives students a uniquely modern way to think about parallel programs.</div>
+          <div class="lang-topics">
+            <span class="lang-chip">Goroutines</span>
+            <span class="lang-chip">Channels</span>
+            <span class="lang-chip">Interfaces</span>
+            <span class="lang-chip">HTTP Servers</span>
+            <span class="lang-chip">Testing</span>
+          </div>
+          <div class="lang-footer">
+            <div class="lang-lessons"><span>28</span> lessons · <span>6</span> projects</div>
+            <a href="#" class="btn-lang">Add to class &rarr;</a>
+          </div>
+        </div>
+
+        <!-- TypeScript -->
+        <div class="lang-card reveal" style="transition-delay:.08s">
+          <div class="lang-header">
+            <div class="lang-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#00c9ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="3"/>
+                <path d="M7 12h5M9 10v4M14 14v-4h3a1.5 1.5 0 010 3h-3"/>
+              </svg>
+            </div>
+            <div class="lang-info">
+              <div class="lang-name">TypeScript</div>
+              <div class="lang-use">Frontend · Full-Stack · Scale</div>
+            </div>
+          </div>
+          <div class="lang-desc">JavaScript with a safety net. TypeScript forces students to think about types explicitly, which dramatically improves code quality and teaches them to write software that scales.</div>
+          <div class="lang-topics">
+            <span class="lang-chip">Type System</span>
+            <span class="lang-chip">Interfaces</span>
+            <span class="lang-chip">Generics</span>
+            <span class="lang-chip">Decorators</span>
+            <span class="lang-chip">Strict Mode</span>
+          </div>
+          <div class="lang-footer">
+            <div class="lang-lessons"><span>30</span> lessons · <span>7</span> projects</div>
+            <a href="#" class="btn-lang">Add to class &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Swift -->
+        <div class="lang-card reveal" style="transition-delay:.14s">
+          <div class="lang-header">
+            <div class="lang-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#00c9ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 8.5C18.5 4 14.5 2 10 3 5.5 4 3 8 4 12.5c.7 3 2.5 5 5 6.5"/>
+                <path d="M14 17.5C9.5 16 7 13 8 9c1-3 4-4.5 4-4.5s-1 4 2 6.5c2 1.5 5 1.5 5 1.5s-2 2.5-5 5z"/>
+              </svg>
+            </div>
+            <div class="lang-info">
+              <div class="lang-name">Swift</div>
+              <div class="lang-use">iOS · macOS · Apple Ecosystem</div>
+            </div>
+          </div>
+          <div class="lang-desc">Modern, expressive, and safe. Swift's playgrounds make it one of the most engaging languages to teach — students see visual results immediately while learning serious concepts.</div>
+          <div class="lang-topics">
+            <span class="lang-chip">Optionals</span>
+            <span class="lang-chip">Protocols</span>
+            <span class="lang-chip">SwiftUI Basics</span>
+            <span class="lang-chip">Closures</span>
+            <span class="lang-chip">Value Types</span>
+          </div>
+          <div class="lang-footer">
+            <div class="lang-lessons"><span>34</span> lessons · <span>8</span> projects</div>
+            <a href="#" class="btn-lang">Add to class &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Kotlin -->
+        <div class="lang-card reveal" style="transition-delay:.08s">
+          <div class="lang-header">
+            <div class="lang-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#00c9ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3h18L12 12l9 9H3V3z"/>
+              </svg>
+            </div>
+            <div class="lang-info">
+              <div class="lang-name">Kotlin</div>
+              <div class="lang-use">Android · JVM · Server-Side</div>
+            </div>
+          </div>
+          <div class="lang-desc">Java's modern successor on the JVM. Kotlin's null safety and concise syntax reduce boilerplate enormously — students spend time on ideas, not ceremony. Pairs with Java modules naturally.</div>
+          <div class="lang-topics">
+            <span class="lang-chip">Null Safety</span>
+            <span class="lang-chip">Data Classes</span>
+            <span class="lang-chip">Coroutines</span>
+            <span class="lang-chip">Extension Fns</span>
+            <span class="lang-chip">Sealed Classes</span>
+          </div>
+          <div class="lang-footer">
+            <div class="lang-lessons"><span>30</span> lessons · <span>6</span> projects</div>
+            <a href="#" class="btn-lang">Add to class &rarr;</a>
+          </div>
+        </div>
+
+        <!-- SQL -->
+        <div class="lang-card reveal" style="transition-delay:.14s">
+          <div class="lang-header">
+            <div class="lang-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#00c9ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <ellipse cx="12" cy="6" rx="8" ry="3"/>
+                <path d="M4 6v6c0 1.66 3.58 3 8 3s8-1.34 8-3V6"/>
+                <path d="M4 12v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/>
+              </svg>
+            </div>
+            <div class="lang-info">
+              <div class="lang-name">SQL</div>
+              <div class="lang-use">Databases · Analytics · Backend</div>
+            </div>
+          </div>
+          <div class="lang-desc">Every application needs data. SQL is the language of databases and one of the most in-demand skills in the industry. Students who can query confidently unlock the entire data-driven world.</div>
+          <div class="lang-topics">
+            <span class="lang-chip">SELECT & JOIN</span>
+            <span class="lang-chip">Aggregations</span>
+            <span class="lang-chip">Schema Design</span>
+            <span class="lang-chip">Indexes</span>
+            <span class="lang-chip">Transactions</span>
+          </div>
+          <div class="lang-footer">
+            <div class="lang-lessons"><span>26</span> lessons · <span>5</span> projects</div>
+            <a href="#" class="btn-lang">Add to class &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="cta-section">
+      <div class="cta-banner reveal">
+        <div class="cta-inner">
+          <h2>Ready to start building?</h2>
+          <p>Pick a course, open the terminal, and write something that matters.</p>
+          <a href="pricing.html" class="btn-primary-lg">See pricing &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <a href="index.html" class="logo-div">
+              <svg width="34" height="34" viewBox="0 0 64 64">
+                <rect width="64" height="64" rx="16" fill="url(#fg)" />
+                <path d="M26 20 L16 32 L26 44" stroke="white" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M38 20 L48 32 L38 44" stroke="white" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs>
+                  <linearGradient id="fg" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#00C9FF" />
+                    <stop offset="100%" stop-color="#005BFF" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="logo-text">The Book of Code</div>
+            </a>
+            <p class="footer-tagline">Building the most effective way to learn programming — for curious minds and inspired educators everywhere.</p>
+            <div class="social-links">
+              <a href="#" class="social-link" aria-label="X / Twitter">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </a>
+              <a href="#" class="social-link" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                </svg>
+              </a>
+              <a href="#" class="social-link" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Product</h4>
+            <ul>
+              <li><a href="#">Methodology</a></li>
+              <li><a href="curriculum.html">Curriculum</a></li>
+              <li><a href="#">Logic Shards</a></li>
+              <li><a href="#">The Terminal</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">Our Story</a></li>
+              <li><a href="#">Philosophy</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Cookie Policy</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 The Book of Code. All rights reserved.</p>
+          <p>Made with &hearts; for the curious</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Nav scroll state
+      const nav = document.getElementById("nav");
+      window.addEventListener("scroll", () => {
+        nav.classList.toggle("scrolled", window.scrollY > 50);
+      }, { passive: true });
+
+      // Tab toggle
+      const tabs = document.querySelectorAll(".tab-btn");
+      const sectionMaker = document.getElementById("section-maker");
+      const sectionEducator = document.getElementById("section-educator");
+
+      tabs.forEach(btn => {
+        btn.addEventListener("click", () => {
+          tabs.forEach(t => { t.classList.remove("active"); t.setAttribute("aria-selected", "false"); });
+          btn.classList.add("active");
+          btn.setAttribute("aria-selected", "true");
+
+          if (btn.dataset.target === "maker") {
+            sectionMaker.style.display = "";
+            sectionEducator.style.display = "none";
+          } else {
+            sectionMaker.style.display = "none";
+            sectionEducator.style.display = "";
+            sectionEducator.querySelectorAll(".reveal:not(.active)").forEach(el => obs.observe(el));
+          }
+        });
+      });
+
+      // Reveal on scroll
+      const obs = new IntersectionObserver(
+        (entries) => entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add("active"); obs.unobserve(e.target); }
+        }),
+        { threshold: 0.08 }
+      );
+      document.querySelectorAll(".reveal").forEach(el => obs.observe(el));
+    </script>
+  </body>
+</html>
